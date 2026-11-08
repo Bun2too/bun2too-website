@@ -15,6 +15,7 @@
 
 # next.js
 /.next/
+/.next-*/
 /out/
 
 # production
@@ -23,6 +24,22 @@
 # misc
 .DS_Store
 *.pem
+*.key
+*.p12
+*.pfx
+*.jks
+*.tfstate*
+/.aws/
+/.ssh/
+/.codex/
+/.npmrc
+/.netrc
+/credentials
+*.har
+*.log
+*.dump
+*.sql
+/secrets/
 
 # debug
 npm-debug.log*
@@ -32,6 +49,12 @@ yarn-error.log*
 
 # env files (can opt-in for committing if needed)
 .env*
+!.env.example
+/.netlify/
+/playwright-report/
+/test-results/
+/artifacts/
+/.idea/
 
 # vercel
 .vercel
@@ -39,3 +62,7 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# Keep repository-owned guidance trackable despite personal global ignores.
+!AGENTS.md
+!**/AGENTS.md

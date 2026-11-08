@@ -1,0 +1,4 @@
+interface:
+  display_name: "Bun2Too Search and Insights"
+  short_description: "Maintain search metadata and public Insights."
+  default_prompt: "Use $bun2too-discovery to complete the requested Bun2Too repository work within its current scope."

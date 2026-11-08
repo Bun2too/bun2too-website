@@ -1,0 +1,126 @@
+name: Build, test, and publish
+
+on:
+  pull_request:
+    branches: [dev, qa, main]
+  push:
+    branches: [dev, qa, main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: website-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  NEXT_TELEMETRY_DISABLED: "1"
+
+jobs:
+  verify:
+    name: Publication guard, tests, and isolated production build
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    # This job gets no deployment/provider secrets, including on forked PRs.
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+      - run: npm run security:check
+      - run: npm run security:scan
+      - run: npm ci
+      - run: npm audit --omit=dev --audit-level=moderate
+      - run: npm run docs:check
+      - run: npm run typecheck
+      - run: npm test
+      - run: npm run build:test
+      - run: npx playwright install --with-deps chromium
+      - run: npm run test:e2e
+      # Only mocked fixtures exist in this job. No deployed-site traces uploaded.
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        if: failure()
+        with:
+          name: browser-test-report
+          path: |
+            playwright-report/
+            test-results/
+          retention-days: 3
+
+  deploy:
+    name: Configure and publish the selected environment
+    needs: verify
+    if: github.event_name != 'pull_request' && github.ref_type == 'branch' && contains(fromJSON('["dev","qa","main"]'), github.ref_name)
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    environment:
+      name: ${{ github.ref_name == 'main' && 'prod' || github.ref_name }}
+      url: ${{ steps.publish.outputs.url }}
+    env:
+      NEXT_PUBLIC_AUTH0_DOMAIN: ${{ vars.NEXT_PUBLIC_AUTH0_DOMAIN }}
+      NEXT_PUBLIC_AUTH0_CLIENT_ID: ${{ vars.NEXT_PUBLIC_AUTH0_CLIENT_ID }}
+      NEXT_PUBLIC_AUTH0_AUDIENCE: ${{ vars.NEXT_PUBLIC_AUTH0_AUDIENCE }}
+      NEXT_PUBLIC_AUTH0_EMAIL_CONNECTION: ${{ vars.NEXT_PUBLIC_AUTH0_EMAIL_CONNECTION || 'email' }}
+      NEXT_PUBLIC_TURNSTILE_SITE_KEY: ${{ vars.NEXT_PUBLIC_TURNSTILE_SITE_KEY }}
+      NEXT_PUBLIC_CONTACT_EMAIL: ${{ vars.NEXT_PUBLIC_CONTACT_EMAIL || 'info@bun2too.com' }}
+      NEXT_PUBLIC_SITE_URL: ${{ vars.NEXT_PUBLIC_SITE_URL }}
+      NEXT_PUBLIC_GTM_CONTAINER_ID: ${{ vars.NEXT_PUBLIC_GTM_CONTAINER_ID }}
+      NEXT_PUBLIC_GA4_MEASUREMENT_ID: ${{ vars.NEXT_PUBLIC_GA4_MEASUREMENT_ID }}
+      SITE_ENVIRONMENT: ${{ github.ref_name == 'main' && 'prod' || github.ref_name }}
+      GOOGLE_SITE_VERIFICATION: ${{ vars.GOOGLE_SITE_VERIFICATION }}
+      BING_SITE_VERIFICATION: ${{ vars.BING_SITE_VERIFICATION }}
+      SUPPORT_SOURCE_HOSTS: ${{ vars.SUPPORT_SOURCE_HOSTS || 'bun2too.com,www.bun2too.com,insights.bun2too.com' }}
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+      - run: npm ci
+      - name: Validate and sync private site configuration
+        run: npm run deploy:configure
+        env:
+          NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
+          NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
+          AUTH0_DOMAIN: ${{ secrets.AUTH0_DOMAIN }}
+          AUTH0_AUDIENCE: ${{ secrets.AUTH0_AUDIENCE }}
+          AUTH0_MANAGEMENT_CLIENT_ID: ${{ secrets.AUTH0_MANAGEMENT_CLIENT_ID }}
+          AUTH0_MANAGEMENT_CLIENT_SECRET: ${{ secrets.AUTH0_MANAGEMENT_CLIENT_SECRET }}
+          AUTH0_EMAIL_CONNECTION: ${{ vars.NEXT_PUBLIC_AUTH0_EMAIL_CONNECTION || 'email' }}
+          TURNSTILE_SECRET_KEY: ${{ secrets.TURNSTILE_SECRET_KEY }}
+          ONYX_API_BASE_URL: ${{ secrets.ONYX_API_BASE_URL }}
+          ONYX_API_KEY: ${{ secrets.ONYX_API_KEY }}
+          ONYX_PUBLIC_AGENT_ID: ${{ secrets.ONYX_PUBLIC_AGENT_ID }}
+          ONYX_PUBLIC_DOCUMENT_SET: ${{ secrets.ONYX_PUBLIC_DOCUMENT_SET }}
+          ONYX_SEARCH_TOOL_ID: ${{ secrets.ONYX_SEARCH_TOOL_ID }}
+          SUPPORT_SESSION_SECRET: ${{ secrets.SUPPORT_SESSION_SECRET }}
+          INSIGHTS_API_ORIGIN: ${{ secrets.INSIGHTS_API_ORIGIN }}
+          INSIGHTS_EMBED_ORIGINS: ${{ secrets.INSIGHTS_EMBED_ORIGINS }}
+      - name: Build with the Netlify adapter
+        run: npx netlify build --context production
+        env:
+          NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
+          NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
+      - name: Publish to the selected site's live URL
+        id: publish
+        shell: bash
+        env:
+          NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
+          NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
+        run: |
+          npx netlify deploy --no-build --prod --context production --message "$GITHUB_SHA" --json > "$RUNNER_TEMP/netlify-deploy.json"
+          url=$(jq -er '.url // .deploy_url' "$RUNNER_TEMP/netlify-deploy.json")
+          echo "url=$url" >> "$GITHUB_OUTPUT"
+          echo "Published: $url" >> "$GITHUB_STEP_SUMMARY"
+          rm -f "$RUNNER_TEMP/netlify-deploy.json"
+      - name: Check public routes using invalid/unauthorized inputs
+        run: npm run test:smoke
+        env:
+          SMOKE_BASE_URL: ${{ steps.publish.outputs.url }}

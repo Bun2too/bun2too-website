@@ -1,0 +1,4 @@
+interface:
+  display_name: "Bun2Too Identity and Consent"
+  short_description: "Maintain Auth0 login and subscription consent."
+  default_prompt: "Use $bun2too-identity to complete the requested Bun2Too repository work within its current scope."

@@ -1,0 +1,14 @@
+[build]
+  command = "npm run build"
+  publish = ".next"
+
+[build.environment]
+  NODE_VERSION = "24"
+  NEXT_TELEMETRY_DISABLED = "1"
+
+[[plugins]]
+  package = "@netlify/plugin-nextjs"
+
+# Each environment has its own Netlify site. CI publishes the production context
+# of that site: dev branch -> dev site; qa -> qa site; main -> prod site.
+# Server environment variables must be set in each Netlify site's Functions scope.

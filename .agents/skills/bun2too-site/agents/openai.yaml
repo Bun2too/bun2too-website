@@ -1,0 +1,4 @@
+interface:
+  display_name: "Bun2Too Site Development"
+  short_description: "Build Bun2Too views, service copy, and branded UI."
+  default_prompt: "Use $bun2too-site to complete the requested Bun2Too repository work within its current scope."

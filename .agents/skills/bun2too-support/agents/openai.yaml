@@ -1,0 +1,4 @@
+interface:
+  display_name: "Bun2Too Public Support"
+  short_description: "Maintain public RAG chat and private inquiries."
+  default_prompt: "Use $bun2too-support to complete the requested Bun2Too repository work within its current scope."

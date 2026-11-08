@@ -1,0 +1,10 @@
+{
+  "NEXT_PUBLIC_AUTH0_DOMAIN": "website-test.example.auth0.com",
+  "NEXT_PUBLIC_AUTH0_CLIENT_ID": "test-spa-client-id",
+  "NEXT_PUBLIC_AUTH0_AUDIENCE": "https://api.example.invalid",
+  "NEXT_PUBLIC_AUTH0_EMAIL_CONNECTION": "email",
+  "NEXT_PUBLIC_GTM_CONTAINER_ID": "GTM-TEST123",
+  "NEXT_PUBLIC_GA4_MEASUREMENT_ID": "G-TEST123456",
+  "NEXT_PUBLIC_SITE_URL": "https://bun2too.com",
+  "INSIGHTS_EMBED_ORIGINS": "https://editorial.example.invalid"
+}

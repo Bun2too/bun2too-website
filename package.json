@@ -1,27 +1,51 @@
 {
   "name": "bun2too-website",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "private": true,
   "scripts": {
-    "dev": "next dev --turbopack",
-    "build": "next build",
-    "start": "next start",
-    "lint": "next lint"
+    "dev": "next dev --webpack --port 3000",
+    "build": "next build --webpack",
+    "build:test": "node scripts/build-test.mjs",
+    "security:check": "node scripts/check-public-repo.mjs",
+    "security:scan": "node scripts/gitleaks.mjs",
+    "deploy:check": "node scripts/sync-netlify-env.mjs --check",
+    "deploy:configure": "node scripts/sync-netlify-env.mjs",
+    "postbuild": "node scripts/validate-build.mjs",
+    "start": "next start --port 3000",
+    "typecheck": "tsc --noEmit",
+    "test": "node --import tsx --test tests/*.test.ts",
+    "test:e2e": "playwright test",
+    "test:smoke": "node scripts/smoke.mjs",
+    "support:check": "node --env-file-if-exists=.env.local scripts/check-support.mjs",
+    "docs:check": "node scripts/check-docs.mjs"
+  },
+  "engines": {
+    "node": ">=24 <27"
+  },
+  "overrides": {
+    "picomatch@^2.0.0": "2.3.2"
   },
   "dependencies": {
-    "react": "^19.0.0",
-    "react-dom": "^19.0.0",
-    "next": "15.2.4"
+    "@auth0/auth0-react": "2.30.0",
+    "@netlify/blobs": "11.1.8",
+    "auth0": "7.7.0",
+    "jose": "6.2.15",
+    "next": "16.4.5",
+    "react": "19.3.1",
+    "react-dom": "19.3.1"
   },
   "devDependencies": {
-    "typescript": "^5",
-    "@types/node": "^20",
-    "@types/react": "^19",
-    "@types/react-dom": "^19",
-    "@tailwindcss/postcss": "^4",
-    "tailwindcss": "^4",
-    "eslint": "^9",
-    "eslint-config-next": "15.2.4",
-    "@eslint/eslintrc": "^3"
+    "@netlify/plugin-nextjs": "5.16.6",
+    "@playwright/test": "1.65.0",
+    "@types/node": "22.14.0",
+    "@types/react": "19.3.0",
+    "@types/react-dom": "19.3.0",
+    "autoprefixer": "^10.4.21",
+    "netlify-cli": "27.16.2",
+    "postcss": "^8.5.3",
+    "prettier": "3.9.10",
+    "tailwindcss": "^3.4.17",
+    "tsx": "4.23.15",
+    "typescript": "5.8.2"
   }
 }

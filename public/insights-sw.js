@@ -1,0 +1,2 @@
+self.addEventListener('push',event=>{let data;try{data=event.data.json();}catch{return;}const path=typeof data.path==='string'&&/^\/insights\/[a-zA-Z0-9-]+$/.test(data.path)?data.path:'/insights';event.waitUntil(self.registration.showNotification('Bun2Too Insights',{body:String(data.title||'A new perspective is ready.').slice(0,200),icon:'/bun2too/logo.png',tag:String(data.id||'insights'),data:{path}}));});
+self.addEventListener('notificationclick',event=>{event.notification.close();event.waitUntil(clients.openWindow(event.notification.data?.path||'/insights'));});

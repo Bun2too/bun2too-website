@@ -1,0 +1,4 @@
+interface:
+  display_name: "Bun2Too Release Verification"
+  short_description: "Verify builds and the GitHub-to-Netlify pipeline."
+  default_prompt: "Use $bun2too-release to complete the requested Bun2Too repository work within its current scope."
