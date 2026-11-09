@@ -1,4 +1,5 @@
 import { getSupportStore } from "@/lib/support-store";
+import { publicSupportConfig } from "@/lib/openwebui";
 import {
   supportIdentity,
   supportResponse,
@@ -21,7 +22,11 @@ export async function GET(request: Request) {
     } catch {
       /* Not configured on this host. */
     }
-    return supportResponse({ inquiries }, request, identity);
+    return supportResponse(
+      { inquiries, chat: inquiries && Boolean(publicSupportConfig()) },
+      request,
+      identity,
+    );
   } catch (error) {
     return supportError(error);
   }

@@ -200,6 +200,29 @@
   max-width: 600px;
   margin-top: 22px;
 }
+.support-chat {
+  border-bottom: 1px solid var(--line);
+  padding-bottom: 18px;
+  margin-bottom: 20px;
+}
+.support-chat summary {
+  cursor: pointer;
+  color: var(--lime);
+  margin-bottom: 12px;
+}
+.support-answer {
+  padding: 14px;
+  margin-top: 16px;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+}
+.support-answer p {
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  font-size: 13px;
+  margin-top: 10px;
+}
+.support-answer a { color: var(--lime); }
 @media (max-width: 600px) {
   .support-launcher {
     right: 16px;

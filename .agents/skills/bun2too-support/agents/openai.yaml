@@ -1,4 +1,4 @@
 interface:
   display_name: "Bun2Too Public Support"
-  short_description: "Maintain support FAQs and private inquiries."
+  short_description: "Maintain private inquiries and optional public AI support."
   default_prompt: "Use $bun2too-support to complete the requested Bun2Too repository work within its current scope."

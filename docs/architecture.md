@@ -30,6 +30,7 @@ The current canonical article experience is **bun2too.com/insights**. It uses a 
 
 | Method and path                                                      | Responsibility                                                                                   | Important boundary                                                                    |
 | -------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------- |
+| `POST /api/support/chat` | Optional single-question Open WebUI public support | Explicit enablement, fixed model/public collection, separate consent, session, CAPTCHA, limits; no transcript persistence |
 | `POST /api/subscriptions`                                            | Validate consent/topics and create a pending, unverified passwordless email profile in Auth0     | Anonymous requests do not modify existing subscription choices                        |
 | `GET /api/preferences`                                               | Read the signed-in user's newsletter preferences                                                 | Validated issuer/audience/client/scope access token                                   |
 | `PATCH /api/preferences`                                             | Confirm topics or unsubscribe                                                                    | Email verification required for activation; never trust a browser-provided user ID    |
@@ -79,4 +80,8 @@ flowchart LR
 
 Source code, local builds, and mocked tests establish implementation behavior. Live Auth0 login/consent, email delivery, Web Push, inquiry persistence, DNS/domain configuration, and external search indexing each need their service configuration and live verification. Do not describe an integration as deployed, connected, or indexed based solely on these files. Setup references: [identity/deployment](setup.md), [support](support.md), [search](search.md), [Insights](insights.md).
 
-Support is inquiry-only. The former chat endpoint/provider code and related deployment settings are removed. Open WebUI is planned but not connected. Legacy expired conversation records remain eligible for the existing retention cleanup; see [support](support.md).
+Private inquiries are provider-independent. The former provider is removed; optional Open WebUI support uses a new configuration-gated server adapter and requires approved public knowledge/access configuration before activation. Legacy expired conversation records remain eligible for the existing retention cleanup; see [support](support.md).
+
+## Optional public AI support
+
+`POST /api/support/chat` accepts a single bounded question with separate explicit AI consent, signed visitor session and CAPTCHA. It uses server-only Open WebUI credentials, a fixed model and approved public knowledge collection; visitor input cannot select model, tools or documents. Private inquiry collection remains independent. The website stores no question/answer transcripts; configured providers may retain logs under their own policies. See [support setup](support.md) for access isolation, limits, retention and activation. Deployment troubleshooting and the configuration inventory are linked from [security](security.md).

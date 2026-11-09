@@ -3,6 +3,7 @@ import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import Icon from "@/components/Icon";
 import SupportCaptcha from "./SupportCaptcha";
+import SupportChat from "./SupportChat";
 
 export default function SupportPanel({
   open,
@@ -16,6 +17,7 @@ export default function SupportPanel({
   const [availability, setAvailability] = useState({
     loading: true,
     inquiries: false,
+    chat: false,
   });
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState("");
@@ -38,11 +40,15 @@ export default function SupportPanel({
         const body = await response.json();
         if (!response.ok)
           throw new Error(body.error || "Support is temporarily unavailable.");
-        setAvailability({ loading: false, inquiries: body.inquiries === true });
+        setAvailability({
+          loading: false,
+          inquiries: body.inquiries === true,
+          chat: body.chat === true,
+        });
       })
       .catch((error) => {
         if (!controller.signal.aborted) {
-          setAvailability({ loading: false, inquiries: false });
+          setAvailability({ loading: false, inquiries: false, chat: false });
           setError(error.message);
         }
       });
@@ -117,6 +123,7 @@ export default function SupportPanel({
         </button>
       </header>
       <div className="support-body">
+        {!availability.loading && <SupportChat available={availability.chat} />}
         {reference ? (
           <div className="support-confirmation" role="status">
             <Icon name="check" size={32} />

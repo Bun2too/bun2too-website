@@ -89,7 +89,8 @@ jobs:
           NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
           NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
           AUTH0_DOMAIN: ${{ secrets.AUTH0_DOMAIN }}
-          AUTH0_AUDIENCE: ${{ secrets.AUTH0_AUDIENCE }}
+          # One source for the SPA request and server token validation.
+          AUTH0_AUDIENCE: ${{ vars.NEXT_PUBLIC_AUTH0_AUDIENCE }}
           AUTH0_MANAGEMENT_CLIENT_ID: ${{ secrets.AUTH0_MANAGEMENT_CLIENT_ID }}
           AUTH0_MANAGEMENT_CLIENT_SECRET: ${{ secrets.AUTH0_MANAGEMENT_CLIENT_SECRET }}
           AUTH0_EMAIL_CONNECTION: ${{ vars.NEXT_PUBLIC_AUTH0_EMAIL_CONNECTION || 'email' }}
@@ -97,11 +98,18 @@ jobs:
           SUPPORT_SESSION_SECRET: ${{ secrets.SUPPORT_SESSION_SECRET }}
           INSIGHTS_API_ORIGIN: ${{ secrets.INSIGHTS_API_ORIGIN }}
           INSIGHTS_EMBED_ORIGINS: ${{ secrets.INSIGHTS_EMBED_ORIGINS }}
+          OPENWEBUI_BASE_URL: ${{ secrets.OPENWEBUI_BASE_URL }}
+          OPENWEBUI_API_KEY: ${{ secrets.OPENWEBUI_API_KEY }}
+          OPENWEBUI_MODEL_ID: ${{ secrets.OPENWEBUI_MODEL_ID }}
+          OPENWEBUI_KNOWLEDGE_ID: ${{ secrets.OPENWEBUI_KNOWLEDGE_ID }}
+          OPENWEBUI_PUBLIC_SUPPORT_ENABLED: ${{ vars.OPENWEBUI_PUBLIC_SUPPORT_ENABLED || 'false' }}
       - name: Build with the Netlify adapter
         run: npx netlify build --context production
         env:
           NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
           NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
+      - name: Verify the release browser integration settings
+        run: node scripts/check-browser-config.mjs
       - name: Publish to the selected site's live URL
         id: publish
         shell: bash
@@ -118,3 +126,5 @@ jobs:
         run: npm run test:smoke
         env:
           SMOKE_BASE_URL: ${{ steps.publish.outputs.url }}
+          SMOKE_REQUIRE_INTEGRATIONS: "true"
+          SMOKE_REQUIRE_AI: ${{ vars.OPENWEBUI_PUBLIC_SUPPORT_ENABLED || 'false' }}

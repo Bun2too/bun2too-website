@@ -97,6 +97,22 @@ export default function PrivacyPage() {
         the hosting platform’s connection address to reduce abuse. Sending an
         inquiry does not subscribe you to marketing.
       </p>
+      <h2>Optional AI support questions</h2>
+      <p>
+        If AI answers are enabled, a separate consent asks permission to send
+        your question to our Open WebUI service and its configured model
+        provider. Answers use approved public knowledge and may be inaccurate.
+        Each question is independent. Do not share confidential or personal
+        information. The website does not save question/answer transcripts or
+        attach them to inquiries. The latest answer remains in page memory until
+        a full reload or closing the page; closing the dialog or following an
+        internal link does not necessarily clear it. Open WebUI, the model
+        provider and hosting infrastructure may process and retain API or
+        security logs under their configured retention policies. You can use the
+        private inquiry form without using AI. AI cannot access your account,
+        submit an inquiry, or subscribe you. Signed visitor cookies and
+        pseudonymous rate counters help limit abuse.
+      </p>
       <h2>Retention and questions</h2>
       <p>
         Identity and subscription records remain until removed by Bun2Too’s
@@ -108,7 +124,7 @@ export default function PrivacyPage() {
         services share these practices.
       </p>
       <p className="small">
-        Notice updated: November 8, 2026. Email consent version: 2026-11-07;
+        Notice updated: November 9, 2026. Email consent version: 2026-11-07;
         inquiry consent version: 2026-11-08.2.
       </p>
     </main>

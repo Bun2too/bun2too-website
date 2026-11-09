@@ -17,7 +17,7 @@ npm run dev
 
 Development and normal production startup use **3000**, matching the supplied local Auth0 root callback. Browser tests use **3100** and mock authentication redirects rather than completing real tenant login on that port.
 
-Public views render without private credentials. Missing configuration returns an unavailable state for the corresponding feature. Private inquiries need Netlify runtime storage context, a session signing secret, and production verification. There is no AI chat dependency.
+Public views render without private credentials. Missing configuration returns an unavailable state for the corresponding feature. Private inquiries need Netlify runtime storage context, a session signing secret, and production verification. Inquiries have no AI dependency; optional Open WebUI support requires explicit enablement and separate public-only configuration. See [support](support.md) and [deployment troubleshooting](deployment-troubleshooting.md).
 
 ## Validation
 

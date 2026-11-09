@@ -11,7 +11,7 @@ async function openSupport(page: import("@playwright/test").Page) {
     page.getByRole("dialog", { name: "Contact Bun2Too" }),
   ).toBeVisible();
 }
-test("support is inquiry-only and never requests AI answers", async ({
+test("unconfigured AI never sends questions and inquiry controls remain usable", async ({
   page,
   request,
 }, testInfo) => {
@@ -28,10 +28,49 @@ test("support is inquiry-only and never requests AI answers", async ({
   await dialog.getByRole("button", { name: "Close support" }).click();
   await expect(dialog).not.toBeVisible();
   expect(chats).toEqual([]);
-  const retired = await request.post("/api/support/chat", {
+  const invalid = await request.post("/api/support/chat", {
+    headers: { Origin: "http://localhost:3100" },
     data: { message: "Question", consent: true },
   });
-  expect([404, 405]).toContain(retired.status());
+  expect(invalid.status()).toBe(400);
+});
+test("configured AI requires a separate opt-in and never submits an inquiry", async ({
+  page,
+}) => {
+  await page.route("**/api/support/session", (route) =>
+    route.fulfill({ json: { inquiries: true, chat: true } }),
+  );
+  let questions = 0;
+  await page.route("**/api/support/chat", async (route) => {
+    const data = route.request().postDataJSON();
+    expect(data.consent).toBe(true);
+    expect(data.model).toBeUndefined();
+    questions++;
+    await route.fulfill({
+      json: {
+        answer: "Bun2Too helps with AI engineering and customer technology.",
+      },
+    });
+  });
+  await page.route("**/api/support/inquiries", () => {
+    throw new Error("AI must not submit an inquiry");
+  });
+  await page.goto("/");
+  await page.locator(".support-launcher").click();
+  await page.getByText("Ask the Bun2Too AI assistant", { exact: true }).click();
+  await page
+    .getByLabel("Your public support question")
+    .fill("What services can Bun2Too help with?");
+  await expect(
+    page.getByRole("button", { name: "Ask AI", exact: true }),
+  ).toBeDisabled();
+  expect(questions).toBe(0);
+  await page
+    .getByLabel("I agree to send this question", { exact: false })
+    .check();
+  await page.getByRole("button", { name: "Ask AI", exact: true }).click();
+  await expect(page.locator(".support-answer")).toContainText("AI engineering");
+  expect(questions).toBe(1);
 });
 test("private inquiry confirms saved reference without chat data", async ({
   page,

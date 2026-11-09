@@ -50,7 +50,7 @@ const privateApi = await fetch(new URL("/api/preferences", base));
 if (privateApi.status !== 401)
   throw new Error(`Preferences API expected 401, got ${privateApi.status}`);
 console.log("OK preferences API authorization");
-for (const route of ["/api/support/inquiries"]) {
+for (const route of ["/api/support/inquiries", "/api/support/chat"]) {
   const response = await fetch(new URL(route, base), {
     method: "POST",
     headers: {
@@ -64,4 +64,20 @@ for (const route of ["/api/support/inquiries"]) {
       `${route}: expected input validation HTTP 400, got ${response.status}`,
     );
   console.log(`OK ${route} validation`);
+}
+if (process.env.SMOKE_REQUIRE_INTEGRATIONS === "true") {
+  const response = await fetch(new URL("/api/support/session", base), {
+    cache: "no-store",
+    signal: AbortSignal.timeout(20000),
+  });
+  const state = response.ok ? await response.json() : {};
+  if (!response.ok || state.inquiries !== true)
+    throw new Error(
+      "Deployed inquiry session is unavailable. Verify SUPPORT_SESSION_SECRET, both Turnstile settings, and Netlify Blobs runtime context; values withheld.",
+    );
+  if (process.env.SMOKE_REQUIRE_AI === "true" && state.chat !== true)
+    throw new Error(
+      "AI support was enabled but the deployed runtime is not ready. Verify the OPENWEBUI_* configuration; values withheld.",
+    );
+  console.log("OK deployed support readiness (no inquiry or AI request sent)");
 }

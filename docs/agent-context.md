@@ -25,7 +25,7 @@ Each skill has a `SKILL.md` entry point and `agents/openai.yaml` discovery metad
 | ----------------------------------------------------------------- | ------------------------------------------------------------------------------------------ |
 | [bun2too-site](../.agents/skills/bun2too-site/SKILL.md)           | Marketing views, capability copy, branding, responsive UI, and related content propagation |
 | [bun2too-identity](../.agents/skills/bun2too-identity/SKILL.md)   | Auth0 SDK, signup, subscription consent/preferences, and token validation                  |
-| [bun2too-support](../.agents/skills/bun2too-support/SKILL.md)     | Support FAQs, private Netlify inquiries, and retention                    |
+| [bun2too-support](../.agents/skills/bun2too-support/SKILL.md)     | Support FAQs, private Netlify inquiries, optional Open WebUI, and retention                    |
 | [bun2too-discovery](../.agents/skills/bun2too-discovery/SKILL.md) | SEO/AI discovery, structured data, sitemaps, public Insights and feed integration          |
 | [bun2too-release](../.agents/skills/bun2too-release/SKILL.md)     | Build/browser/smoke verification, GitHub Actions, Netlify packaging, release configuration |
 

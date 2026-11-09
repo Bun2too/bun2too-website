@@ -1,6 +1,6 @@
 # Implementation and live integration readiness
 
-Last audited: November 8, 2026. This records source implementation and locally visible configuration, not a claim about uninspected GitHub secrets, Netlify dashboards, DNS, or deployed production state.
+Last audited: November 9, 2026. This records source implementation and locally visible configuration, not a claim about uninspected GitHub secrets, Netlify dashboards, DNS, or deployed production state.
 
 | Area | Implemented / checked locally | Still requires external configuration or live verification |
 | --- | --- | --- |
@@ -9,7 +9,7 @@ Last audited: November 8, 2026. This records source implementation and locally v
 | Auth0 sign-in | Official React SDK, PKCE, memory token cache, sign-in/signup/passwordless/logout/profile code; explicit environment-only public tenant/client configuration | Verify the actual deployed hosts in Auth0 callbacks/logout/origins and the API audience/scopes. Intercepted SDK redirects do not establish a completed tenant login. |
 | Email provisioning / consent | Pending unverified passwordless provisioning, explicit topics, verified activation and withdrawal, token-validated preferences | Local `AUTH0_MANAGEMENT_CLIENT_ID`, `AUTH0_MANAGEMENT_CLIENT_SECRET`, and `NEXT_PUBLIC_AUTH0_AUDIENCE` are absent. Configure the M2M app, email connection/verification, audience/permissions, then verify with an authorized test address. Auth0 is not the campaign sender. |
 | Public anti-abuse | Turnstile integration and server-side verification | Local `NEXT_PUBLIC_TURNSTILE_SITE_KEY` and `TURNSTILE_SECRET_KEY` are absent. Register the actual hosts and configure production keys. |
-| Future AI support | No site chat endpoint, provider settings, or transcript attachment remains. Support uses FAQs and private inquiries. | Open WebUI is planned; its API/model/knowledge scope and website integration are not configured. |
+| Optional AI support | Server-side Open WebUI adapter, separately consented question form, fixed model/public knowledge, CAPTCHA/rate limits, bounded text-only answers and no website transcript persistence. | Local Open WebUI credential/model/collection settings are absent. Configure a restricted public-only service account and approved knowledge, enable explicitly, then verify live retrieval/retention. The adapter is implemented; no live model connection is claimed. |
 | Private inquiries | Explicit inquiry consent without chat attachments, private Netlify Blobs, ownership/rate limits, 90-day retention and scheduled cleanup | Connect the Netlify site, runtime secrets, production Turnstile, and storage. Verify an authorized inquiry appears privately and retention is scheduled. Local `NETLIFY_AUTH_TOKEN` / `NETLIFY_SITE_ID` are absent; no actual inquiry was sent. |
 | Insights | Integrated server-rendered editorial API, feeds/proxies, signup embed, consent-gated read status, Web Push UI/service worker | Editorial backend, SES/VAPID configuration, production consent identity mapping, and authorized delivery checks belong to the companion service. |
 | SEO / AI discovery | Metadata, canonical URLs, truthful structured data, sitemap, robots, `/llms.txt`, preview noindex | Search ownership, actual indexing, correct production site URL, and public content refreshes after publication |
@@ -21,3 +21,9 @@ Missing local variables are names only; secrets must be configured through priva
 Current verification commands and their limits are in [development](development.md). Browser checks cover the Gmail mail-link mutation reported by the owner, console hydration diagnostics, responsive artwork loading, identity redirects, mocked support/newsletter behavior, and optional tracking permissions. They intentionally do not provision real users, send inquiries, contact subscribers, or publish the site.
 
 Before publication, follow [security and deployment inventory](security.md). Actual tenant, backend, agent, and tag values are intentionally absent; recorded implementation checks do not supply production configuration.
+
+## November 9 deployment diagnosis
+
+The reported workflow failed before synchronization because the server and SPA audience settings differed. CI now derives both from one `NEXT_PUBLIC_AUTH0_AUDIENCE` environment Variable, checks the Management token grant/scopes without customer writes, logs safe key-level synchronization progress, and verifies browser configuration before publishing. The new [troubleshooting guide](deployment-troubleshooting.md) maps each form to its required setup.
+
+A clean-browser read-only check of bun2too.com found functional cookie controls and no page errors, but the deployed navigation showed Account instead of an Auth0 login button, consistent with missing browser Auth0 configuration. No valid inquiry, subscriber, sign-in or model request was sent. This does not establish the state of a different dev/QA URL. Local verification: production fixture build, 50 unit tests and 98 desktop/mobile checks passed; provider calls/inquiry writes remained mocked.

@@ -2,6 +2,7 @@ import {
   DeploymentConfigError,
   syncNetlifyEnvironment,
   validateDeployment,
+  verifyAuth0Connection,
 } from "./deploy-config.mjs";
 try {
   validateDeployment(process.env);
@@ -9,10 +10,16 @@ try {
     console.log(
       "Deployment configuration names, required values, and consistency checks passed. No values were printed.",
     );
-  else
+  else {
     console.log(
-      `Configured ${await syncNetlifyEnvironment(process.env)} site environment keys for the production context. Values were not printed.`,
+      "Configuration consistency passed. Checking Auth0 Management connectivity without creating users or sending email.",
     );
+    await verifyAuth0Connection(process.env);
+    console.log("Auth0 Management credentials and required scopes verified.");
+    console.log(
+      `Configured ${await syncNetlifyEnvironment(process.env, fetch, (message) => console.log(message))} site environment keys for the production context. Values were not printed.`,
+    );
+  }
 } catch (error) {
   console.error(
     error instanceof DeploymentConfigError

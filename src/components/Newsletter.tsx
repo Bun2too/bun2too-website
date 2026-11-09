@@ -16,7 +16,11 @@ declare global {
     };
   }
 }
-export default function Newsletter({ insights = false }: { insights?: boolean }) {
+export default function Newsletter({
+  insights = false,
+}: {
+  insights?: boolean;
+}) {
   const id = useId();
   const widget = useRef<HTMLDivElement>(null);
   const widgetId = useRef<string | undefined>(undefined);
@@ -99,7 +103,9 @@ export default function Newsletter({ insights = false }: { insights?: boolean })
           <em>In your inbox.</em>
         </h2>
         <p>
-          {insights ? "A weekly reading list of our latest AI and engineering insights. Choose AI & automation below to receive the digest." : "Get Bun2Too updates about customer technology, AI, and the occasional fintech experiment. Choose what interests you."}
+          {insights
+            ? "A weekly reading list of our latest AI and engineering insights. Choose AI & automation below to receive the digest."
+            : "Get Bun2Too updates about customer technology, AI, and the occasional fintech experiment. Choose what interests you."}
         </p>
       </div>
       <form className="newsletter-form" onSubmit={submit}>
@@ -143,7 +149,9 @@ export default function Newsletter({ insights = false }: { insights?: boolean })
                 type="checkbox"
                 name="topics"
                 value={topic.value}
-                defaultChecked={insights ? topic.value === "ai-automation" : i === 0}
+                defaultChecked={
+                  insights ? topic.value === "ai-automation" : i === 0
+                }
               />
               {topic.label}
             </label>
@@ -163,6 +171,12 @@ export default function Newsletter({ insights = false }: { insights?: boolean })
               src="https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit"
               strategy="afterInteractive"
               onReady={renderCaptcha}
+              onError={() => {
+                setStatus("error");
+                setMessage(
+                  "Security verification could not load. Allow challenges.cloudflare.com in your browser or content blocker, then reload.",
+                );
+              }}
             />
             <div ref={widget} className="turnstile-container" />
           </>

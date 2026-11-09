@@ -6,6 +6,7 @@ import {
   requiredKeys,
   syncNetlifyEnvironment,
   validateDeployment,
+  verifyAuth0Connection,
 } from "../scripts/deploy-config.mjs";
 function configuration() {
   return {
@@ -38,6 +39,78 @@ test("deployment validation rejects incomplete and mismatched configuration with
         INSIGHTS_API_ORIGIN: "http://example.invalid",
       }),
     /Invalid HTTPS URL/,
+  );
+});
+test("audience drift and pasted whitespace fail with setting names, never values", () => {
+  const env = configuration();
+  for (const changes of [
+    { AUTH0_AUDIENCE: `${env.NEXT_PUBLIC_AUTH0_AUDIENCE}/` },
+    { AUTH0_AUDIENCE: "private-wrong-identifier" },
+    { NEXT_PUBLIC_AUTH0_CLIENT_ID: " private-client " },
+  ])
+    assert.throws(
+      () => validateDeployment({ ...env, ...changes }),
+      (error: Error) => {
+        assert.match(
+          error.message,
+          /AUTH0_AUDIENCE|NEXT_PUBLIC_AUTH0_CLIENT_ID/,
+        );
+        assert.doesNotMatch(
+          error.message,
+          /private-wrong-identifier|private-client/,
+        );
+        return true;
+      },
+    );
+});
+test("Auth0 preflight verifies the M2M grant and scopes without profile writes", async () => {
+  const calls: string[] = [];
+  await verifyAuth0Connection(
+    configuration(),
+    async (url: string, options: { body: string }) => {
+      calls.push(new URL(url).pathname);
+      assert.equal(JSON.parse(options.body).grant_type, "client_credentials");
+      return Response.json({
+        access_token: "fixture-token",
+        scope: "read:users create:users update:users_app_metadata",
+      });
+    },
+  );
+  assert.deepEqual(calls, ["/oauth/token"]);
+  // OAuth permits omission when the server grants exactly the requested scope.
+  await assert.doesNotReject(
+    verifyAuth0Connection(configuration(), async () =>
+      Response.json({ access_token: "fixture-token" }),
+    ),
+  );
+  for (const response of [
+    new Response("private provider failure", { status: 401 }),
+    Response.json({
+      access_token: "fixture-denied-token",
+      scope: "read:users",
+    }),
+  ])
+    await assert.rejects(
+      verifyAuth0Connection(configuration(), async () => response),
+      (error: Error) => {
+        assert.match(error.message, /Auth0 Management connection/);
+        assert.doesNotMatch(
+          error.message,
+          /private provider failure|fixture-denied-token/,
+        );
+        return true;
+      },
+    );
+});
+test("optional AI must be explicitly enabled with complete public-support configuration", () => {
+  assert.doesNotThrow(() => validateDeployment(configuration()));
+  assert.throws(
+    () =>
+      validateDeployment({
+        ...configuration(),
+        OPENWEBUI_PUBLIC_SUPPORT_ENABLED: "true",
+      }),
+    /Missing OPENWEBUI_BASE_URL/,
   );
 });
 test("runtime sync selects the intended site and never forwards deployment credentials", async () => {

@@ -35,7 +35,7 @@ manage:subscriptions
 
 Authorize the SPA to request it. For a first-party application, configure the API's consent policy appropriately. If RBAC is enabled, grant this permission to the intended customer role/users so it appears in the issued token's `scope` claim. The application requests `openid profile email manage:subscriptions` and this API audience. The server rejects ID tokens, tokens for another audience/client/issuer, expired tokens, machine identities, and tokens without the scope.
 
-Use the same identifier for `NEXT_PUBLIC_AUTH0_AUDIENCE` and `AUTH0_AUDIENCE`. Sign out and back in after changing token audience or scopes. Without an audience configured, regular login can still work, but the account UI explains that preferences are not connected.
+Set the exact Identifier in the GitHub environment Variable `NEXT_PUBLIC_AUTH0_AUDIENCE`. CI derives server `AUTH0_AUDIENCE` from that one source; the older duplicate GitHub Secret is unused. For local development, set both names to the same Identifier. See [deployment troubleshooting](deployment-troubleshooting.md). Sign out and back in after changing token audience or scopes. Without an audience configured, regular login can still work, but the account UI explains that preferences are not connected.
 
 ## 4. Credentialless subscriber profiles
 

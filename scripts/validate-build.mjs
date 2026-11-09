@@ -29,6 +29,8 @@ for (const route of [
   "/sitemap.xml/route",
   "/llms.txt/route",
   "/api/support/inquiries/route",
+  "/api/support/session/route",
+  "/api/support/chat/route",
 ]) {
   if (!manifest[route])
     throw new Error(

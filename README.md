@@ -18,7 +18,7 @@ See [public-repository security and exact GitHub/Netlify configuration](docs/sec
 | [Deployment and Auth0](docs/setup.md)                      | One-time GitHub/Netlify configuration, SPA callbacks, Management API and consent setup        |
 | [Insights integration](docs/insights.md)                   | Public editorial backend, server-rendered articles, feeds, signup embed, and updates          |
 | [Search and AI discovery](docs/search.md)                  | Canonical metadata, structured data, crawler/indexing controls, and search ownership setup    |
-| [Public support setup](docs/support.md)                    | Provider-independent private inquiries, retention, and future AI integration boundaries |
+| [Public support setup](docs/support.md)                    | Provider-independent private inquiries, retention, and optional Open WebUI setup boundaries |
 | [Terms and cookie preferences](docs/legal-and-cookies.md) | Legal draft/review notes, cookie inventory, consent gates, and adding future trackers |
 | [Visual design and artwork](docs/visual-design.md) | Responsive hero layouts, generated asset map, prompts, and email hydration regression |
 | [Integration readiness](docs/readiness.md) | Implemented work versus remaining live credentials, provider setup, and deployment verification |
@@ -83,7 +83,7 @@ The active article experience is **https://bun2too.com/insights**, rendered insi
 | Auth0 React SDK 2.x  | Browser-side Universal Login, signup, logout, and profile; public content remains server-rendered and tokens stay in SDK memory.                                                                                          |
 | Auth0 Management API | `POST /api/subscriptions` records an explicit, pending, unverified passwordless email request. Anonymous duplicates do not overwrite existing choices.                                                                    |
 | Account preferences  | `GET/PATCH /api/preferences` checks access-token issuer/audience/client/scope/expiry. Activation requires verified email; authenticated users can change topics or unsubscribe.                                           |
-| Customer support | Lazy-loaded **Contact Bun2Too** private inquiry form and public FAQs. No AI provider, chat, or transcript attachment is required. Open WebUI integration is planned separately. |
+| Customer support | Lazy-loaded **Contact Bun2Too** private inquiry form and public FAQs. Optional Open WebUI questions require separate consent and approved public-only model/knowledge configuration. Inquiries remain independent; no transcripts attach. |
 | Private inquiries    | Separate consented form saves contact details in private Netlify Blobs. It never enrolls marketing.                                                                          |
 | Retention | Signed visitor cookie expires after 24 hours; inquiry records after 90 days. Daily cleanup also handles legacy expired conversation records. |
 | Insights updates     | Website-side reading/update controls, feeds, shared consent form, and a push/click service worker. Email digest and Web Push delivery belong to the editorial backend and require its configuration.                      |
@@ -149,4 +149,6 @@ The source includes these views/integrations and local mocked checks. A live dep
 
 `src/app_temp` and `src/components/tsconfig.json` are retained legacy material. Use the active root TypeScript configuration and `src/app`. Generated build/test artifacts are ignored. The repository-local [agent and skill context](docs/agent-context.md) explains how future assistants should navigate and extend the actual application without replacing its established integrations.
 
-Support currently uses FAQs and private inquiries. All former AI-provider integration/settings have been removed. Open WebUI is the planned replacement, but no website connection is configured yet. See [support](docs/support.md).
+Support includes FAQs, private inquiries, and an optional Open WebUI adapter. AI remains disabled until a restricted service account, approved public knowledge collection and model are configured and explicitly enabled. See [support](docs/support.md).
+
+Deployment derives the server audience from the `NEXT_PUBLIC_AUTH0_AUDIENCE` GitHub environment Variable, checks the Management API grant, and verifies browser configuration before publication. [Deployment and form troubleshooting](docs/deployment-troubleshooting.md) explains exact setting names, provider setup, pending subscription activation, and live verification limits.
