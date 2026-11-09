@@ -13,7 +13,6 @@ export const publicBuildKeys = [
   "SITE_ENVIRONMENT",
   "GOOGLE_SITE_VERIFICATION",
   "BING_SITE_VERIFICATION",
-  "SUPPORT_SOURCE_HOSTS",
 ];
 export const privateRuntimeKeys = [
   "AUTH0_DOMAIN",
@@ -22,11 +21,6 @@ export const privateRuntimeKeys = [
   "AUTH0_MANAGEMENT_CLIENT_SECRET",
   "AUTH0_EMAIL_CONNECTION",
   "TURNSTILE_SECRET_KEY",
-  "ONYX_API_BASE_URL",
-  "ONYX_API_KEY",
-  "ONYX_PUBLIC_AGENT_ID",
-  "ONYX_PUBLIC_DOCUMENT_SET",
-  "ONYX_SEARCH_TOOL_ID",
   "SUPPORT_SESSION_SECRET",
   "INSIGHTS_API_ORIGIN",
   "INSIGHTS_EMBED_ORIGINS",
@@ -53,11 +47,7 @@ export function validateDeployment(env) {
     .map((key) => `Missing ${key}`);
   if (env.SUPPORT_SESSION_SECRET && env.SUPPORT_SESSION_SECRET.length < 32)
     errors.push("SUPPORT_SESSION_SECRET must contain at least 32 characters");
-  for (const key of [
-    "NEXT_PUBLIC_SITE_URL",
-    "INSIGHTS_API_ORIGIN",
-    "ONYX_API_BASE_URL",
-  ]) {
+  for (const key of ["NEXT_PUBLIC_SITE_URL", "INSIGHTS_API_ORIGIN"]) {
     if (!env[key]) continue;
     try {
       const url = new URL(env[key]);
@@ -67,7 +57,7 @@ export function validateDeployment(env) {
         url.password ||
         url.search ||
         url.hash ||
-        (key !== "ONYX_API_BASE_URL" && url.pathname !== "/")
+        url.pathname !== "/"
       )
         throw new DeploymentConfigError();
     } catch {
@@ -101,10 +91,6 @@ export function validateDeployment(env) {
     !["dev", "qa", "prod"].includes(env.SITE_ENVIRONMENT)
   )
     errors.push("Invalid SITE_ENVIRONMENT");
-  if (env.ONYX_PUBLIC_AGENT_ID && !/^[1-9]\d*$/.test(env.ONYX_PUBLIC_AGENT_ID))
-    errors.push("Invalid ONYX_PUBLIC_AGENT_ID");
-  if (env.ONYX_SEARCH_TOOL_ID && !/^\d+$/.test(env.ONYX_SEARCH_TOOL_ID))
-    errors.push("Invalid ONYX_SEARCH_TOOL_ID");
   if (errors.length) throw new DeploymentConfigError(errors.join("\n"));
 }
 

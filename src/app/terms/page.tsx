@@ -22,7 +22,7 @@ export default function TermsPage() {
       </p>
       <p>
         These terms govern your use of bun2too.com, including its public pages,
-        Insights, account features, and support assistant (the “Site”).
+        Insights, account features, and support inquiry tools (the “Site”).
         “Bun2Too,” “we,” and “us” mean Bun2too, Inc.; “you” means the person
         using the Site and any organization they are authorized to represent. By
         using the Site, you agree to these terms. If you do not agree, stop
@@ -75,17 +75,16 @@ export default function TermsPage() {
         impersonate others, send spam, upload malware, harass people, commit
         fraud, or violate applicable sanctions or export restrictions. Do not
         probe private systems without authorization, circumvent access or rate
-        limits, disrupt availability, extract private records, or use the
-        assistant to obtain secrets or evade its knowledge and safety
-        boundaries.
+        limits, disrupt availability, extract private records, or use the Site
+        to obtain secrets or evade its access controls.
       </p>
       <p>
         Public search engines and AI discovery agents may index public pages in
         accordance with our published crawler rules, reasonable rate limits, and
         applicable law. This permission does not grant access to private
-        accounts, support conversations, internal APIs, or restricted content,
-        or a license to republish our entire site or imply our endorsement.
-        Legal rights that cannot be restricted by contract remain unaffected.
+        accounts, private inquiries, internal APIs, or restricted content, or a
+        license to republish our entire site or imply our endorsement. Legal
+        rights that cannot be restricted by contract remain unaffected.
       </p>
 
       <h2>4. Site content and intellectual property</h2>
@@ -114,33 +113,27 @@ export default function TermsPage() {
       <p>
         Do not submit passwords, authentication codes, payment credentials,
         confidential client records, sensitive personal data, or information
-        requiring special regulatory handling. Public chat and inquiry forms are
-        not approved channels for regulated or confidential project data. Agree
-        an appropriate secure channel and written protections with us before
-        sharing such material. You may choose whether to attach the support
-        transcript to an inquiry.
+        requiring special regulatory handling. Public inquiry forms are not
+        approved channels for regulated or confidential project data. Agree an
+        appropriate secure channel and written protections with us before
+        sharing such material.
       </p>
 
-      <h2 id="ai">6. AI assistant and generated responses</h2>
+      <h2 id="ai">6. AI-generated editorial material</h2>
       <p>
-        The support assistant uses Onyx retrieval and configured model services
-        to answer from approved public knowledge. Generated responses and
-        citations may be incomplete, outdated, inaccurate, or unrelated to your
-        circumstances. A citation is a reference to check, not proof that every
-        statement is correct. Outputs may resemble content supplied to other
-        users or contain material subject to third-party rights; we do not
-        guarantee exclusivity or ownership of every output.
+        Some articles, illustrations, and demonstrations may include
+        AI-generated material. Such material and its citations may be
+        incomplete, outdated, or inaccurate. Check the original sources before
+        relying on a statement. Outputs may resemble other material or be
+        subject to third-party rights; we do not guarantee exclusivity or
+        ownership of every output.
       </p>
       <p>
-        Review responses and original sources before acting. The assistant
-        cannot bind Bun2Too to contracts, pricing, refunds, delivery dates, or
-        legal commitments, and it is not authorized to access or change your
-        private accounts on your behalf. Verify consequential decisions with an
-        appropriately qualified person. Do not use this public assistant as the
-        sole basis for decisions affecting someone’s rights, safety, employment,
-        credit, or access to essential services.
+        The Site currently does not provide an AI support chat. Editorial
+        content and demonstrations cannot bind Bun2Too to contracts, pricing,
+        refunds, delivery dates, or legal commitments. Review consequential
+        decisions with an appropriately qualified person.
       </p>
-
       <h2>7. No professional or investment advice</h2>
       <p>
         Articles, demonstrations, stock picks, forecasts, and experiments are
@@ -157,7 +150,7 @@ export default function TermsPage() {
         <Link href="/cookies">cookie policy</Link> explain current data
         processing, storage, and choices. Agreeing to these terms does not opt
         you into marketing, optional browser storage, push notifications, or
-        transcript sharing. Those choices are separate. Account creation alone
+        inquiry processing. Those choices are separate. Account creation alone
         does not subscribe you to email updates. You may withdraw optional
         consent through the relevant controls without accepting optional cookies
         to browse public pages.

@@ -1,12 +1,9 @@
 import assert from "node:assert/strict";
 import { test } from "node:test";
 import { randomUUID } from "node:crypto";
-import { askOnyx, publicSources } from "../src/lib/onyx";
 import {
   consumeLimit,
   DAY,
-  ownedConversation,
-  parseChat,
   parseInquiry,
   saveInquiry,
   SUPPORT_COOKIE,
@@ -68,59 +65,25 @@ test("support cookies are signed, expire, and cannot be forged into another visi
   );
   assert.notEqual(expired.owner, first.owner);
 });
-test("support inputs require consent, bounded text, and app-owned identifiers", () => {
-  assert.throws(
-    () => parseChat({ message: "Hello", consent: false }),
-    RequestError,
-  );
-  assert.throws(
-    () => parseChat({ message: "x".repeat(2001), consent: true }),
-    RequestError,
-  );
-  assert.throws(
-    () =>
-      parseChat({
-        message: "Hello",
-        consent: true,
-        conversationId: "../../other-user",
-      }),
-    RequestError,
-  );
-  const input = parseChat({
-    message: " Hello ",
+test("inquiries require consent, bounded fields, and valid request identifiers", () => {
+  const valid = {
+    name: "Customer",
+    email: "person@example.com",
+    topic: "project",
+    message: "Please help with a project.",
     consent: true,
-    persona_id: 0,
-    chat_session_id: randomUUID(),
-    allowed_tool_ids: [999],
-  });
-  assert.deepEqual(input, {
-    message: "Hello",
-    conversationId: null,
-    captchaToken: "",
-  });
-  assert.throws(() => parseInquiry({ consent: false }), RequestError);
-});
-test("another visitor cannot read or attach a conversation, including expired sessions", async () => {
-  const { store } = memory();
-  const id = randomUUID();
-  await store.write(`conversations/${id}`, {
-    owner: "owner-one",
-    onyxSession: randomUUID(),
-    messages: [],
-    expiresAt: 2000,
-  });
-  await assert.rejects(
-    ownedConversation(store, id, "owner-two", 1000),
-    (error) => error instanceof RequestError && error.status === 404,
-  );
-  await assert.rejects(
-    ownedConversation(store, id, "owner-one", 3000),
+    requestId: randomUUID(),
+  };
+  assert.throws(() => parseInquiry({ ...valid, consent: false }), RequestError);
+  assert.throws(
+    () => parseInquiry({ ...valid, message: "x".repeat(2001) }),
     RequestError,
   );
-  assert.equal(
-    (await ownedConversation(store, id, "owner-one", 1000)).data.owner,
-    "owner-one",
+  assert.throws(
+    () => parseInquiry({ ...valid, requestId: "../../private" }),
+    RequestError,
   );
+  assert.equal(parseInquiry({ ...valid, website: "spam" }), null);
 });
 test("distributed limits use conditional writes and reject requests over the budget", async () => {
   const { store } = memory();
@@ -132,7 +95,7 @@ test("distributed limits use conditional writes and reject requests over the bud
   );
   await consumeLimit(store, "visitor", 2, 60000, 61000);
 });
-test("private inquiries persist contact consent, exclude chats by default, and are idempotent", async () => {
+test("private inquiries persist consent, ignore client attachments, and are idempotent", async () => {
   const { store, entries } = memory();
   const now = Date.parse("2026-11-07T12:00:00Z");
   const input = parseInquiry({
@@ -143,6 +106,8 @@ test("private inquiries persist contact consent, exclude chats by default, and a
     consent: true,
     requestId: randomUUID(),
     transcript: ["client-injected content"],
+    includeTranscript: true,
+    conversationId: randomUUID(),
   })!;
   const first = await saveInquiry(store, "owner", input, now);
   const second = await saveInquiry(store, "owner", input, now);
@@ -150,7 +115,8 @@ test("private inquiries persist contact consent, exclude chats by default, and a
   assert.equal(entries.size, 1);
   const record = [...entries.values()][0].data as Record<string, unknown>;
   assert.equal(record.email, "person@example.com");
-  assert.deepEqual(record.transcript, []);
+  assert.equal("transcript" in record, false);
+  assert.equal("conversationId" in record, false);
   assert.equal(record.expiresAt, now + 90 * DAY);
   assert.equal("marketing" in record, false);
   assert.equal(
@@ -158,149 +124,24 @@ test("private inquiries persist contact consent, exclude chats by default, and a
     "respond-to-inquiry",
   );
 });
-test("transcript attachment uses server-owned content only after explicit consent", async () => {
+test("visitor ownership isolates inquiry retries", async () => {
   const { store, entries } = memory();
-  const id = randomUUID();
-  await store.write(`conversations/${id}`, {
-    owner: "one",
-    onyxSession: randomUUID(),
-    messages: [{ role: "user", content: "Original question" }],
-    expiresAt: 2000,
-  });
-  const inquiry = parseInquiry({
-    name: "Person",
+  const input = parseInquiry({
+    name: "Customer",
     email: "person@example.com",
-    topic: "account",
-    message: "Please help with this question.",
-    requestId: randomUUID(),
+    topic: "project",
+    message: "Please help with a project.",
     consent: true,
-    conversationId: id,
-    includeTranscript: true,
+    requestId: randomUUID(),
   })!;
-  await assert.rejects(
-    saveInquiry(store, "other", inquiry, 1000),
-    RequestError,
-  );
-  await saveInquiry(store, "one", inquiry, 1000);
-  const record = entries.get(`inquiries/one/${inquiry.requestId}`)!.data as {
-    transcript: unknown[];
-  };
-  assert.deepEqual(record.transcript, [
-    { role: "user", content: "Original question" },
-  ]);
-});
-test("citations expose only cited, public, safe URLs and never document metadata", () => {
-  const data = {
-    top_documents: [
-      {
-        document_id: "public",
-        semantic_identifier: "Customer technology",
-        link: "https://bun2too.com/services",
-        primary_owners: ["private@example.com"],
-      },
-      {
-        document_id: "private",
-        link: "https://support.example.invalid/document/internal",
-      },
-      { document_id: "script", link: "javascript:alert(1)" },
-      {
-        document_id: "hidden",
-        link: "https://bun2too.com/secret",
-        hidden: true,
-      },
-    ],
-    citation_info: [
-      { document_id: "public", citation_number: 1 },
-      { document_id: "private", citation_number: 2 },
-      { document_id: "script", citation_number: 3 },
-      { document_id: "hidden", citation_number: 4 },
-    ],
-  };
-  assert.deepEqual(publicSources(data), [
-    {
-      title: "Customer technology",
-      url: "https://bun2too.com/services",
-      number: 1,
-    },
-  ]);
-});
-test("Onyx request forces the configured public RAG agent and search tool", async () => {
-  const names = [
-    "ONYX_API_KEY",
-    "ONYX_PUBLIC_AGENT_ID",
-    "ONYX_SEARCH_TOOL_ID",
-    "ONYX_PUBLIC_DOCUMENT_SET",
-    "ONYX_API_BASE_URL",
-  ];
-  const previous = Object.fromEntries(
-    names.map((name) => [name, process.env[name]]),
-  );
-  const sessionId = randomUUID();
-  Object.assign(process.env, {
-    ONYX_API_KEY: "test-only-key",
-    ONYX_PUBLIC_AGENT_ID: "12",
-    ONYX_SEARCH_TOOL_ID: "4",
-    ONYX_PUBLIC_DOCUMENT_SET: "Bun2Too public support",
-    ONYX_API_BASE_URL: "https://support.example.invalid/api",
+  await saveInquiry(store, "first-visitor", input);
+  await saveInquiry(store, "second-visitor", {
+    ...input,
+    message: "Another visitor’s inquiry.",
   });
-  try {
-    const bodies: Record<string, unknown>[] = [];
-    const fetcher: typeof fetch = async (url, options) => {
-      assert.equal(
-        url,
-        "https://support.example.invalid/api/chat/send-chat-message",
-      );
-      assert.equal(
-        new Headers(options?.headers).get("Authorization"),
-        "Bearer test-only-key",
-      );
-      bodies.push(JSON.parse(String(options?.body)));
-      return Response.json({
-        answer: "A sourced answer [1]",
-        answer_citationless: "A sourced answer",
-        chat_session_id: sessionId,
-        top_documents: [
-          {
-            document_id: "doc",
-            link: "https://bun2too.com/services",
-            semantic_identifier: "Services",
-          },
-        ],
-        citation_info: [{ document_id: "doc", citation_number: 1 }],
-        pre_answer_reasoning: "Never send reasoning to the browser",
-      });
-    };
-    const result = await askOnyx("How can you help?", null, fetcher);
-    assert.deepEqual(bodies[0].chat_session_info, {
-      persona_id: 12,
-      description: "Bun2Too website support",
-      incognito: false,
-    });
-    assert.deepEqual(bodies[0].allowed_tool_ids, [4]);
-    assert.equal(bodies[0].forced_tool_id, 4);
-    assert.deepEqual(bodies[0].internal_search_filters, {
-      document_set: ["Bun2Too public support"],
-    });
-    assert.equal(bodies[0].stream, false);
-    assert.equal(result.answer, "A sourced answer");
-    assert.equal("pre_answer_reasoning" in result, false);
-    await askOnyx("Follow-up question", sessionId, fetcher);
-    assert.equal(bodies[1].chat_session_id, sessionId);
-    assert.equal("chat_session_info" in bodies[1], false);
-    await assert.rejects(
-      askOnyx(
-        "Question",
-        null,
-        async () => new Response("private upstream details", { status: 500 }),
-      ),
-      (error) =>
-        error instanceof RequestError &&
-        !error.message.includes("private upstream"),
-    );
-  } finally {
-    for (const name of names) {
-      if (previous[name] === undefined) delete process.env[name];
-      else process.env[name] = previous[name];
-    }
-  }
+  assert.equal(entries.size, 2);
+  assert.notDeepEqual(
+    entries.get(`inquiries/first-visitor/${input.requestId}`)?.data,
+    entries.get(`inquiries/second-visitor/${input.requestId}`)?.data,
+  );
 });

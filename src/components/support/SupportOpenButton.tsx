@@ -1,20 +1,14 @@
 "use client";
 export default function SupportOpenButton({
-  inquiry = false,
-  children = "Ask Bun2Too",
+  children = "Contact Bun2Too",
 }: {
-  inquiry?: boolean;
   children?: React.ReactNode;
 }) {
   return (
     <button
       type="button"
       className="button button-lime"
-      onClick={() =>
-        window.dispatchEvent(
-          new CustomEvent("bun2too:open-support", { detail: { inquiry } }),
-        )
-      }
+      onClick={() => window.dispatchEvent(new Event("bun2too:open-support"))}
     >
       {children}
     </button>

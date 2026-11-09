@@ -57,19 +57,19 @@ export const publicPages = [
     path: "/contact",
     title: "Contact Bun2Too about customer technology",
     description:
-      "Discuss AI engineering, infrastructure setup, or customer technology with Bun2Too. Ask the support assistant or submit a private inquiry.",
+      "Discuss AI engineering, infrastructure setup, or customer technology with Bun2Too. Send a private inquiry to our team.",
   },
   {
     path: "/support",
     title: "Customer support & frequently asked questions",
     description:
-      "Get help with Bun2Too services, applications, accounts, and subscriptions. Ask our knowledge-based assistant or send the team a private inquiry.",
+      "Get help with Bun2Too services, applications, accounts, and subscriptions. Read our FAQs or send the team a private inquiry.",
   },
   {
     path: "/privacy",
     title: "Privacy, consent & support data",
     description:
-      "Learn how Bun2Too handles identity, email preferences, support conversations, inquiries, and your consent choices.",
+      "Learn how Bun2Too handles identity, email preferences, private inquiries, and your consent choices.",
   },
   {
     path: "/cookies",

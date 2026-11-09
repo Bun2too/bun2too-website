@@ -28,7 +28,6 @@ for (const route of [
   "/robots.txt/route",
   "/sitemap.xml/route",
   "/llms.txt/route",
-  "/api/support/chat/route",
   "/api/support/inquiries/route",
 ]) {
   if (!manifest[route])

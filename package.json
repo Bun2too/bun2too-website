@@ -16,7 +16,6 @@
     "test": "node --import tsx --test tests/*.test.ts",
     "test:e2e": "playwright test",
     "test:smoke": "node scripts/smoke.mjs",
-    "support:check": "node --env-file-if-exists=.env.local scripts/check-support.mjs",
     "docs:check": "node scripts/check-docs.mjs"
   },
   "engines": {

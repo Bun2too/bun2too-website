@@ -1,4 +1,3 @@
-import { onyxConfig } from "@/lib/onyx";
 import { getSupportStore } from "@/lib/support-store";
 import {
   supportIdentity,
@@ -15,7 +14,6 @@ export async function GET(request: Request) {
         process.env.TURNSTILE_SECRET_KEY &&
         process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY,
       );
-    let chat = false;
     let inquiries = false;
     try {
       getSupportStore();
@@ -23,13 +21,7 @@ export async function GET(request: Request) {
     } catch {
       /* Not configured on this host. */
     }
-    try {
-      onyxConfig();
-      chat = inquiries;
-    } catch {
-      /* Inquiries remain available without Onyx. */
-    }
-    return supportResponse({ chat, inquiries }, request, identity);
+    return supportResponse({ inquiries }, request, identity);
   } catch (error) {
     return supportError(error);
   }

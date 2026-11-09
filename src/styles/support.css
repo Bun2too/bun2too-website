@@ -74,89 +74,17 @@
   border-radius: 50%;
   flex-shrink: 0;
 }
-.support-tabs {
-  display: flex;
-  border-bottom: 1px solid var(--line);
-  padding: 0 12px;
-}
-.support-tabs button {
-  flex: 1;
-  background: transparent;
-  color: var(--muted);
-  border: 0;
-  border-bottom: 2px solid transparent;
-  padding: 16px 8px;
-  font-size: 12px;
-}
-.support-tabs button[aria-selected="true"] {
-  color: var(--lime);
-  border-bottom-color: var(--lime);
-}
 .support-body {
   padding: 18px;
   overflow-y: auto;
   min-height: 0;
   flex: 1;
 }
-.support-history {
-  max-height: 280px;
-  overflow: auto;
-  overscroll-behavior: contain;
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-  margin-bottom: 20px;
-}
-.support-message {
-  padding: 14px;
-  border-radius: 10px;
-  font-size: 13px;
-  max-width: 100%;
-  overflow-wrap: anywhere;
-}
-.support-message p {
-  color: #c8d2c6;
-  white-space: pre-wrap;
-  line-height: 1.65;
-}
-.support-message-assistant {
-  background: var(--surface);
-  border: 1px solid var(--line);
-  align-self: stretch;
-}
-.support-message-user {
-  background: #2d4228;
-  align-self: flex-end;
-  max-width: 90%;
-}
-.support-message-user p {
-  color: var(--cream);
-}
-.support-sources {
-  padding-left: 0;
-  list-style: none;
-  border-top: 1px solid var(--line);
-  margin: 12px 0 0;
-  padding-top: 9px;
-  font-size: 11px;
-  line-height: 1.8;
-}
-.support-sources a {
-  color: var(--lime);
-}
-.support-sources a:hover {
-  text-decoration: underline;
-}
 .support-note {
   font-size: 12px !important;
   line-height: 1.65 !important;
   color: var(--muted) !important;
   margin: 0 0 16px;
-}
-.support-message .support-note {
-  margin-top: 12px;
-  margin-bottom: 0;
-  font-size: 10px !important;
 }
 .support-notice {
   font-size: 12px;
@@ -167,12 +95,10 @@
 }
 .support-notice a,
 .support-footer a,
-.support-chat-form .check-label a,
 .support-inquiry-form .check-label a {
   color: var(--lime);
   text-decoration: underline;
 }
-.support-chat-form textarea,
 .support-inquiry-form textarea,
 .support-inquiry-form > input,
 .support-inquiry-form select {
@@ -195,15 +121,10 @@
   outline: 2px solid var(--lime);
   outline-offset: 3px;
 }
-.support-chat-form textarea::placeholder {
-  color: #9aa997;
-}
-.support-chat-form .check-label,
 .support-inquiry-form .check-label {
   font-size: 11px;
   margin: 14px 0;
 }
-.support-chat-form .button,
 .support-inquiry-form .button {
   width: 100%;
   margin-top: 14px;
@@ -300,52 +221,10 @@
   .support-body {
     padding: 15px;
   }
-  .support-history {
-    max-height: 32dvh;
-  }
   .support-faqs summary {
     font-size: 18px;
   }
   .support-faqs p {
     font-size: 14px;
   }
-}
-@media (prefers-reduced-motion: reduce) {
-  .support-history {
-    scroll-behavior: auto;
-  }
-}
-/* Keep the question composer visible while the conversation scrolls. */
-.support-body:has(#support-chat-panel:not([hidden])) {
-  display: flex;
-  flex-direction: column;
-  overflow: hidden;
-}
-#support-chat-panel:not([hidden]) {
-  display: flex;
-  flex-direction: column;
-  flex: 1;
-  min-height: 0;
-}
-#support-chat-panel .support-history {
-  flex: 1;
-  min-height: 40px;
-  max-height: none;
-}
-.support-chat-form {
-  flex-shrink: 0;
-}
-.support-chat-form textarea {
-  resize: none;
-}
-.support-chat-form .check-label {
-  margin: 10px 0;
-}
-.support-chat-form .button {
-  min-height: 44px;
-  padding-block: 12px;
-  margin-top: 10px;
-}
-.support-history > * {
-  flex-shrink: 0;
 }

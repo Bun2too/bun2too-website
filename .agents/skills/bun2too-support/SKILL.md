@@ -1,24 +1,24 @@
 ---
 name: bun2too-support
-description: Implement or troubleshoot Bun2Too Onyx RAG chat, support dialog, public source links, private Netlify inquiry collection, visitor ownership, rate limits, or retention. Applies to the support integration rather than general AI application development.
+description: Implement or troubleshoot Bun2Too support FAQs, private Netlify inquiry collection, native inquiry dialog, visitor ownership, idempotency, rate limits, or retention. Future AI integrations are a separately scoped change.
 ---
 
-# Bun2Too public support
+# Bun2Too customer support
 
-Read [root guidance](../../../AGENTS.md), [support setup](../../../docs/support.md), and the [architecture/storage map](../../../docs/architecture.md). The chosen integration is a new dedicated public Onyx agent and private Netlify inquiry storage. No configured/live state should be assumed from source files.
+Read [root guidance](../../../AGENTS.md), [support setup](../../../docs/support.md), [architecture](../../../docs/architecture.md), and [security/configuration](../../../docs/security.md).
 
-## Protect the knowledge and identity boundary
+## Current boundary
 
-`src/lib/onyx.ts` uses the server-only key and configured nondefault public agent, public document-set name, and internal search-tool ID. Every question is constrained to that document set and allowed/forced search tool. Respect the configured deployment's API contract. Verify its version privately when changing the contract rather than publishing infrastructure inventory or assuming the newest docs apply.
+Support consists of public FAQs and a lazy-loaded Contact Bun2Too inquiry form. It has no AI chat endpoint, model calls, document search, provider credentials, or transcript attachment. Open WebUI is planned, not connected. Do not restore an old provider or invent future API credentials/knowledge behavior from the service name alone.
 
-Never accept browser-selected Onyx session IDs, models, tools, or retrieval scopes. Visitor ownership uses a signed HttpOnly cookie and server-owned conversation records. Preserve conditional-write limits/locks, input bounds, first-chat verification, timeout handling, and the conversation cap.
+## Protect inquiry collection
 
-Return answer text and reviewed public citation URLs only. Do not expose reasoning, tool traces, document owners, private source links, or raw upstream errors. An agent's underlying permissions/public corpus matter in addition to URL filtering.
+`src/lib/support.ts`, `support-api.ts`, and `support-store.ts` own signed HttpOnly visitor identity, strict input/consent checks, ownership/idempotency, conditional-write rate limits, and private Netlify storage. No public inbox or generic blob read/list endpoint should be added. Emails are self-reported contact information, never proof of identity. Inquiry submission does not enroll marketing.
 
-## Inquiry collection and UI
+The `bun2too-support` store retains new inquiries for 90 days. The daily retention function also cleans expired rate limits and legacy conversation records, without creating new chats or calling an external AI service. Do not delete existing customer records or change retention merely to remove code.
 
-Private inquiries use the `bun2too-support` Netlify store, explicit contact-purpose consent, idempotency, and optional server-owned transcript attachment. They never enroll marketing. No public inbox or generic blob read/list API should be added. Preserve configured expiry and the scheduled cleanup's relationship to separate Onyx retention.
+## UI and verification
 
-The lazy-loaded native dialog must work on mobile and short desktop viewports, keep the composer visible, support keyboard close/focus, and show actual failures instead of fabricated receipts. Keep the launcher out of the signup embed.
+Preserve native-dialog keyboard/close/focus behavior, accessible field labels, unchecked inquiry consent, CAPTCHA, honest availability/errors, and confirmation only after a saved reference is returned. Hide the launcher on signup embeds. Use isolated fixtures for tests; real inquiry writes need an authorized test environment and task scope. Never claim a deployment or a future AI connection from a local test.
 
-Use isolated support tests/browser mocks for routine changes. For live checks, follow current authorization and the guide's test-data plan. Update privacy/setup/architecture when contracts or retention change. `npm run support:check` is read-only; it does not verify answer quality or create the agent.
+Read [security](../../../docs/security.md) before adding private endpoints or service configuration. If future AI work is explicitly requested, define the authentication, public knowledge boundary, consent, retention, and server-only contract first. Keep that separate from the existing inquiry flow.

@@ -50,7 +50,7 @@ const privateApi = await fetch(new URL("/api/preferences", base));
 if (privateApi.status !== 401)
   throw new Error(`Preferences API expected 401, got ${privateApi.status}`);
 console.log("OK preferences API authorization");
-for (const route of ["/api/support/chat", "/api/support/inquiries"]) {
+for (const route of ["/api/support/inquiries"]) {
   const response = await fetch(new URL(route, base), {
     method: "POST",
     headers: {

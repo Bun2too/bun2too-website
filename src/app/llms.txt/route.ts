@@ -23,7 +23,7 @@ export function GET() {
     `- Atom: ${absoluteUrl("/insights/feed.atom")}`,
     `- Privacy: ${absoluteUrl("/privacy")}`,
     "",
-    "This is an optional public content overview. The linked website pages are the source of truth. Account data, support conversations, and private inquiry records are not public content.",
+    "This is an optional public content overview. The linked website pages are the source of truth. Account data and private inquiry records are not public content.",
     "",
   ].join("\n");
   return new Response(text, {

@@ -1,18 +1,8 @@
 import { createHmac, randomUUID, timingSafeEqual } from "node:crypto";
 import { object, RequestError } from "./consent";
-export const SUPPORT_CONSENT_VERSION = "2026-11-07";
+export const SUPPORT_CONSENT_VERSION = "2026-11-08.2";
 export const SUPPORT_COOKIE = "bun2too_support";
 export const DAY = 86400000;
-export type SupportMessage = { role: "user" | "assistant"; content: string };
-export type SupportSource = { title: string; url: string; number: number };
-export type Conversation = {
-  owner: string;
-  onyxSession: string | null;
-  messages: SupportMessage[];
-  expiresAt: number;
-  busyUntil?: number;
-  consent: { version: string; givenAt: string };
-};
 export interface SupportStore {
   read<T>(key: string): Promise<{ data: T; etag: string } | null>;
   write(
@@ -83,36 +73,6 @@ export function visitor(request: Request, secret: string, now = Date.now()) {
     fresh,
   };
 }
-export function parseChat(input: unknown) {
-  const data = object(input);
-  if (data.consent !== true)
-    throw new RequestError(
-      400,
-      "Please agree to support message processing before starting.",
-    );
-  if (
-    typeof data.message !== "string" ||
-    !data.message.trim() ||
-    data.message.trim().length > 2000
-  )
-    throw new RequestError(
-      400,
-      "Enter a message between 1 and 2,000 characters.",
-    );
-  if (
-    data.conversationId !== undefined &&
-    data.conversationId !== null &&
-    !uuid(data.conversationId)
-  )
-    throw new RequestError(400, "Start a new conversation.");
-  return {
-    message: data.message.trim(),
-    conversationId:
-      typeof data.conversationId === "string" ? data.conversationId : null,
-    captchaToken:
-      typeof data.captchaToken === "string" ? data.captchaToken : "",
-  };
-}
 export function parseInquiry(input: unknown) {
   const data = object(input);
   if (data.website) return null;
@@ -150,8 +110,6 @@ export function parseInquiry(input: unknown) {
     throw new RequestError(400, "Choose an inquiry topic.");
   if (!uuid(data.requestId))
     throw new RequestError(400, "Refresh the form and try again.");
-  if (data.includeTranscript === true && !uuid(data.conversationId))
-    throw new RequestError(400, "There is no active chat to attach.");
   return {
     name: data.name.trim(),
     email: data.email.trim().toLowerCase(),
@@ -159,8 +117,6 @@ export function parseInquiry(input: unknown) {
     topic: String(data.topic),
     requestId: data.requestId,
     consent: true,
-    includeTranscript: data.includeTranscript === true,
-    conversationId: uuid(data.conversationId) ? data.conversationId : null,
     captchaToken:
       typeof data.captchaToken === "string" ? data.captchaToken : "",
   };
@@ -189,20 +145,6 @@ export async function consumeLimit(
   }
   throw new RequestError(429, "Support is busy. Please try again shortly.");
 }
-export async function ownedConversation(
-  store: SupportStore,
-  id: string,
-  owner: string,
-  now = Date.now(),
-) {
-  const record = await store.read<Conversation>(`conversations/${id}`);
-  if (!record || record.data.owner !== owner || record.data.expiresAt <= now)
-    throw new RequestError(
-      404,
-      "This conversation has expired. Please start a new chat.",
-    );
-  return record;
-}
 export async function saveInquiry(
   store: SupportStore,
   owner: string,
@@ -212,11 +154,6 @@ export async function saveInquiry(
   const key = `inquiries/${owner}/${inquiry.requestId}`;
   const existing = await store.read<{ reference: string }>(key);
   if (existing) return existing.data.reference;
-  const transcript =
-    inquiry.includeTranscript && inquiry.conversationId
-      ? (await ownedConversation(store, inquiry.conversationId, owner, now))
-          .data.messages
-      : [];
   const reference = `B2T-${inquiry.requestId.slice(0, 8).toUpperCase()}`;
   const result = await store.write(
     key,
@@ -226,12 +163,10 @@ export async function saveInquiry(
       email: inquiry.email,
       topic: inquiry.topic,
       message: inquiry.message,
-      transcript,
       consent: {
         purpose: "respond-to-inquiry",
         version: SUPPORT_CONSENT_VERSION,
         givenAt: new Date(now).toISOString(),
-        includeTranscript: inquiry.includeTranscript,
       },
       createdAt: new Date(now).toISOString(),
       expiresAt: now + 90 * DAY,

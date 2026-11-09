@@ -1,80 +1,52 @@
 import { expect, test } from "@playwright/test";
 async function openSupport(page: import("@playwright/test").Page) {
   await page.route("**/api/support/session", (route) =>
-    route.fulfill({ json: { chat: true, inquiries: true } }),
+    route.fulfill({ json: { inquiries: true } }),
   );
   await page.goto("/");
-  await page.getByRole("button", { name: "Ask Bun2Too", exact: false }).click();
-  await expect(page.getByRole("dialog", { name: "Ask Bun2Too" })).toBeVisible();
+  await page
+    .getByRole("button", { name: "Contact Bun2Too", exact: false })
+    .click();
+  await expect(
+    page.getByRole("dialog", { name: "Contact Bun2Too" }),
+  ).toBeVisible();
 }
-test("support chat requires consent, shows source links, and safely renders answers", async ({
+test("support is inquiry-only and never requests AI answers", async ({
   page,
+  request,
 }, testInfo) => {
-  await page.route("**/api/support/chat", async (route) => {
-    const data = route.request().postDataJSON();
-    expect(data.consent).toBe(true);
-    expect(data.message).toBe("How can Bun2Too help with CIAM?");
-    expect(data.persona_id).toBeUndefined();
-    await route.fulfill({
-      json: {
-        answer:
-          "We connect identity and customer journeys. <script>alert(1)</script>",
-        sources: [
-          {
-            title: "Customer technology services",
-            url: "https://bun2too.com/services",
-            number: 1,
-          },
-        ],
-        conversationId: "91d30ad0-bdd6-4bc3-aa77-735ee97950aa",
-      },
-    });
+  const chats: string[] = [];
+  page.on("request", (request) => {
+    if (request.url().endsWith("/api/support/chat")) chats.push(request.url());
   });
   await openSupport(page);
   const dialog = page.getByRole("dialog");
-  await dialog
-    .getByLabel("Your question")
-    .fill("How can Bun2Too help with CIAM?");
-  await expect(
-    dialog.getByRole("button", { name: "Ask the assistant", exact: true }),
-  ).toBeDisabled();
-  await dialog
-    .getByLabel("I agree that Bun2Too and its Onyx service", { exact: false })
-    .check();
-  await dialog
-    .getByRole("button", { name: "Ask the assistant", exact: true })
-    .click();
-  await expect(dialog.getByRole("log")).toContainText("We connect identity");
-  await expect(
-    dialog.getByRole("link", { name: "[1] Customer technology services" }),
-  ).toHaveAttribute("href", "https://bun2too.com/services");
-  await expect(dialog.locator("script")).toHaveCount(0);
-  expect(
-    await dialog.evaluate(
-      (element) => element.scrollWidth <= element.clientWidth,
-    ),
-  ).toBe(true);
-  await expect(
-    dialog.getByRole("button", { name: "Ask the assistant", exact: true }),
-  ).toBeInViewport();
-  await page.screenshot({ path: testInfo.outputPath("support-chat.png") });
+  await expect(dialog.getByLabel("Your name")).toBeVisible();
+  await expect(dialog.getByRole("tab")).toHaveCount(0);
+  await expect(dialog.getByLabel("Your question")).toHaveCount(0);
+  await page.screenshot({ path: testInfo.outputPath("private-inquiry.png") });
   await dialog.getByRole("button", { name: "Close support" }).click();
   await expect(dialog).not.toBeVisible();
+  expect(chats).toEqual([]);
+  const retired = await request.post("/api/support/chat", {
+    data: { message: "Question", consent: true },
+  });
+  expect([404, 405]).toContain(retired.status());
 });
-test("private inquiry confirms saved reference and keeps transcript attachment optional", async ({
+test("private inquiry confirms saved reference without chat data", async ({
   page,
 }) => {
   await page.route("**/api/support/inquiries", async (route) => {
     const data = route.request().postDataJSON();
     expect(data.email).toBe("customer@example.com");
     expect(data.consent).toBe(true);
-    expect(data.includeTranscript).toBe(false);
+    expect(data.includeTranscript).toBeUndefined();
+    expect(data.conversationId).toBeUndefined();
     expect(data.requestId).toMatch(/^[0-9a-f-]{36}$/);
     await route.fulfill({ status: 201, json: { reference: "B2T-12345678" } });
   });
   await openSupport(page);
   const dialog = page.getByRole("dialog");
-  await dialog.getByRole("tab", { name: "Send an inquiry" }).click();
   await dialog.getByLabel("Your name").fill("A customer");
   await dialog.getByLabel("Contact email").fill("customer@example.com");
   await dialog
@@ -100,7 +72,6 @@ test("support failures retain the inquiry and never display a false receipt", as
   );
   await openSupport(page);
   const dialog = page.getByRole("dialog");
-  await dialog.getByRole("tab", { name: "Send an inquiry" }).click();
   await dialog.getByLabel("Your name").fill("A customer");
   await dialog.getByLabel("Contact email").fill("customer@example.com");
   await dialog
@@ -122,13 +93,14 @@ test("support works from the contact page and is excluded from embedded signup",
   page,
 }) => {
   await page.route("**/api/support/session", (route) =>
-    route.fulfill({ json: { chat: true, inquiries: true } }),
+    route.fulfill({ json: { inquiries: true } }),
   );
   await page.goto("/contact");
   await page.getByRole("button", { name: "Send a private inquiry" }).click();
   await expect(
-    page.getByRole("tab", { name: "Send an inquiry" }),
-  ).toHaveAttribute("aria-selected", "true");
+    page.getByRole("dialog", { name: "Contact Bun2Too" }),
+  ).toBeVisible();
+  await expect(page.getByLabel("Your name")).toBeVisible();
   await page.keyboard.press("Escape");
   await page.goto("/insights/signup");
   await expect(page.locator(".support-launcher")).toHaveCount(0);

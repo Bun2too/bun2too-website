@@ -2,7 +2,7 @@
 
 Bun2Too helps businesses build, deploy, and operate AI and connected customer technology. The site leads with **AI forward-deployed engineering** and **AI infrastructure/environment setup**, alongside CDP integration, customer identity, analytics, and consent. Fintech remains a supporting area of experimentation.
 
-This repository contains the marketing site, integrated Insights views, Auth0 account/subscription flows, search discovery endpoints, and the Onyx-backed public support/inquiry integration. It uses Next.js App Router, React, TypeScript, Tailwind/authored CSS, and Netlify hosting/functions.
+This repository contains the marketing site, integrated Insights views, Auth0 account/subscription flows, search discovery endpoints, and the private customer inquiry integration. It uses Next.js App Router, React, TypeScript, Tailwind/authored CSS, and Netlify hosting/functions.
 
 See [public-repository security and exact GitHub/Netlify configuration](docs/security.md) before publishing. No real environment credentials, backend hosts, tenant IDs, agent IDs, or tracking IDs belong in Git.
 
@@ -18,7 +18,7 @@ See [public-repository security and exact GitHub/Netlify configuration](docs/sec
 | [Deployment and Auth0](docs/setup.md)                      | One-time GitHub/Netlify configuration, SPA callbacks, Management API and consent setup        |
 | [Insights integration](docs/insights.md)                   | Public editorial backend, server-rendered articles, feeds, signup embed, and updates          |
 | [Search and AI discovery](docs/search.md)                  | Canonical metadata, structured data, crawler/indexing controls, and search ownership setup    |
-| [Public support setup](docs/support.md)                    | Dedicated Onyx public agent, private Netlify inquiries, secrets, retention, and launch checks |
+| [Public support setup](docs/support.md)                    | Provider-independent private inquiries, retention, and future AI integration boundaries |
 | [Terms and cookie preferences](docs/legal-and-cookies.md) | Legal draft/review notes, cookie inventory, consent gates, and adding future trackers |
 | [Visual design and artwork](docs/visual-design.md) | Responsive hero layouts, generated asset map, prompts, and email hydration regression |
 | [Integration readiness](docs/readiness.md) | Implemented work versus remaining live credentials, provider setup, and deployment verification |
@@ -65,8 +65,8 @@ Open **http://localhost:3000**. Public views render without private provider cre
 | `/account`                                 | Login/signup/logout, profile, verified newsletter confirmation, topic choices, and unsubscribe                                |
 | `/insights`                                | Server-rendered public article hub, reading/update features, RSS/Atom links, and newsletter                                   |
 | `/insights/[id]`                           | Article content, artwork, source links, and article metadata/structured data                                                  |
-| `/insights/signup`                         | Reusable consent form for approved embed origins; primary navigation and chat are hidden                                      |
-| `/support`                                 | Public FAQs and entry points to the AI assistant/private inquiry form                                                         |
+| `/insights/signup`                         | Reusable consent form for approved embed origins; primary navigation and the support launcher are hidden                                      |
+| `/support`                                 | Public FAQs and private inquiry form                                                         |
 | `/privacy`                                 | Identity, consent, provider, support/inquiry handling, and retention description                                              |
 | `/cookies`                                 | Cookie/storage inventory and separate preference, Analytics, and Marketing controls; optional categories default off |
 | `/terms`                                   | Bun2too, Inc. website terms covering accounts, AI, intellectual property, risk, and Texas/Collin County dispute venue |
@@ -83,9 +83,9 @@ The active article experience is **https://bun2too.com/insights**, rendered insi
 | Auth0 React SDK 2.x  | Browser-side Universal Login, signup, logout, and profile; public content remains server-rendered and tokens stay in SDK memory.                                                                                          |
 | Auth0 Management API | `POST /api/subscriptions` records an explicit, pending, unverified passwordless email request. Anonymous duplicates do not overwrite existing choices.                                                                    |
 | Account preferences  | `GET/PATCH /api/preferences` checks access-token issuer/audience/client/scope/expiry. Activation requires verified email; authenticated users can change topics or unsubscribe.                                           |
-| Onyx support         | Lazy-loaded **Ask Bun2Too** dialog; server API constrains requests to the configured public agent, document set, and search tool and returns approved source links.                                                       |
-| Private inquiries    | Separate consented form saves contact details and an optional server-owned chat transcript in private Netlify Blobs. It never enrolls marketing.                                                                          |
-| Retention            | Signed visitor cookie and site chat state expire after 24 hours; inquiry records expire after 90 days. A daily scheduled function removes expired records. Onyx retains its separate history under its own configuration. |
+| Customer support | Lazy-loaded **Contact Bun2Too** private inquiry form and public FAQs. No AI provider, chat, or transcript attachment is required. Open WebUI integration is planned separately. |
+| Private inquiries    | Separate consented form saves contact details in private Netlify Blobs. It never enrolls marketing.                                                                          |
+| Retention | Signed visitor cookie expires after 24 hours; inquiry records after 90 days. Daily cleanup also handles legacy expired conversation records. |
 | Insights updates     | Website-side reading/update controls, feeds, shared consent form, and a push/click service worker. Email digest and Web Push delivery belong to the editorial backend and require its configuration.                      |
 
 The full endpoint/proxy and data-store map is in [architecture](docs/architecture.md). There is no public inquiry inbox or generic blob listing API. Auth0 stores identity/preferences; it is not the campaign email delivery engine. Metadata records the latest preference state and consent provenance rather than an immutable audit ledger.
@@ -111,7 +111,7 @@ npx playwright install chromium
 npm run test:e2e
 ```
 
-`npm run docs:check` validates repository-relative links across README, documentation, scoped agent guides, and local skills. `npm run build` also validates required pages/APIs in its output. Browser tests start a production server on **3100**, leaving the supplied local Auth0 origin on **3000**. Tests mock newsletter/support HTTP responses and intercept Auth0 redirects; no live customer inquiries, account provisioning, or Onyx questions are sent by these checks.
+`npm run docs:check` validates repository-relative links across README, documentation, scoped agent guides, and local skills. `npm run build` also validates required pages/APIs in its output. Browser tests start a production server on **3100**, leaving the supplied local Auth0 origin on **3000**. Tests mock newsletter/support HTTP responses and intercept Auth0 redirects; no live customer inquiries, account provisioning, or AI questions are sent by these checks.
 
 If a developer server is already using `.next`, isolate both build and browser startup:
 
@@ -124,11 +124,10 @@ Additional checks:
 
 ```sh
 SMOKE_BASE_URL=http://localhost:3000 npm run test:smoke
-npm run support:check
 npx netlify build --offline --context production
 ```
 
-Smoke checks use invalid/unauthorized API inputs. `support:check` needs configured server environment values and performs read-only Onyx health/version/agent checks; it does not establish answer quality. Offline Netlify packaging includes Next.js server APIs and scheduled retention without deployment. Run only the checks appropriate to your change. See [development](docs/development.md) for details.
+Smoke checks use invalid/unauthorized API inputs. Offline Netlify packaging includes Next.js server APIs and scheduled retention without deployment. See [development](docs/development.md).
 
 ## Release and configuration
 
@@ -142,10 +141,12 @@ Origin: `https://github.com/Bun2too/bun2too-website.git`.
 
 Each destination is a **separate Netlify site**. The [workflow](.github/workflows/ci-cd.yml) verifies pull requests and publishes branch pushes after documentation-link validation, type checking, unit tests, a production build, and desktop/mobile checks. The deploy job uses environment-specific public values and Netlify's Next.js adapter, publishes the selected site's live URL, and smoke-tests routes. Pull requests do not publish.
 
-Configure public build values and server-only Functions values using `.env.example` and the setup guides. An environment-scoped `NEXT_PUBLIC_SITE_URL` GitHub variable is required. Management API, Onyx, Turnstile verification, and session secrets never belong in `NEXT_PUBLIC_*` or browser code. Static export/upload cannot host these server integrations.
+Configure public build values and server-only Functions values using `.env.example` and the setup guides. An environment-scoped `NEXT_PUBLIC_SITE_URL` GitHub variable is required. Management API, Turnstile verification, and session secrets never belong in `NEXT_PUBLIC_*` or browser code. Static export/upload cannot host these server integrations.
 
 ## Implementation versus live readiness
 
-The source includes these views/integrations and local mocked checks. A live deployment, working Auth0 tenant, configured **new public-support Onyx agent**, private inquiry persistence, email/Web Push delivery, DNS mapping, and search ownership/indexing each need authorized provider configuration and live verification. Do not infer those states from a successful local build. No production credentials or customer records are part of this repository.
+The source includes these views/integrations and local mocked checks. A live deployment, working Auth0 tenant, private inquiry persistence, email/Web Push delivery, DNS mapping, and search ownership/indexing each need authorized provider configuration and live verification. Do not infer those states from a successful local build. No production credentials or customer records are part of this repository.
 
 `src/app_temp` and `src/components/tsconfig.json` are retained legacy material. Use the active root TypeScript configuration and `src/app`. Generated build/test artifacts are ignored. The repository-local [agent and skill context](docs/agent-context.md) explains how future assistants should navigate and extend the actual application without replacing its established integrations.
+
+Support currently uses FAQs and private inquiries. All former AI-provider integration/settings have been removed. Open WebUI is the planned replacement, but no website connection is configured yet. See [support](docs/support.md).

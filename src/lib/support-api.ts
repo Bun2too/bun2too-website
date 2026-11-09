@@ -61,16 +61,14 @@ export async function throttleSupport(
   store: SupportStore,
   request: Request,
   owner: string,
-  type: "chat" | "inquiry",
 ) {
-  const limit = type === "chat" ? 30 : 5;
-  await consumeLimit(store, `${type}-${owner}`, limit, 3600000);
+  await consumeLimit(store, `inquiry-${owner}`, 5, 3600000);
   const ip = request.headers.get("x-nf-client-connection-ip");
   if (ip)
     await consumeLimit(
       store,
-      `${type}-network-${digest(ip, supportSecret())}`,
-      type === "chat" ? 100 : 20,
+      `inquiry-network-${digest(ip, supportSecret())}`,
+      20,
       3600000,
     );
 }

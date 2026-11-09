@@ -102,4 +102,4 @@ Useful references: [Auth0 React quickstart](https://auth0.com/docs/quickstart/sp
 
 ## Search and support configuration
 
-Also follow [search setup](search.md) for environment-specific canonical URLs, indexing controls, and ownership verification, and [support setup](support.md) for the Onyx public-support agent, private Netlify inquiry records, and runtime secrets.
+Also follow [search setup](search.md) for environment-specific canonical URLs, indexing controls, and ownership verification, and [support setup](support.md) for the private Netlify inquiry records, runtime secrets, and the future AI integration boundary.

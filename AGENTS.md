@@ -20,7 +20,7 @@ Read the nearest scoped `AGENTS.md` before changing files in that directory. Loa
 - Active routes are in `src/app`; `@/*` maps to `src/*`. `src/app_temp` and `src/components/tsconfig.json` are retained legacy material.
 - `src/lib/site.ts` owns capabilities, explicit stable service slugs, and primary shared destinations. `src/lib/seo.ts` and `src/lib/support-content.ts` keep discovery/FAQ content aligned.
 - The active article view is `/insights`, backed by a separate public editorial API (`INSIGHTS_API_ORIGIN`, required private configuration; no deployment default). Preserve this integration and its proxy routes.
-- Authentication uses the official Auth0 React SDK in the browser. Management API access, support/RAG calls, and private storage are server-side.
+- Authentication uses the official Auth0 React SDK in the browser. Management API access, private inquiry APIs and storage are server-side.
 - Netlify hosts the app and `netlify/functions/support-retention.mts`. Server functionality requires the Next.js adapter; static export is insufficient.
 
 ## Working rules
@@ -29,9 +29,9 @@ Read the nearest scoped `AGENTS.md` before changing files in that directory. Loa
 - Before public commits, follow [security/configuration guidance](docs/security.md), run publication/secret checks, and keep actual tenant IDs, backend hosts, agent inventory, and credentials out of code, tests, docs, and skills. Public browser settings still remain observable in deployment.
 - Keep public pages server-rendered, interactive behavior in client components, and secrets out of `NEXT_PUBLIC_*`, source, logs, screenshots, and agent context.
 - Use official Auth0 SDK flows. Preserve explicit subscription consent, unverified passwordless requests, verified activation, token-validated preferences, and authenticated withdrawal. Do not merge identities by email automatically.
-- Onyx support is constrained to its configured public agent, public document set, and search tool. Keep cookies signed/HttpOnly, chat ownership checked, citations public, and inquiry transcripts explicitly selected. Inquiry submission never enrolls marketing.
-- Use isolated fixtures for tests. Live Onyx questions, Auth0 provisioning, marketing sends, push notifications, and inquiry writes need the task's authorization and an appropriate test environment.
-- Document implemented behavior separately from external configuration and live verification. Do not claim deployment, indexing, delivered email, or a connected knowledge base from code or mocked tests alone.
+- Support is currently inquiry-only. Keep signed/HttpOnly visitor cookies, explicit consent, ownership/idempotency, rate limits, private storage, and retention. No AI-provider calls or transcript attachments belong in the current inquiry flow. Open WebUI is planned but not connected.
+- Use isolated fixtures for tests. Live AI requests, Auth0 provisioning, marketing sends, push notifications, and inquiry writes need the task's authorization and an appropriate test environment.
+- Document implemented behavior separately from external configuration and live verification. Do not claim deployment, indexing, delivered email, or a connected AI service from code or mocked tests alone.
 
 ## Commands
 
@@ -47,13 +47,13 @@ npm run test:e2e
 
 Port 3000 is the supplied local Auth0 origin. Browser checks use 3100. To avoid a developer's running `.next` process, use `NEXT_BUILD_DIR=.next-check npm run build:test` followed by `NEXT_BUILD_DIR=.next-check npm run test:e2e`. Do not stop an unrelated server. Run checks appropriate to the change; do not add tests that only mirror copy or formatting.
 
-`SMOKE_BASE_URL=... npm run test:smoke` checks real HTTP routes using invalid/unauthorized API inputs. `npm run support:check` reads configured Onyx status/agent access; it does not test generated answers. The existing release pipeline maps `dev → dev`, `qa → qa`, `main → prod` across separate Netlify sites. Use [setup](docs/setup.md) and [support setup](docs/support.md) when the task actually requires external configuration or publication.
+`SMOKE_BASE_URL=... npm run test:smoke` checks real HTTP routes using invalid/unauthorized API inputs. The existing release pipeline maps `dev → dev`, `qa → qa`, `main → prod` across separate Netlify sites. Use [setup](docs/setup.md) and [support setup](docs/support.md) when the task actually requires external configuration or publication.
 
 ## Local skill routing
 
 - `.agents/skills/bun2too-site/SKILL.md`: views, service content, visual design.
 - `.agents/skills/bun2too-identity/SKILL.md`: login and subscription/consent.
-- `.agents/skills/bun2too-support/SKILL.md`: Onyx, private inquiries, retention.
+- `.agents/skills/bun2too-support/SKILL.md`: Private inquiries, support FAQs, retention.
 - `.agents/skills/bun2too-discovery/SKILL.md`: search, schemas, Insights/feeds.
 - `.agents/skills/bun2too-release/SKILL.md`: build/test/Netlify/GitHub release work.
 

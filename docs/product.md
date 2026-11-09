@@ -31,6 +31,6 @@ The process is discover, design, deliver, and evolve. Connect AI implementation 
 
 Public copy should remain concrete about what the service helps with. Do not invent customers, certifications, performance statistics, commercial commitments, vendor partnerships, or completed case studies. Keep fintech experiments distinct from personalized investment recommendations.
 
-## Relationship to the site's AI assistant
+## Relationship to customer support
 
-The public support assistant is a product integration backed by Onyx; it is separate from the coding-agent guidance and skills checked into this repository. Its knowledge scope is the approved public document set. After publishing service-content changes, re-index the approved website sources in Onyx so answers reflect the new positioning. Changing these files does not provision an Onyx agent or refresh its index automatically. Follow [support setup](support.md).
+Current website support consists of FAQs and private customer inquiries. Open WebUI is the planned future AI platform, but no AI chat or model connection is currently implemented. Updating service content should keep public FAQs and discovery copy aligned; it does not configure an AI service. Follow [support setup](support.md) for current inquiry behavior and future integration boundaries.

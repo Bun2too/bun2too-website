@@ -30,18 +30,15 @@ export default function SupportPage() {
         </h1>
         <p className="page-intro">
           Get help with Bun2Too’s customer technology, applications, accounts,
-          and website. Explore common questions, ask our AI assistant, or send
-          the team a private inquiry.
+          and website. Explore common questions or send the team a private
+          inquiry.
         </p>
         <div className="actions">
-          <SupportOpenButton>Ask the assistant ↗</SupportOpenButton>
-          <SupportOpenButton inquiry>
-            Send a private inquiry ↗
-          </SupportOpenButton>
+          <SupportOpenButton>Send a private inquiry ↗</SupportOpenButton>
         </div>
         <p className="support-intro-note">
-          The assistant uses Bun2Too’s Onyx knowledge service. AI answers can be
-          mistaken; confirm important details with our team.{" "}
+          Your inquiry goes to the Bun2Too team. We use the contact details you
+          provide to respond.{" "}
           <Link href="/privacy" className="text-link">
             Privacy & consent ↗
           </Link>

@@ -45,7 +45,7 @@ export const supportFaqs = [
   {
     question: "How can I ask for help or discuss a project?",
     answer:
-      "Open Ask Bun2Too for questions about our services, applications, or website. You can also send a private inquiry with your contact email and a description of what you need. Sending an inquiry does not subscribe you to marketing.",
+      "Read our support FAQs or open Contact Bun2Too to send a private inquiry with your contact email and a description of what you need. Sending an inquiry does not subscribe you to marketing.",
     path: "/contact",
   },
 ];

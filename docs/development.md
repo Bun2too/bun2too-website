@@ -17,7 +17,7 @@ npm run dev
 
 Development and normal production startup use **3000**, matching the supplied local Auth0 root callback. Browser tests use **3100** and mock authentication redirects rather than completing real tenant login on that port.
 
-Public views render without Management API or Onyx credentials. Missing configuration returns an unavailable state for the corresponding integration. Real private storage needs Netlify's runtime context or supported local Netlify development, and real RAG needs the configured public agent.
+Public views render without private credentials. Missing configuration returns an unavailable state for the corresponding feature. Private inquiries need Netlify runtime storage context, a session signing secret, and production verification. There is no AI chat dependency.
 
 ## Validation
 
@@ -29,7 +29,6 @@ Public views render without Management API or Onyx credentials. Missing configur
 | `npm run build`                                    | Production build and required-page/API manifest checks through `postbuild`                                                                   |
 | `npm run test:e2e`                                 | Desktop/mobile views, navigation, consent states, SDK redirect construction, Insights, support dialog/inquiries, crawler-visible metadata    |
 | `SMOKE_BASE_URL=... npm run test:smoke`            | Real HTTP page/discovery routes and invalid-input/unauthorized API responses; no valid inquiry or chat is sent                               |
-| `npm run support:check`                            | Configured, read-only Onyx health/version/agent checks; no generated answer or inquiry                                                       |
 | `npx netlify build --offline --context production` | Netlify adapter and function packaging, including scheduled retention; no deployment                                                         |
 
 Install a browser once if needed with `npx playwright install chromium`. Run tests appropriate to the change. Copy-only/documentation changes do not need new tests that simply match the wording. Reuse the browser suite for responsive or interaction changes. Check links and skill metadata when editing repository guidance.
@@ -48,7 +47,7 @@ The test runner owns port 3100 and tears its server down. Do not stop an unrelat
 - Service copy: use `src/lib/site.ts`; keep public slugs, FAQs, SEO descriptions, and `/llms.txt` aligned. The service schema is derived from capabilities. See [product context](product.md).
 - Views and UI: public pages stay server-rendered; client components own interactive forms and chat. Use official assets in `public/bun2too/`. Preserve mobile layout, keyboard access, reduced-motion behavior, and the chat's visible message composer.
 - Identity: use official Auth0 SDK methods; keep Management API credentials server-only. Preserve passwordless pending signup, verified activation, separate marketing consent, and authenticated withdrawal.
-- Support: keep public RAG access constrained on the server, conversations owner-bound, citations restricted to public hosts, and inquiries private. Never use real customers as test fixtures.
+- Support: keep inquiries private, consent explicit, visitor ownership/idempotency checked, and rate limits/retention intact. Never use real customers as test fixtures.
 - Insights: keep its public backend integration and unavailable states; do not import editorial administration credentials into this app or replace its local `/insights` routes with stale external links.
 - Search: use `pageMetadata`/JSON-LD helpers; keep private routes and staging out of indexing. Do not invent structured-data facts or imply ranking guarantees.
 - Documentation: explain new routes, API contracts, data stores, environment names, and verification limits where they belong, then link the relevant guide from README and the agent index.

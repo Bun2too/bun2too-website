@@ -6,11 +6,9 @@ const SupportPanel = dynamic(() => import("./SupportPanel"), { ssr: false });
 export default function SupportLauncher() {
   const [loaded, setLoaded] = useState(false);
   const [open, setOpen] = useState(false);
-  const [inquiry, setInquiry] = useState(false);
   const pathname = usePathname();
   useEffect(() => {
-    const show = (event: Event) => {
-      setInquiry(Boolean((event as CustomEvent).detail?.inquiry));
+    const show = () => {
       setLoaded(true);
       setOpen(true);
     };
@@ -27,21 +25,14 @@ export default function SupportLauncher() {
         aria-expanded={open}
         aria-controls={loaded ? "bun2too-support" : undefined}
         onClick={() => {
-          setInquiry(false);
           setLoaded(true);
           setOpen(true);
         }}
       >
         <img src="/bun2too/logo.png" width={27} height={27} alt="" />
-        Ask Bun2Too <span aria-hidden="true">↗</span>
+        Contact Bun2Too <span aria-hidden="true">↗</span>
       </button>
-      {loaded && (
-        <SupportPanel
-          open={open}
-          initialInquiry={inquiry}
-          onClose={() => setOpen(false)}
-        />
-      )}
+      {loaded && <SupportPanel open={open} onClose={() => setOpen(false)} />}
     </>
   );
 }

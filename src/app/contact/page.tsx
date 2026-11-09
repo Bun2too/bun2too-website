@@ -24,9 +24,7 @@ export default function ContactPage() {
           and what’s getting in the way.
         </p>
         <div className="actions">
-          <SupportOpenButton inquiry>
-            Send a private inquiry ↗
-          </SupportOpenButton>
+          <SupportOpenButton>Send a private inquiry ↗</SupportOpenButton>
           <EmailButton className="button button-outline" email={email}>
             Email Bun2Too ↗
           </EmailButton>

@@ -74,7 +74,6 @@ jobs:
       SITE_ENVIRONMENT: ${{ github.ref_name == 'main' && 'prod' || github.ref_name }}
       GOOGLE_SITE_VERIFICATION: ${{ vars.GOOGLE_SITE_VERIFICATION }}
       BING_SITE_VERIFICATION: ${{ vars.BING_SITE_VERIFICATION }}
-      SUPPORT_SOURCE_HOSTS: ${{ vars.SUPPORT_SOURCE_HOSTS || 'bun2too.com,www.bun2too.com,insights.bun2too.com' }}
     steps:
       - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
         with:
@@ -95,11 +94,6 @@ jobs:
           AUTH0_MANAGEMENT_CLIENT_SECRET: ${{ secrets.AUTH0_MANAGEMENT_CLIENT_SECRET }}
           AUTH0_EMAIL_CONNECTION: ${{ vars.NEXT_PUBLIC_AUTH0_EMAIL_CONNECTION || 'email' }}
           TURNSTILE_SECRET_KEY: ${{ secrets.TURNSTILE_SECRET_KEY }}
-          ONYX_API_BASE_URL: ${{ secrets.ONYX_API_BASE_URL }}
-          ONYX_API_KEY: ${{ secrets.ONYX_API_KEY }}
-          ONYX_PUBLIC_AGENT_ID: ${{ secrets.ONYX_PUBLIC_AGENT_ID }}
-          ONYX_PUBLIC_DOCUMENT_SET: ${{ secrets.ONYX_PUBLIC_DOCUMENT_SET }}
-          ONYX_SEARCH_TOOL_ID: ${{ secrets.ONYX_SEARCH_TOOL_ID }}
           SUPPORT_SESSION_SECRET: ${{ secrets.SUPPORT_SESSION_SECRET }}
           INSIGHTS_API_ORIGIN: ${{ secrets.INSIGHTS_API_ORIGIN }}
           INSIGHTS_EMBED_ORIGINS: ${{ secrets.INSIGHTS_EMBED_ORIGINS }}

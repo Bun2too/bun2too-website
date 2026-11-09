@@ -35,9 +35,9 @@ export default function CookiesPage() {
       <h2>Choose what stays on your device</h2>
       <p>
         <strong>Necessary:</strong> remember cookie choices and support sign-in,
-        security, and support conversations you request. These cannot be
-        switched off through our preference controls. You can block storage in
-        your browser, but sign-in or support may stop working.
+        security, and inquiries you submit. These cannot be switched off through
+        our preference controls. You can block storage in your browser, but
+        sign-in or support may stop working.
       </p>
       <p>
         <strong>Preferences:</strong> optionally remember articles marked as
@@ -149,7 +149,7 @@ export default function CookiesPage() {
               </th>
               <td>
                 Necessary when you open support. Signed visitor identifier
-                isolates conversations and inquiry ownership.
+                protects inquiry ownership.
               </td>
               <td>Up to 24 hours.</td>
             </tr>

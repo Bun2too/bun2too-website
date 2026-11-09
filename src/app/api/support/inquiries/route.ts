@@ -16,7 +16,7 @@ export async function POST(request: Request) {
       return supportResponse({ received: true }, undefined, undefined, 202);
     const identity = supportIdentity(request);
     const store = getSupportStore();
-    await throttleSupport(store, request, identity.owner, "inquiry");
+    await throttleSupport(store, request, identity.owner);
     await verifyCaptcha(
       inquiry.captchaToken,
       new URL(publicOrigin(request)).hostname,

@@ -18,11 +18,8 @@ function configuration() {
     NEXT_PUBLIC_AUTH0_AUDIENCE: "https://api.example.invalid",
     NEXT_PUBLIC_GTM_CONTAINER_ID: "GTM-TEST123",
     NEXT_PUBLIC_GA4_MEASUREMENT_ID: "G-TEST123456",
-    ONYX_API_BASE_URL: "https://support.example.invalid/api",
     INSIGHTS_API_ORIGIN: "https://editorial.example.invalid",
     SUPPORT_SESSION_SECRET: "fixture-value-with-at-least-thirty-two-characters",
-    ONYX_PUBLIC_AGENT_ID: "12",
-    ONYX_SEARCH_TOOL_ID: "4",
   };
 }
 test("deployment validation rejects incomplete and mismatched configuration without echoing values", () => {

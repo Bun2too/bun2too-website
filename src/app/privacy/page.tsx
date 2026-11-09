@@ -80,32 +80,22 @@ export default function PrivacyPage() {
         subscriptions or browser notification permissions, which require their
         own opt-ins.
       </p>
-      <h2>Support conversations and inquiries</h2>
+      <h2>Private support inquiries</h2>
       <p>
-        When you start a support chat, Bun2Too sends the messages you choose to
-        share to our Onyx knowledge service and its configured model provider to
-        retrieve relevant knowledge and generate an answer. The assistant is
-        limited to an approved public support knowledge set. AI responses can be
-        mistaken. Do not include passwords, authentication codes, payment
-        details, or other sensitive information.
-      </p>
-      <p>
-        After you open support, an essential, signed, HTTP-only cookie
-        identifies your browser for up to 24 hours and keeps your conversation
-        separate from other visitors. We store support chat state privately in
-        Netlify for up to 24 hours before it becomes eligible for automatic
-        cleanup. Onyx also stores its chat history under its own
-        administrator-configured retention policy; deleting website chat state
-        does not itself delete Onyx history.
+        When you open the inquiry form, an essential signed, HTTP-only cookie
+        identifies your browser for up to 24 hours. It helps isolate submission
+        ownership and safely handle retries. Do not include passwords,
+        authentication codes, payment details, or sensitive personal
+        information.
       </p>
       <p>
         When you send a private inquiry, we store your name, contact email,
-        topic, message, and consent timestamp in Netlify. We attach the chat
-        transcript only if you explicitly choose to include it. Inquiry records
-        become eligible for cleanup after 90 days; scheduled cleanup runs daily.
-        A pseudonymous rate-limit identifier may be derived from the hosting
-        platform’s connection address to reduce abuse. Sending an inquiry does
-        not subscribe you to marketing.
+        topic, message, and consent timestamp in Netlify. Inquiry records become
+        eligible for cleanup after 90 days; scheduled cleanup runs daily. No AI
+        provider processes new inquiries, and the form does not attach chat
+        transcripts. A pseudonymous rate-limit identifier may be derived from
+        the hosting platform’s connection address to reduce abuse. Sending an
+        inquiry does not subscribe you to marketing.
       </p>
       <h2>Retention and questions</h2>
       <p>
@@ -118,8 +108,8 @@ export default function PrivacyPage() {
         services share these practices.
       </p>
       <p className="small">
-        Notice updated: November 8, 2026. Email and support consent wording
-        version: 2026-11-07.
+        Notice updated: November 8, 2026. Email consent version: 2026-11-07;
+        inquiry consent version: 2026-11-08.2.
       </p>
     </main>
   );
