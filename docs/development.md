@@ -33,6 +33,8 @@ Public views render without private credentials. Missing configuration returns a
 
 Install a browser once if needed with `npx playwright install chromium`. Run tests appropriate to the change. Copy-only/documentation changes do not need new tests that simply match the wording. Reuse the browser suite for responsive or interaction changes. Check links and skill metadata when editing repository guidance.
 
+The deployment-command regression feeds the workflow's publish arguments through the pinned Netlify CLI's actual parser/action validation. Deployment execution and error telemetry are replaced, so this check never authenticates, uploads or publishes. It verifies prebuilt publication flags; it does not prove live deployment success.
+
 To avoid colliding with a developer's existing `.next` process:
 
 ```sh

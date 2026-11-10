@@ -117,7 +117,7 @@ jobs:
           NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
           NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
         run: |
-          npx netlify deploy --no-build --prod --context production --message "$GITHUB_SHA" --json > "$RUNNER_TEMP/netlify-deploy.json"
+          npx netlify deploy --no-build --prod --message "$GITHUB_SHA" --json > "$RUNNER_TEMP/netlify-deploy.json"
           url=$(jq -er '.url // .deploy_url' "$RUNNER_TEMP/netlify-deploy.json")
           echo "url=$url" >> "$GITHUB_OUTPUT"
           echo "Published: $url" >> "$GITHUB_STEP_SUMMARY"

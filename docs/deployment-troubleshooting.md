@@ -65,6 +65,15 @@ The earlier UUID account route and scope spelling were integration mistakes; the
 
 ## What the pipeline verifies
 
+The build and publish commands have separate roles:
+
+```sh
+npx netlify build --context production
+npx netlify deploy --no-build --prod --message "$GITHUB_SHA" --json
+```
+
+`--context production` selects build-time configuration. The subsequent publish step uploads the adapter output already built; `--prod` selects the chosen project's live production deployment. Netlify CLI rejects `--context` together with `--no-build`, so the publish command must omit it. This is a CLI argument error, unrelated to tokens or site settings. GitHub environment `prod`, server `SITE_ENVIRONMENT=prod`, and Netlify context `production` remain as configured. See the [CLI deploy reference](https://cli.netlify.com/commands/deploy/).
+
 1. Validate all required configuration and cross-setting consistency before changing Netlify.
 2. Request a Management API token with the configured M2M credentials and required scopes. This creates no users, reads no customer profiles and sends no email. A failure reports HTTP status and corrective setting names; provider bodies/tokens are withheld.
 3. Confirm the selected Netlify site matches `NEXT_PUBLIC_SITE_URL`, then sync named production-context values. Logs show public hostname comparisons, redacted API route templates, HTTP status and key names. A failed sync stops publication, although earlier keys in that sync may already have been updated.
