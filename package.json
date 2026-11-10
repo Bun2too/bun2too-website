@@ -10,6 +10,7 @@
     "security:scan": "node scripts/gitleaks.mjs",
     "deploy:check": "node scripts/sync-netlify-env.mjs --check",
     "deploy:configure": "node scripts/sync-netlify-env.mjs",
+    "deploy:inspect": "node scripts/sync-netlify-env.mjs --inspect-site",
     "postbuild": "node scripts/validate-build.mjs",
     "start": "next start --port 3000",
     "typecheck": "tsc --noEmit",

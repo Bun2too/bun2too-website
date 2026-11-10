@@ -3,22 +3,32 @@ import {
   syncNetlifyEnvironment,
   validateDeployment,
   verifyAuth0Connection,
+  inspectNetlifySite,
 } from "./deploy-config.mjs";
 try {
-  validateDeployment(process.env);
-  if (process.argv.includes("--check"))
-    console.log(
-      "Deployment configuration names, required values, and consistency checks passed. No values were printed.",
+  if (process.argv.includes("--inspect-site")) {
+    await inspectNetlifySite(process.env, fetch, (message) =>
+      console.log(message),
     );
-  else {
     console.log(
-      "Configuration consistency passed. Checking Auth0 Management connectivity without creating users or sending email.",
+      "Read-only Netlify inspection passed. No settings were written and no deployment was created.",
     );
-    await verifyAuth0Connection(process.env);
-    console.log("Auth0 Management credentials and required scopes verified.");
-    console.log(
-      `Configured ${await syncNetlifyEnvironment(process.env, fetch, (message) => console.log(message))} site environment keys for the production context. Values were not printed.`,
-    );
+  } else {
+    validateDeployment(process.env);
+    if (process.argv.includes("--check"))
+      console.log(
+        "Deployment configuration names, required values, and consistency checks passed. No values were printed.",
+      );
+    else {
+      console.log(
+        "Configuration consistency passed. Checking Auth0 Management connectivity without creating users or sending email.",
+      );
+      await verifyAuth0Connection(process.env);
+      console.log("Auth0 Management credentials and required scopes verified.");
+      console.log(
+        `Configured ${await syncNetlifyEnvironment(process.env, fetch, (message) => console.log(message))} site environment keys for the production context. Credentials and setting values were withheld; only public hostname diagnostics were printed.`,
+      );
+    }
   }
 } catch (error) {
   console.error(

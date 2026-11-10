@@ -77,7 +77,9 @@ export function validateDeployment(env) {
       )
         throw new DeploymentConfigError();
     } catch {
-      errors.push(`Invalid HTTPS URL in ${key}`);
+      errors.push(
+        `Invalid HTTPS URL in ${key}; use a plain HTTPS origin without quotes, commas, Markdown, credentials, query, or path`,
+      );
     }
   }
   if (env.AUTH0_DOMAIN && env.AUTH0_DOMAIN !== env.NEXT_PUBLIC_AUTH0_DOMAIN)
@@ -204,18 +206,19 @@ export async function verifyAuth0Connection(env, fetcher = fetch) {
     );
 }
 
-export async function syncNetlifyEnvironment(
-  env,
-  fetcher = fetch,
-  progress = () => {},
-) {
-  validateDeployment(env);
+function netlifyClient(env, fetcher, progress) {
   const api = "https://api.netlify.com/api/v1";
   const headers = {
     Authorization: `Bearer ${env.NETLIFY_AUTH_TOKEN}`,
     "Content-Type": "application/json",
   };
-  async function call(path, options = {}) {
+  progress(
+    "Netlify transport: Node fetch; Authorization: Bearer [redacted]; redirects rejected; timeout 20 seconds",
+  );
+  return async function call(path, options, displayPath) {
+    const method = options?.method || "GET";
+    const request = `${method} ${api}${displayPath}`;
+    progress(`[Netlify request] ${request} (IDs and body values redacted)`);
     let response;
     try {
       response = await fetcher(`${api}${path}`, {
@@ -226,36 +229,146 @@ export async function syncNetlifyEnvironment(
       });
     } catch {
       throw new DeploymentConfigError(
-        "Netlify configuration request failed; no response body or credentials were logged",
+        `Netlify request failed: ${request} (network, timeout, or redirect). Credentials and provider details withheld`,
       );
     }
+    progress(`[Netlify response] ${request} -> HTTP ${response.status}`);
     return response;
+  };
+}
+
+function siteHost(value, isDomain = false) {
+  if (typeof value !== "string" || !value) return null;
+  try {
+    const url = new URL(isDomain ? `https://${value}` : value);
+    if (
+      !["https:", "http:"].includes(url.protocol) ||
+      url.username ||
+      url.password ||
+      url.pathname !== "/" ||
+      url.search ||
+      url.hash ||
+      url.port
+    )
+      return null;
+    return url.hostname;
+  } catch {
+    return null;
   }
-  progress("Looking up the selected Netlify site");
+}
+
+async function checkedNetlifySite(env, call, progress) {
+  progress(
+    `Site environment: ${["dev", "qa", "prod"].includes(env.SITE_ENVIRONMENT) ? env.SITE_ENVIRONMENT : "not supplied"}`,
+  );
+  const expectedHost = new URL(env.NEXT_PUBLIC_SITE_URL).hostname;
+  progress(
+    `Expected NEXT_PUBLIC_SITE_URL hostname: ${JSON.stringify(expectedHost)}`,
+  );
   const siteResponse = await call(
     `/sites/${encodeURIComponent(env.NETLIFY_SITE_ID)}`,
+    undefined,
+    "/sites/{NETLIFY_SITE_ID}",
   );
   if (!siteResponse.ok)
     throw new DeploymentConfigError(
-      `Netlify site lookup failed (HTTP ${siteResponse.status})`,
+      `Netlify site lookup failed (HTTP ${siteResponse.status}). Check NETLIFY_AUTH_TOKEN access and NETLIFY_SITE_ID in the selected GitHub environment. Provider body withheld`,
     );
-  const site = await siteResponse.json();
+  let site;
+  try {
+    site = await siteResponse.json();
+    if (!site || typeof site !== "object" || Array.isArray(site))
+      throw new Error();
+  } catch {
+    throw new DeploymentConfigError(
+      "Netlify site lookup returned invalid JSON metadata; provider body withheld",
+    );
+  }
+  if (typeof site.id === "string")
+    progress(
+      `Returned site.id equals NETLIFY_SITE_ID: ${site.id === env.NETLIFY_SITE_ID} (ID values redacted)`,
+    );
+  // Allowlist public domain fields only: site metadata can contain private
+  // repository details, environment values, passwords and notification emails.
+  const entries = [
+    ["ssl_url", siteHost(site.ssl_url)],
+    ["url", siteHost(site.url)],
+    ["custom_domain", siteHost(site.custom_domain, true)],
+    [
+      "default domain from site.name",
+      typeof site.name === "string" &&
+      /^[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?$/i.test(site.name)
+        ? `${site.name.toLowerCase()}.netlify.app`
+        : null,
+    ],
+    ...(Array.isArray(site.domain_aliases)
+      ? site.domain_aliases.map((value, index) => [
+          `domain_aliases[${index}]`,
+          siteHost(value, true),
+        ])
+      : []),
+  ];
+  for (const [field, host] of entries)
+    progress(
+      `Returned ${field} hostname: ${host ? JSON.stringify(host) : "not returned or invalid (raw value withheld)"}`,
+    );
+  const siteHosts = [
+    ...new Set(entries.map(([, host]) => host).filter(Boolean)),
+  ];
+  const matches = siteHosts.includes(expectedHost);
+  progress(
+    `Hostname comparison: ${matches ? "MATCH" : "MISMATCH"}; DNS and redirects are not used for this check`,
+  );
+  if (!matches)
+    throw new DeploymentConfigError(
+      `Selected Netlify site does not match NEXT_PUBLIC_SITE_URL; no configuration was changed. Expected hostname ${JSON.stringify(expectedHost)}; returned hostnames ${JSON.stringify(siteHosts)}. Compare NETLIFY_SITE_ID with the Project ID shown in that project's Netlify settings and check the selected GitHub environment (main uses prod). A trailing slash does not affect this hostname comparison`,
+    );
+  return site;
+}
+
+// This path deliberately requires no Auth0/model credentials and performs GET
+// only. It is usable independently when diagnosing the deployment destination.
+export async function inspectNetlifySite(
+  env,
+  fetcher = fetch,
+  progress = () => {},
+) {
+  for (const key of [
+    "NETLIFY_AUTH_TOKEN",
+    "NETLIFY_SITE_ID",
+    "NEXT_PUBLIC_SITE_URL",
+  ])
+    if (!env[key]?.trim())
+      throw new DeploymentConfigError(
+        `Missing ${key} for read-only Netlify inspection`,
+      );
+  const url = siteHost(env.NEXT_PUBLIC_SITE_URL);
+  if (
+    !url ||
+    !env.NEXT_PUBLIC_SITE_URL.startsWith("https://") ||
+    env.NEXT_PUBLIC_SITE_URL !== env.NEXT_PUBLIC_SITE_URL.trim()
+  )
+    throw new DeploymentConfigError(
+      "Invalid NEXT_PUBLIC_SITE_URL; enter a plain HTTPS origin without quotes, commas or Markdown",
+    );
+  return checkedNetlifySite(
+    env,
+    netlifyClient(env, fetcher, progress),
+    progress,
+  );
+}
+
+export async function syncNetlifyEnvironment(
+  env,
+  fetcher = fetch,
+  progress = () => {},
+) {
+  validateDeployment(env);
+  const call = netlifyClient(env, fetcher, progress);
+  const site = await checkedNetlifySite(env, call, progress);
   if (!site.account_id)
     throw new DeploymentConfigError(
       "Netlify did not return the site's account identifier",
-    );
-  // Refuse an accidental dev/QA/prod site mismatch before changing its environment.
-  const siteHosts = [
-    site.ssl_url,
-    site.url,
-    site.custom_domain ? `https://${site.custom_domain}` : null,
-    ...(site.domain_aliases || []).map((host) => `https://${host}`),
-  ]
-    .filter(Boolean)
-    .map((value) => new URL(value).hostname);
-  if (!siteHosts.includes(new URL(env.NEXT_PUBLIC_SITE_URL).hostname))
-    throw new DeploymentConfigError(
-      "Selected Netlify site does not match NEXT_PUBLIC_SITE_URL; no configuration was changed",
     );
   const endpoint = `/accounts/${encodeURIComponent(site.account_id)}/env`;
   progress(
@@ -274,12 +387,17 @@ export async function syncNetlifyEnvironment(
     const response = await call(
       `${endpoint}/${encodeURIComponent(key)}${query}`,
       { method: "PUT", body: JSON.stringify(payload) },
+      `/accounts/{account_id}/env/${key}?site_id={NETLIFY_SITE_ID}`,
     );
     if (response.status === 404) {
-      const created = await call(`${endpoint}${query}`, {
-        method: "POST",
-        body: JSON.stringify([payload]),
-      });
+      const created = await call(
+        `${endpoint}${query}`,
+        {
+          method: "POST",
+          body: JSON.stringify([payload]),
+        },
+        "/accounts/{account_id}/env?site_id={NETLIFY_SITE_ID}",
+      );
       if (!created.ok)
         throw new DeploymentConfigError(
           `Netlify configuration failed for ${key} (HTTP ${created.status})`,

@@ -7,6 +7,7 @@ import {
   syncNetlifyEnvironment,
   validateDeployment,
   verifyAuth0Connection,
+  inspectNetlifySite,
 } from "../scripts/deploy-config.mjs";
 function configuration() {
   return {
@@ -39,6 +40,147 @@ test("deployment validation rejects incomplete and mismatched configuration with
         INSIGHTS_API_ORIGIN: "http://example.invalid",
       }),
     /Invalid HTTPS URL/,
+  );
+});
+
+test("site mismatch logs the API/status and public comparison, and stops before any writes", async () => {
+  const env = {
+    ...configuration(),
+    NETLIFY_SITE_ID: "fixture-private-site-id",
+    NETLIFY_AUTH_TOKEN: "fixture-private-token",
+  };
+  const logs: string[] = [];
+  const methods: string[] = [];
+  await assert.rejects(
+    syncNetlifyEnvironment(
+      env,
+      async (url: string, options: { method?: string }) => {
+        methods.push(options.method || "GET");
+        assert.equal(
+          new URL(url).pathname,
+          `/api/v1/sites/${env.NETLIFY_SITE_ID}`,
+        );
+        return Response.json({
+          id: env.NETLIFY_SITE_ID,
+          account_id: "fixture-private-account-id",
+          name: "fixture-other-project",
+          ssl_url: "https://other.example.com/",
+          custom_domain: "other.example.com",
+          domain_aliases: ["www.other.example.com"],
+          password: "fixture-password-withheld",
+          notification_email: "private@example.invalid",
+          admin_url: "https://private.example.invalid/admin",
+          build_settings: { env: { SOME_SECRET: "fixture-env-withheld" } },
+        });
+      },
+      (line: string) => logs.push(line),
+    ),
+    /does not match/,
+  );
+  const output = logs.join("\n");
+  assert.match(
+    output,
+    /GET https:\/\/api.netlify.com\/api\/v1\/sites\/\{NETLIFY_SITE_ID\}/,
+  );
+  assert.match(output, /HTTP 200/);
+  assert.match(
+    output,
+    /Expected NEXT_PUBLIC_SITE_URL hostname: "website.example.com"/,
+  );
+  assert.match(output, /Returned custom_domain hostname: "other.example.com"/);
+  assert.match(output, /www.other.example.com/);
+  assert.match(output, /Hostname comparison: MISMATCH/);
+  assert.doesNotMatch(
+    output,
+    /fixture-private|fixture-password|fixture-env|private@example|private.example/,
+  );
+  assert.deepEqual(methods, ["GET"]);
+});
+
+test("custom domains, aliases and the project's default hostname match with a trailing slash", async () => {
+  for (const hostname of [
+    "custom.example.com",
+    "www.custom.example.com",
+    "fixture-project.netlify.app",
+  ]) {
+    const methods: string[] = [];
+    await inspectNetlifySite(
+      {
+        NETLIFY_AUTH_TOKEN: "fixture-token",
+        NETLIFY_SITE_ID: "fixture-site",
+        NEXT_PUBLIC_SITE_URL: `https://${hostname}/`,
+      },
+      async (_url: string, options: { method?: string }) => {
+        methods.push(options.method || "GET");
+        return Response.json({
+          name: "fixture-project",
+          ssl_url: "https://custom.example.com",
+          custom_domain: "custom.example.com",
+          domain_aliases: ["www.custom.example.com"],
+        });
+      },
+    );
+    assert.deepEqual(methods, ["GET"]);
+  }
+});
+
+test("read-only inspection needs no Auth0 credentials and reports safe HTTP failures", async () => {
+  const logs: string[] = [];
+  await assert.rejects(
+    inspectNetlifySite(
+      {
+        NETLIFY_AUTH_TOKEN: "fixture-token",
+        NETLIFY_SITE_ID: "fixture-site",
+        NEXT_PUBLIC_SITE_URL: "https://website.example.com",
+      },
+      async () =>
+        new Response("fixture-private-provider-details", { status: 404 }),
+      (line: string) => logs.push(line),
+    ),
+    (error: Error) => {
+      assert.match(
+        error.message,
+        /HTTP 404.*NETLIFY_AUTH_TOKEN.*NETLIFY_SITE_ID/,
+      );
+      assert.doesNotMatch(error.message, /fixture-private-provider-details/);
+      return true;
+    },
+  );
+  assert.match(logs.join("\n"), /HTTP 404/);
+  assert.doesNotMatch(logs.join("\n"), /fixture-private-provider-details/);
+});
+
+test("malformed/pasted URLs and hostile metadata do not leak raw fields or bypass the site guard", async () => {
+  const env = {
+    NETLIFY_AUTH_TOKEN: "fixture-token",
+    NETLIFY_SITE_ID: "fixture-site",
+    NEXT_PUBLIC_SITE_URL: "https://website.example.com",
+  };
+  await assert.rejects(
+    inspectNetlifySite(
+      { ...env, NEXT_PUBLIC_SITE_URL: "'https://website.example.com/'," },
+      () => assert.fail("must not fetch"),
+    ),
+    /plain HTTPS origin/,
+  );
+  const logs: string[] = [];
+  await assert.rejects(
+    inspectNetlifySite(
+      env,
+      async () =>
+        Response.json({
+          name: "invalid\nname",
+          custom_domain: "fixture-user:fixture-password@website.example.com",
+          domain_aliases: "website.example.com",
+          url: "https://other.example.com/private?token=fixture-token",
+        }),
+      (line: string) => logs.push(line),
+    ),
+    /does not match/,
+  );
+  assert.doesNotMatch(
+    logs.join("\n"),
+    /fixture-user|fixture-password|invalid\\nname|token=|fixture-token/,
   );
 });
 test("audience drift and pasted whitespace fail with setting names, never values", () => {
