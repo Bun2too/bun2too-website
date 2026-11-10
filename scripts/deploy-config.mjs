@@ -366,45 +366,78 @@ export async function syncNetlifyEnvironment(
   validateDeployment(env);
   const call = netlifyClient(env, fetcher, progress);
   const site = await checkedNetlifySite(env, call, progress);
-  if (!site.account_id)
+  // Netlify's environment service uses account_slug as its account locator,
+  // despite the OpenAPI path parameter being named account_id. Match the
+  // pinned Netlify CLI's env:set implementation; never fall back to the UUID.
+  if (typeof site.account_slug !== "string" || !site.account_slug.trim())
     throw new DeploymentConfigError(
-      "Netlify did not return the site's account identifier",
+      "Netlify did not return site.account_slug required by the environment API; no configuration was changed",
     );
-  const endpoint = `/accounts/${encodeURIComponent(site.account_id)}/env`;
+  const endpoint = `/accounts/${encodeURIComponent(site.account_slug)}/env`;
   progress(
-    "Selected site matches NEXT_PUBLIC_SITE_URL; synchronizing production-context settings",
+    "Selected site matches NEXT_PUBLIC_SITE_URL; environment API account locator: site.account_slug (value withheld)",
   );
   const query = `?site_id=${encodeURIComponent(env.NETLIFY_SITE_ID)}`;
+  // Determine creation vs update before writing, as Netlify's CLI does. Do not
+  // interpret a forbidden update as permission to try a different write route.
+  const listed = await call(
+    `${endpoint}${query}`,
+    undefined,
+    "/accounts/{account_slug}/env?site_id={NETLIFY_SITE_ID}",
+  );
+  if (!listed.ok)
+    throw new DeploymentConfigError(
+      `Netlify site environment lookup failed (HTTP ${listed.status}); account locator is site.account_slug and site_id is supplied. No configuration was changed; provider body withheld`,
+    );
+  let existingKeys;
+  try {
+    const entries = await listed.json();
+    if (
+      !Array.isArray(entries) ||
+      entries.some((entry) => !entry || typeof entry.key !== "string")
+    )
+      throw new Error();
+    // Response values are private. Retain only key names; never log the body.
+    existingKeys = new Set(entries.map((entry) => entry.key));
+  } catch {
+    throw new DeploymentConfigError(
+      "Netlify site environment lookup returned invalid metadata; no configuration was changed; provider body withheld",
+    );
+  }
+  progress(
+    "Synchronizing production-context settings using all CLI-compatible scopes (including post_processing)",
+  );
   for (const key of [...publicBuildKeys, ...privateRuntimeKeys]) {
     const value = env[key] || (key.endsWith("EMAIL_CONNECTION") ? "email" : "");
     // Empty optional values overwrite old values, avoiding stale configuration.
     // Use all scopes rather than a Pro-only granular restriction.
     const payload = {
       key,
-      scopes: ["builds", "functions", "runtime", "post-processing"],
+      // Envelope uses an underscore here. The OpenAPI spelling differs.
+      scopes: ["builds", "functions", "runtime", "post_processing"],
       values: [{ context: "production", value }],
     };
-    const response = await call(
-      `${endpoint}/${encodeURIComponent(key)}${query}`,
-      { method: "PUT", body: JSON.stringify(payload) },
-      `/accounts/{account_id}/env/${key}?site_id={NETLIFY_SITE_ID}`,
-    );
-    if (response.status === 404) {
-      const created = await call(
+    const create = () =>
+      call(
         `${endpoint}${query}`,
         {
           method: "POST",
           body: JSON.stringify([payload]),
         },
-        "/accounts/{account_id}/env?site_id={NETLIFY_SITE_ID}",
+        "/accounts/{account_slug}/env?site_id={NETLIFY_SITE_ID}",
       );
-      if (!created.ok)
-        throw new DeploymentConfigError(
-          `Netlify configuration failed for ${key} (HTTP ${created.status})`,
-        );
-    } else if (!response.ok)
+    let response;
+    if (existingKeys.has(key)) {
+      response = await call(
+        `${endpoint}/${encodeURIComponent(key)}${query}`,
+        { method: "PUT", body: JSON.stringify(payload) },
+        `/accounts/{account_slug}/env/${key}?site_id={NETLIFY_SITE_ID}`,
+      );
+      if (response.status === 404) response = await create(); // Concurrent deletion.
+    } else response = await create();
+    if (!response.ok)
       throw new DeploymentConfigError(
-        `Netlify configuration failed for ${key} (HTTP ${response.status})`,
+        `Netlify configuration failed for ${key} (HTTP ${response.status}); request used site.account_slug, site_id and CLI-compatible scopes. Provider body withheld; check team/SSO authorization or plan restrictions if access is still denied`,
       );
     // Never read or print environment-value response bodies.
     progress(`Synchronized ${key}`);

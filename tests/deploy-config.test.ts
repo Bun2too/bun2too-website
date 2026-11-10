@@ -258,6 +258,7 @@ test("optional AI must be explicitly enabled with complete public-support config
 test("runtime sync selects the intended site and never forwards deployment credentials", async () => {
   const calls: { url: string; body: Record<string, unknown> | undefined }[] =
     [];
+  const progress: string[] = [];
   const env = configuration();
   let first = true;
   const fetcher = async (
@@ -271,13 +272,30 @@ test("runtime sync selects the intended site and never forwards deployment crede
     if (first) {
       first = false;
       return Response.json({
-        account_id: "fixture-account",
+        account_id: "fixture-account-uuid",
+        account_slug: "fixture-team-slug",
         ssl_url: env.NEXT_PUBLIC_SITE_URL,
       });
     }
+    // Contract fixture: site lookup IDs and Envelope account locators differ.
+    // Enforce the official CLI's slug routing and scope spelling so the old
+    // implementation fails here instead of passing an unconditional mock.
+    assert.equal(new URL(url).pathname.split("/")[4], "fixture-team-slug");
+    if (!options.method)
+      return Response.json([{ key: "NEXT_PUBLIC_SITE_URL" }]);
+    const payload = JSON.parse(options.body!);
+    const variable = Array.isArray(payload) ? payload[0] : payload;
+    assert.deepEqual(variable.scopes, [
+      "builds",
+      "functions",
+      "runtime",
+      "post_processing",
+    ]);
     return new Response(null, { status: options.method === "PUT" ? 404 : 201 });
   };
-  const count = await syncNetlifyEnvironment(env, fetcher);
+  const count = await syncNetlifyEnvironment(env, fetcher, (line: string) =>
+    progress.push(line),
+  );
   assert.equal(count, privateRuntimeKeys.length + publicBuildKeys.length);
   const payloads = calls.flatMap((call) =>
     call.body ? (Array.isArray(call.body) ? call.body : [call.body]) : [],
@@ -295,6 +313,10 @@ test("runtime sync selects the intended site and never forwards deployment crede
       .slice(1)
       .every((call) => new URL(call.url).searchParams.has("site_id")),
   );
+  assert.doesNotMatch(
+    progress.join("\n"),
+    /fixture-team-slug|fixture-account-uuid/,
+  );
   const rejectedCalls: string[] = [];
   await assert.rejects(
     syncNetlifyEnvironment(env, async (url: string) => {
@@ -307,4 +329,107 @@ test("runtime sync selects the intended site and never forwards deployment crede
     /does not match/,
   );
   assert.equal(rejectedCalls.length, 1);
+});
+
+test("existing variables use PUT and new variables use POST with the site's account slug", async () => {
+  const env = configuration();
+  const writes: { method: string; key: string }[] = [];
+  await syncNetlifyEnvironment(
+    env,
+    async (url: string, options: { method?: string; body?: string }) => {
+      const parsed = new URL(url);
+      if (parsed.pathname.startsWith("/api/v1/sites/"))
+        return Response.json({
+          account_id: "fixture-uuid",
+          account_slug: "fixture-slug",
+          ssl_url: env.NEXT_PUBLIC_SITE_URL,
+        });
+      assert.ok(
+        parsed.pathname.startsWith("/api/v1/accounts/fixture-slug/env"),
+      );
+      assert.equal(parsed.searchParams.get("site_id"), env.NETLIFY_SITE_ID);
+      if (!options.method)
+        return Response.json([
+          {
+            key: "NEXT_PUBLIC_SITE_URL",
+            values: [{ value: "fixture-old-value" }],
+          },
+        ]);
+      const body = JSON.parse(options.body!);
+      const variable = Array.isArray(body) ? body[0] : body;
+      const expectedMethod =
+        variable.key === "NEXT_PUBLIC_SITE_URL" ? "PUT" : "POST";
+      assert.equal(options.method, expectedMethod);
+      assert.equal(Array.isArray(body), expectedMethod === "POST");
+      assert.deepEqual(variable.scopes, [
+        "builds",
+        "functions",
+        "runtime",
+        "post_processing",
+      ]);
+      writes.push({ method: options.method!, key: variable.key });
+      return new Response(null, {
+        status: expectedMethod === "POST" ? 201 : 200,
+      });
+    },
+  );
+  assert.equal(
+    writes.length,
+    publicBuildKeys.length + privateRuntimeKeys.length,
+  );
+  assert.equal(writes.filter((write) => write.method === "PUT").length, 1);
+});
+
+test("missing account slug fails before environment calls instead of guessing the UUID", async () => {
+  let calls = 0;
+  await assert.rejects(
+    syncNetlifyEnvironment(configuration(), async () => {
+      calls++;
+      return Response.json({
+        account_id: "fixture-uuid",
+        ssl_url: configuration().NEXT_PUBLIC_SITE_URL,
+      });
+    }),
+    /site.account_slug.*no configuration was changed/,
+  );
+  assert.equal(calls, 1);
+});
+
+test("403 on environment lookup or writes stops without trying another write route or leaking values", async () => {
+  for (const failOn of ["GET", "PUT", "POST"]) {
+    const methods: string[] = [];
+    const progress: string[] = [];
+    const env = configuration();
+    await assert.rejects(
+      syncNetlifyEnvironment(
+        env,
+        async (url: string, options: { method?: string }) => {
+          if (new URL(url).pathname.startsWith("/api/v1/sites/"))
+            return Response.json({
+              account_slug: "fixture-team-private",
+              ssl_url: env.NEXT_PUBLIC_SITE_URL,
+            });
+          const method = options.method || "GET";
+          methods.push(method);
+          if (method === failOn)
+            return new Response("fixture-private-provider-error", {
+              status: 403,
+            });
+          return Response.json(
+            failOn === "POST" ? [] : [{ key: "NEXT_PUBLIC_SITE_URL" }],
+          );
+        },
+        (line: string) => progress.push(line),
+      ),
+      (error: Error) => {
+        assert.match(error.message, /HTTP 403/);
+        assert.doesNotMatch(
+          error.message + progress.join("\n"),
+          /fixture-private-provider-error|fixture-team-private/,
+        );
+        return true;
+      },
+    );
+    assert.deepEqual(methods, failOn === "GET" ? ["GET"] : ["GET", failOn]);
+  }
 });
