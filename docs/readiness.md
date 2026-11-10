@@ -27,3 +27,17 @@ Before publication, follow [security and deployment inventory](security.md). Act
 The reported workflow failed before synchronization because the server and SPA audience settings differed. CI now derives both from one `NEXT_PUBLIC_AUTH0_AUDIENCE` environment Variable, checks the Management token grant/scopes without customer writes, logs safe key-level synchronization progress, and verifies browser configuration before publishing. The new [troubleshooting guide](deployment-troubleshooting.md) maps each form to its required setup.
 
 A clean-browser read-only check of bun2too.com found functional cookie controls and no page errors, but the deployed navigation showed Account instead of an Auth0 login button, consistent with missing browser Auth0 configuration. No valid inquiry, subscriber, sign-in or model request was sent. This does not establish the state of a different dev/QA URL. Local verification: production fixture build, 50 unit tests and 98 desktop/mobile checks passed; provider calls/inquiry writes remained mocked.
+
+## Insights connection follow-up
+
+The configured public editorial source returned 28 published articles, an individual article and RSS successfully during the November 9 read-only check. The deployed main-site feed/push proxy routes returned 503 during diagnosis, so production configuration or upstream reachability still required verification.
+
+The index now renders at request time, independently retaining the successful API data cache. Release configuration probes the public API/article/feed before syncing. Post-deploy smoke checks inspect the loaded index state, an article body when available and RSS; an HTTP 200 unavailable screen fails. Server diagnostics expose configuration failure categories and public-route HTTP status without the private origin or response bodies.
+
+Local validation completed: production fixture build, 62 unit tests, and 100 desktop/mobile browser checks. An additional temporary local production server using the real configured public source rendered 28 article cards, loaded the first artwork and a complete article body, and returned RSS XML with no page errors. This did not publish a deployment or modify GitHub/Netlify settings. Configure the selected GitHub environment's origin and redeploy through the pipeline; see [Insights connection setup](insights.md).
+
+## Static asset publication follow-up
+
+The architecture SVG was tracked and present locally, while its deployed URL, current WebP artwork and the official logo returned 404. A status-only probe also found the raw build marker served by the deployed publish root. The split standalone-build/upload workflow was selecting raw `.next` after the adapter's `onEnd` restored it.
+
+Release now combines build and upload in one Netlify invocation. A local plugin validates public browser settings in `onBuild` and every public/compiled-browser asset byte in `onPostBuild`, before upload. A real isolated offline Netlify build confirmed both hooks and checked 28 public files plus 54 browser assets without dependency tracing warnings. Regression tests exercise the pinned adapter's actual copy/swap/restore behavior, including the original missing SVG failure. All 64 unit tests passed; the adapter/CLI regressions also passed on Node 24. Local HTTP smoke checks passed the SVG, logo, current artwork and 13 referenced JavaScript/CSS assets. These checks did not publish a deployment; the corrected workflow must replace the previously uploaded artifact.

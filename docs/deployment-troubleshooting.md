@@ -65,20 +65,28 @@ The earlier UUID account route and scope spelling were integration mistakes; the
 
 ## What the pipeline verifies
 
-The build and publish commands have separate roles:
+Build and publish run in one adapter lifecycle:
 
 ```sh
-npx netlify build --context production
-npx netlify deploy --no-build --prod --message "$GITHUB_SHA" --json
+npx netlify deploy --build --prod --context production --message "$GITHUB_SHA" --json
 ```
 
-`--context production` selects build-time configuration. The subsequent publish step uploads the adapter output already built; `--prod` selects the chosen project's live production deployment. Netlify CLI rejects `--context` together with `--no-build`, so the publish command must omit it. This is a CLI argument error, unrelated to tokens or site settings. GitHub environment `prod`, server `SITE_ENVIRONMENT=prod`, and Netlify context `production` remain as configured. See the [CLI deploy reference](https://cli.netlify.com/commands/deploy/).
+`--context production` selects build-time configuration and is valid with `--build`. `--prod` selects the chosen project's live deployment. The Next.js adapter prepares CDN assets, routing, images and functions before the CLI uploads them. Netlify CLI rejects `--context` together with `--no-build`; this workflow therefore builds inside the deploy command. GitHub environment `prod`, server `SITE_ENVIRONMENT=prod`, and Netlify context `production` remain as configured. See the [CLI deploy reference](https://cli.netlify.com/commands/deploy/).
+
+### HTML works but public images return 404
+
+The pinned Next.js adapter copies `public/` and browser chunks into `.netlify/static`, then temporarily swaps that CDN directory into the configured `.next` publish path during `onPostBuild`. Its `onEnd` restores raw Next.js output. Running a standalone `netlify build` followed by a separate `netlify deploy --no-build` loses that temporary publish handoff and can upload raw `.next`, leaving public images absent.
+
+The workflow now keeps build and upload in one CLI invocation. `netlify.toml` still declares `publish = ".next"`, as required by the adapter; the adapter owns its temporary swap. Do not permanently change this to a raw public/static export or remove a failing image check.
+
+The local `netlify/plugins/verify-release` plugin runs after the adapter. Its `onBuild` checks public browser configuration when runner-only `BUN2TOO_RELEASE_CHECK=true`. Its `onPostBuild` refuses raw server/build output and verifies every public file and every compiled browser asset against the prepared CDN file bytes **before upload**. Missing SVGs, logos, WebP artwork or stale chunks therefore fail before publication. A regression test exercises the pinned adapter's actual copy/swap/restore functions. Post-publication smoke checks retain the legacy SVG and additionally verify the official logo, current artwork, and referenced JavaScript/CSS responses. A failure in this post-publication step means publication already happened; it does not automatically roll back the live site.
 
 1. Validate all required configuration and cross-setting consistency before changing Netlify.
 2. Request a Management API token with the configured M2M credentials and required scopes. This creates no users, reads no customer profiles and sends no email. A failure reports HTTP status and corrective setting names; provider bodies/tokens are withheld.
-3. Confirm the selected Netlify site matches `NEXT_PUBLIC_SITE_URL`, then sync named production-context values. Logs show public hostname comparisons, redacted API route templates, HTTP status and key names. A failed sync stops publication, although earlier keys in that sync may already have been updated.
-4. Build with the Netlify adapter, then check that release browser JavaScript contains the expected public Auth0, Turnstile and tracking settings. A successful fixture build cannot substitute for this release build.
-5. Publish, check real routes and invalid/unauthorized API inputs, then check runtime inquiry readiness (and AI readiness if enabled). Readiness means configuration/context is present, not that a valid customer transaction has completed.
+3. Probe the configured public Insights index, one article when available and RSS. Only public GETs are used; a wrong origin or incompatible response blocks synchronization with safe diagnostics.
+4. Confirm the selected Netlify site matches `NEXT_PUBLIC_SITE_URL`, then sync named production-context values. Logs show public hostname comparisons, redacted API route templates, HTTP status and key names. A failed sync stops publication, although earlier keys in that sync may already have been updated.
+5. Run build and upload in one Netlify deploy invocation. The local validation plugin checks public Auth0/Turnstile/tracking values and all prepared CDN asset bytes before upload. A successful fixture build cannot substitute for this release build.
+6. Publish, check real routes and invalid/unauthorized API inputs, then check runtime inquiry readiness (and AI readiness if enabled). Readiness means configuration/context is present, not that a valid customer transaction has completed.
 
 Public `NEXT_PUBLIC_*` settings are frozen into browser JavaScript during a Next.js build. Updating a Netlify runtime variable cannot repair an old browser bundle. Commit/push the fix or trigger a new build on the correct branch after correcting dashboard settings. Rerunning an old workflow run uses that old commit. GitHub debug logging will still mask secret values; it cannot fix inconsistent or absent settings. Normal logs now include safe diagnostics, so enabling debug is unnecessary.
 
@@ -93,6 +101,7 @@ Public `NEXT_PUBLIC_*` settings are frozen into browser JavaScript during a Next
 | Newsletter request accepted but not active | Expected: sign in through **Continue with email**, verify the same passwordless identity, and explicitly confirm topics in `/account`. A signup request alone is pending, not subscribed. |
 | Inquiry collection unavailable | Set a random `SUPPORT_SESSION_SECRET` of at least 32 characters and both Turnstile keys. Use Netlify Functions/Next adapter with Blobs runtime context; static upload is insufficient. |
 | Inquiry saved but no notification email | Expected: the reference confirms private Netlify storage, not email delivery. Administrators review `bun2too-support/inquiries/` and respond; no helpdesk notification integration is implemented. |
+| Insights shows “Taking a short pause” | Set `INSIGHTS_API_ORIGIN` in the selected GitHub environment to the working editorial HTTPS origin, without `/insights`. Run `npm run insights:check` with private local configuration. New deployments check the actual public API before syncing; the page uses request-time rendering and smoke checks inspect article content, not HTTP status alone. See [Insights integration](insights.md). |
 | AI answer controls absent/unavailable | Complete [Open WebUI setup](support.md), including dedicated public-only access, all four Secrets and explicit enable Variable. There is no implicit connection to a host just because DNS exists. |
 | Cookie settings seem unresponsive | They require JavaScript but no Auth0/API credential. Check console and `/_next/static/` responses; test a fresh browser profile. A saved choice hides the initial banner; footer **Cookie settings** reopens it. Choices are per browser/origin. |
 | Analytics has no events | Explicit Analytics consent is required; necessary-only intentionally leaves Google unloaded. Verify the published GTM container/GA4 destination and allow them in the browser. Cookie acceptance does not subscribe email. |

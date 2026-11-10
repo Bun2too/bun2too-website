@@ -1,4 +1,6 @@
 let base = process.env.SMOKE_BASE_URL || "http://localhost:3000";
+let insightsHTML = "";
+let homeHTML = "";
 const routes = [
   "/",
   "/services",
@@ -19,6 +21,8 @@ const routes = [
   "/llms.txt",
   "/og",
   "/images/customer-architecture.svg",
+  "/bun2too/logo.png",
+  "/images/artwork/knowledge-library.webp",
 ];
 for (const route of routes) {
   let response;
@@ -30,10 +34,53 @@ for (const route of routes) {
   }
   if (!response.ok) throw new Error(`${route}: HTTP ${response.status}`);
   if (route === "/") base = new URL(response.url).origin;
-  if (route === "/" && !(await response.text()).includes("Make every"))
-    throw new Error("Home page content is missing");
+  if (route === "/") {
+    homeHTML = await response.text();
+    if (!homeHTML.includes("Make every"))
+      throw new Error("Home page content is missing");
+  }
+  if (/\.(?:svg|png|webp)$/.test(route)) {
+    if (!response.headers.get("content-type")?.startsWith("image/"))
+      throw new Error(
+        `${route}: expected an image response, not an HTML fallback`,
+      );
+    await response.body?.cancel();
+  }
+  if (route === "/insights") insightsHTML = await response.text();
   console.log(`OK ${route}`);
 }
+const browserAssets = new Set(
+  Array.from(
+    homeHTML.matchAll(
+      /(?:src|href)="([^"<>]*\/_next\/static\/[^"<>]+\.(?:js|css)(?:\?[^"<>]*)?)"/g,
+    ),
+    (match) => match[1],
+  ),
+);
+if (
+  !Array.from(browserAssets).some((asset) =>
+    new URL(asset, base).pathname.endsWith(".js"),
+  )
+)
+  throw new Error("Homepage exposes no browser JavaScript asset references");
+for (const asset of browserAssets) {
+  const url = new URL(asset, base);
+  if (url.origin !== new URL(base).origin)
+    throw new Error("Unexpected external browser asset origin");
+  const response = await fetch(url, { signal: AbortSignal.timeout(30000) });
+  const type = response.headers.get("content-type") || "";
+  const correctType = url.pathname.endsWith(".css")
+    ? type.startsWith("text/css")
+    : /(?:java|ecma)script/i.test(type);
+  await response.body?.cancel();
+  if (!response.ok || !correctType)
+    throw new Error(
+      `${url.pathname}: browser asset unavailable or incorrect content type (HTTP ${response.status})`,
+    );
+}
+console.log(
+  `OK ${browserAssets.size} referenced browser JavaScript/CSS assets`,
+);
 const api = await fetch(new URL("/api/subscriptions", base), {
   method: "POST",
   headers: { "Content-Type": "application/json", Origin: new URL(base).origin },
@@ -66,6 +113,33 @@ for (const route of ["/api/support/inquiries", "/api/support/chat"]) {
   console.log(`OK ${route} validation`);
 }
 if (process.env.SMOKE_REQUIRE_INTEGRATIONS === "true") {
+  if (!/data-insights-state="(?:ready|empty)"/.test(insightsHTML))
+    throw new Error(
+      "Deployed Insights did not load its article index. HTTP 200 with an unavailable message is not a successful connection. Check INSIGHTS_API_ORIGIN and the public backend API.",
+    );
+  const article = insightsHTML.match(/href="(\/insights\/[a-zA-Z0-9-]+)"/);
+  if (insightsHTML.includes('data-insights-state="ready"')) {
+    if (!article)
+      throw new Error("Insights reports articles but exposes no article link");
+    const detail = await fetch(new URL(article[1], base), {
+      signal: AbortSignal.timeout(30000),
+    });
+    if (
+      !detail.ok ||
+      !(await detail.text()).includes('<article class="insight-prose"')
+    )
+      throw new Error("Deployed Insights article body did not load");
+  }
+  const feed = await fetch(new URL("/insights/feed.xml", base), {
+    signal: AbortSignal.timeout(20000),
+  });
+  if (!feed.ok || !/<rss\b|<feed\b/i.test(await feed.text()))
+    throw new Error(
+      "Deployed Insights feed is unavailable. Check INSIGHTS_API_ORIGIN in the selected Netlify site's runtime.",
+    );
+  console.log(
+    "OK deployed Insights article index, detail where available, and RSS feed",
+  );
   const response = await fetch(new URL("/api/support/session", base), {
     cache: "no-store",
     signal: AbortSignal.timeout(20000),

@@ -1,0 +1,16 @@
+{
+  "articles": [
+    {
+      "id": "fixture-ai-delivery",
+      "title": "From AI prototype to useful customer workflows",
+      "body": "Reliable AI delivery starts with a clear customer problem. Connect trusted data, evaluate answers, and give teams a path to improve the workflow.\n\n## Build for daily use\n\nMeasure the result and keep the team in control.",
+      "summary": "Practical steps for connecting AI applications to customer needs.",
+      "published_at": "2026-11-08T12:00:00Z",
+      "url": "https://editorial.example.invalid/insights/fixture-ai-delivery",
+      "image_url": null,
+      "image_alt": "",
+      "reading_minutes": 3,
+      "source_urls": ["https://example.com/public-source"]
+    }
+  ]
+}

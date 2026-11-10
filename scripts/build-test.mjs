@@ -11,7 +11,13 @@ const env = {
   ...process.env,
   ...fixtures,
   NEXT_PUBLIC_TURNSTILE_SITE_KEY: "",
-  INSIGHTS_API_ORIGIN: "",
+  INSIGHTS_API_ORIGIN: "https://editorial.example.invalid",
+  NODE_OPTIONS: [
+    process.env.NODE_OPTIONS,
+    `--import=${new URL("../tests/fixtures/insights-fetch.mjs", import.meta.url).href}`,
+  ]
+    .filter(Boolean)
+    .join(" "),
 };
 const result = spawnSync(
   process.platform === "win32" ? "npm.cmd" : "npm",

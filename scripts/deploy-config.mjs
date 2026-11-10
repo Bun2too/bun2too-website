@@ -206,6 +206,98 @@ export async function verifyAuth0Connection(env, fetcher = fetch) {
     );
 }
 
+// Public read-only probes: no editorial administration credential, visitor
+// cookie, subscriber write, push registration, or email send is involved.
+export async function verifyInsightsConnection(
+  env,
+  fetcher = fetch,
+  progress = () => {},
+) {
+  let origin;
+  try {
+    const url = new URL(env.INSIGHTS_API_ORIGIN);
+    if (
+      url.protocol !== "https:" ||
+      url.username ||
+      url.password ||
+      url.pathname !== "/" ||
+      url.search ||
+      url.hash
+    )
+      throw new Error();
+    origin = url.origin;
+  } catch {
+    throw new DeploymentConfigError(
+      "INSIGHTS_API_ORIGIN must be the HTTPS origin only, without /insights or /api. Obtain it from the working public Insights website; value withheld",
+    );
+  }
+  async function get(path, type = "application/json") {
+    let response;
+    const route = path.startsWith("/insights/api/articles/")
+      ? "/insights/api/articles/{id}"
+      : path;
+    try {
+      response = await fetcher(`${origin}${path}`, {
+        headers: { Accept: type },
+        redirect: "error",
+        cache: "no-store",
+        signal: AbortSignal.timeout(15000),
+      });
+    } catch {
+      throw new DeploymentConfigError(
+        `Insights GET [INSIGHTS_API_ORIGIN]${route} failed (network, timeout, or redirect). Check the origin and public-path firewall rules; provider details withheld`,
+      );
+    }
+    progress(
+      `Insights GET [INSIGHTS_API_ORIGIN]${route} -> HTTP ${response.status}`,
+    );
+    if (!response.ok)
+      throw new DeploymentConfigError(
+        `Insights public endpoint ${route} returned HTTP ${response.status}. Correct the selected GitHub environment's INSIGHTS_API_ORIGIN Secret and allow public article/feed requests from Netlify; response body withheld`,
+      );
+    return response;
+  }
+  async function json(response) {
+    try {
+      return await response.json();
+    } catch {
+      throw new DeploymentConfigError(
+        "Insights returned non-JSON content. Check INSIGHTS_API_ORIGIN and whether a login page or bot challenge is intercepting the public API; body withheld",
+      );
+    }
+  }
+  const index = await json(await get("/insights/api/articles"));
+  const valid = (article) =>
+    article &&
+    typeof article.id === "string" &&
+    /^[a-zA-Z0-9-]+$/.test(article.id) &&
+    typeof article.title === "string" &&
+    typeof article.body === "string";
+  if (
+    !Array.isArray(index?.articles) ||
+    index.articles.some((article) => !valid(article))
+  )
+    throw new DeploymentConfigError(
+      "Insights public article index has an incompatible schema; expected an articles array with public IDs, titles and bodies. Response withheld",
+    );
+  if (index.articles.length) {
+    const first = index.articles[0];
+    const article = await json(
+      await get(`/insights/api/articles/${encodeURIComponent(first.id)}`),
+    );
+    if (!valid(article) || article.id !== first.id)
+      throw new DeploymentConfigError(
+        "Insights individual-article endpoint has an incompatible response; body withheld",
+      );
+  }
+  const feed = await get("/insights/feed.xml", "application/rss+xml");
+  if (!/<rss\b|<feed\b/i.test(await feed.text()))
+    throw new DeploymentConfigError(
+      "Insights feed endpoint did not return an RSS/Atom document; check INSIGHTS_API_ORIGIN. Body withheld",
+    );
+  return index.articles.length;
+}
+
 function netlifyClient(env, fetcher, progress) {
   const api = "https://api.netlify.com/api/v1";
   const headers = {

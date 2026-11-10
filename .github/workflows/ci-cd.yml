@@ -103,21 +103,15 @@ jobs:
           OPENWEBUI_MODEL_ID: ${{ secrets.OPENWEBUI_MODEL_ID }}
           OPENWEBUI_KNOWLEDGE_ID: ${{ secrets.OPENWEBUI_KNOWLEDGE_ID }}
           OPENWEBUI_PUBLIC_SUPPORT_ENABLED: ${{ vars.OPENWEBUI_PUBLIC_SUPPORT_ENABLED || 'false' }}
-      - name: Build with the Netlify adapter
-        run: npx netlify build --context production
-        env:
-          NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
-          NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
-      - name: Verify the release browser integration settings
-        run: node scripts/check-browser-config.mjs
-      - name: Publish to the selected site's live URL
+      - name: Build, validate adapter assets, and publish to the selected site's live URL
         id: publish
         shell: bash
         env:
           NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
           NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
+          BUN2TOO_RELEASE_CHECK: "true"
         run: |
-          npx netlify deploy --no-build --prod --message "$GITHUB_SHA" --json > "$RUNNER_TEMP/netlify-deploy.json"
+          npx netlify deploy --build --prod --context production --message "$GITHUB_SHA" --json > "$RUNNER_TEMP/netlify-deploy.json"
           url=$(jq -er '.url // .deploy_url' "$RUNNER_TEMP/netlify-deploy.json")
           echo "url=$url" >> "$GITHUB_OUTPUT"
           echo "Published: $url" >> "$GITHUB_STEP_SUMMARY"

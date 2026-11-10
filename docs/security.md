@@ -55,10 +55,10 @@ These appear under `vars.NAME`. They are public configuration, not credentials. 
 
 GitHub Secrets alone do not reach deployed Functions. The workflow runs `scripts/sync-netlify-env.mjs` before `netlify build`. The named inventory and validation live in `scripts/deploy-config.mjs`.
 
-1. Validate required keys and domain/audience/URL consistency without logging values. Check the M2M token grant and required Management scopes without creating users or sending email.
+1. Validate required keys and domain/audience/URL consistency without logging values. Check the M2M token grant and required Management scopes without creating users or sending email. Probe the configured public Insights index, article and RSS with GET requests; no editorial administration credential is used.
 2. Use the selected site ID/token to read site metadata. Refuse a site whose hostnames do not match `NEXT_PUBLIC_SITE_URL` before changing its configuration.
 3. Use the checked site’s `account_slug` for the environment API account locator, list existing site-level key names, then update/create only the named keys in that site's **production context**. The opaque `account_id` is not substituted for that slug. Each dev/QA/prod site has its own production context.
-4. Build with the Netlify Next.js adapter and verify expected public settings are present in the browser artifact, then publish and smoke-test that site, including inquiry readiness. Deployment tokens/site IDs are not forwarded to website runtime.
+4. Build and publish within one Netlify CLI invocation. The local release plugin verifies expected public browser settings and prepared CDN files before upload, refusing raw Next.js server/build output. Then smoke-test that site, including static assets and inquiry readiness. Deployment tokens/site IDs are not forwarded to website runtime.
 
 Netlify diagnostics intentionally print the expected public website hostname and allowlisted public domain hostnames returned by the site lookup. They also print HTTP methods/statuses and API route templates with account/site IDs redacted. Tokens, raw site responses, private provider settings and environment payload values remain withheld. `npm run deploy:inspect` runs only the site lookup/comparison, requiring the two Netlify credentials and public site URL but no Auth0/model settings. See [site mismatch troubleshooting](deployment-troubleshooting.md).
 

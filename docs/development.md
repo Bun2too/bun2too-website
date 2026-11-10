@@ -33,7 +33,7 @@ Public views render without private credentials. Missing configuration returns a
 
 Install a browser once if needed with `npx playwright install chromium`. Run tests appropriate to the change. Copy-only/documentation changes do not need new tests that simply match the wording. Reuse the browser suite for responsive or interaction changes. Check links and skill metadata when editing repository guidance.
 
-The deployment-command regression feeds the workflow's publish arguments through the pinned Netlify CLI's actual parser/action validation. Deployment execution and error telemetry are replaced, so this check never authenticates, uploads or publishes. It verifies prebuilt publication flags; it does not prove live deployment success.
+The deployment-command regression feeds the workflow's publish arguments through the pinned Netlify CLI's actual parser/action validation. Deployment execution and error telemetry are replaced, so this check never authenticates, uploads or publishes. It verifies the combined build/publication flags; it does not prove live deployment success.
 
 To avoid colliding with a developer's existing `.next` process:
 
@@ -41,6 +41,8 @@ To avoid colliding with a developer's existing `.next` process:
 NEXT_BUILD_DIR=.next-check npm run build:test
 NEXT_BUILD_DIR=.next-check npm run test:e2e
 ```
+
+Insights fixture builds and the browser server preload a synthetic editorial API at a reserved origin. This provides real server-rendered article cards and detail pages for browser assertions without live provider requests. Release builds do not use the preload. `npm run insights:check` is a separate, explicitly live read-only check of the configured public article API and feed.
 
 The test runner owns port 3100 and tears its server down. Do not stop an unrelated process to reuse its port. Next.js may add isolated build paths to `tsconfig.json`; keep generated caches, reports, and machine-specific paths out of the intended source change. The generated Next.js guidance block in `AGENTS.md` is intentional and should remain.
 
@@ -55,6 +57,8 @@ The test runner owns port 3100 and tears its server down. Do not stop an unrelat
 - Documentation: explain new routes, API contracts, data stores, environment names, and verification limits where they belong, then link the relevant guide from README and the agent index.
 
 ## Release
+
+The release uses one `netlify deploy --build --prod --context production` invocation so the Next.js adapter’s temporary CDN publish-directory swap stays active through upload. The local release plugin checks browser configuration before the swap and public/browser asset bytes after it, before publication. Offline `netlify build` still verifies packaging but restores raw `.next` on completion; `.netlify/static` then holds the prepared CDN assets.
 
 GitHub Actions verifies pull requests and publishes pushes according to `dev → dev`, `qa → qa`, and `main → prod`. Each destination is a separate Netlify site, with its own configuration. Netlify's Next.js adapter packages server routes; static export/upload is insufficient. User-requested release operations still need the correct repository/site access and the current task's authorization. A source edit or successful local build does not itself publish anything.
 

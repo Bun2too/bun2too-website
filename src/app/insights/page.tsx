@@ -5,6 +5,7 @@ import Newsletter from "@/components/Newsletter";
 import InsightUpdates from "@/components/InsightUpdates";
 import { getInsights } from "@/lib/insights";
 import { PageHero } from "@/components/PageArtwork";
+import { connection } from "next/server";
 export const metadata = {
   ...pageMetadata("/insights"),
   alternates: {
@@ -16,6 +17,10 @@ export const metadata = {
   },
 };
 export default async function InsightsPage() {
+  // Read the runtime connection on each request; a build-time outage must not
+  // become a permanently prerendered error page. Successful API data keeps its
+  // existing 60-second cache independently of page rendering.
+  await connection();
   let articles: Awaited<ReturnType<typeof getInsights>> = [];
   let unavailable = false;
   try {
@@ -52,7 +57,13 @@ export default async function InsightsPage() {
           published_at,
         }))}
       />
-      <section className="shell insights-grid" aria-label="Latest insights">
+      <section
+        className="shell insights-grid"
+        aria-label="Latest insights"
+        data-insights-state={
+          unavailable ? "unavailable" : articles.length ? "ready" : "empty"
+        }
+      >
         {unavailable ? (
           <div role="status" className="insights-empty">
             <h2>Taking a short pause.</h2>

@@ -11,16 +11,42 @@ export type Insight = {
   reading_minutes: number;
   source_urls: string[];
 };
-export async function getInsights(): Promise<Insight[]> {
+async function publicArticleJSON(path: string, allowMissing = false) {
   const base = insightsOrigin();
-  const response = await fetch(`${base}/insights/api/articles`, {
-    next: { revalidate: 60 },
-    signal: AbortSignal.timeout(10000),
-  });
-  if (!response.ok) throw new Error("Insights are temporarily unavailable");
-  const data = await response.json();
-  if (!Array.isArray(data.articles))
+  let status: number | undefined;
+  try {
+    const response = await fetch(`${base}${path}`, {
+      headers: { Accept: "application/json" },
+      redirect: "error",
+      next: { revalidate: 60 },
+      signal: AbortSignal.timeout(10000),
+    });
+    status = response.status;
+    if (allowMissing && status === 404) return null;
+    if (!response.ok) throw new Error();
+    return await response.json();
+  } catch {
+    console.error("Insights public API request failed", {
+      endpoint: allowMissing
+        ? "/insights/api/articles/{id}"
+        : "/insights/api/articles",
+      status: status ?? "network, timeout or redirect",
+      reason:
+        status === 200
+          ? "invalid JSON; provider body withheld"
+          : "provider details withheld",
+    });
+    throw new Error("Insights are temporarily unavailable");
+  }
+}
+export async function getInsights(): Promise<Insight[]> {
+  const data = await publicArticleJSON("/insights/api/articles");
+  if (!data || !Array.isArray(data.articles)) {
+    console.error("Insights index response invalid", {
+      reason: "expected public articles array; provider body withheld",
+    });
     throw new Error("Invalid insights response");
+  }
   return data.articles.filter(
     (item: Insight) =>
       typeof item.id === "string" &&
@@ -32,12 +58,5 @@ export async function getInsights(): Promise<Insight[]> {
 
 export async function getInsight(id: string): Promise<Insight | null> {
   if (!/^[a-zA-Z0-9-]+$/.test(id)) return null;
-  const base = insightsOrigin();
-  const response = await fetch(`${base}/insights/api/articles/${id}`, {
-    next: { revalidate: 60 },
-    signal: AbortSignal.timeout(10000),
-  });
-  if (response.status === 404) return null;
-  if (!response.ok) throw new Error("Insight temporarily unavailable");
-  return response.json();
+  return publicArticleJSON(`/insights/api/articles/${id}`, true);
 }

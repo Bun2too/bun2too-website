@@ -4,6 +4,7 @@ import {
   validateDeployment,
   verifyAuth0Connection,
   inspectNetlifySite,
+  verifyInsightsConnection,
 } from "./deploy-config.mjs";
 try {
   if (process.argv.includes("--inspect-site")) {
@@ -25,6 +26,9 @@ try {
       );
       await verifyAuth0Connection(process.env);
       console.log("Auth0 Management credentials and required scopes verified.");
+      console.log(
+        `Insights public API connection verified (${await verifyInsightsConnection(process.env, fetch, (message) => console.log(message))} articles; article lookup and feed checked where available).`,
+      );
       console.log(
         `Configured ${await syncNetlifyEnvironment(process.env, fetch, (message) => console.log(message))} site environment keys for the production context. Credentials and setting values were withheld; only public hostname diagnostics were printed.`,
       );

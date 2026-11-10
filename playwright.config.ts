@@ -1,4 +1,6 @@
 import { defineConfig, devices } from "@playwright/test";
+import { pathToFileURL } from "node:url";
+import { resolve } from "node:path";
 import {
   COOKIE_CONSENT_NAME,
   createCookieConsent,
@@ -39,6 +41,15 @@ export default defineConfig({
     },
   ],
   webServer: {
+    env: {
+      INSIGHTS_API_ORIGIN: "https://editorial.example.invalid",
+      NODE_OPTIONS: [
+        process.env.NODE_OPTIONS,
+        `--import=${pathToFileURL(resolve("tests/fixtures/insights-fetch.mjs")).href}`,
+      ]
+        .filter(Boolean)
+        .join(" "),
+    },
     command: "npx next start --port 3100 --hostname 127.0.0.1",
     url: "http://localhost:3100",
     reuseExistingServer: false,

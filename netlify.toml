@@ -9,6 +9,11 @@
 [[plugins]]
   package = "@netlify/plugin-nextjs"
 
+# Run after the Next.js adapter, before upload. The publish directory contains
+# prepared CDN assets only during this build/deploy lifecycle.
+[[plugins]]
+  package = "./netlify/plugins/verify-release"
+
 # Each environment has its own Netlify site. CI publishes the production context
 # of that site: dev branch -> dev site; qa -> qa site; main -> prod site.
 # Server environment variables must be set in each Netlify site's Functions scope.

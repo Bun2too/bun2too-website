@@ -73,12 +73,22 @@ export async function proxyInsights(request: Request, path: string) {
     if (response.headers.get("content-type"))
       output.set("content-type", response.headers.get("content-type")!);
     // Do not expose upstream headers/cookies, internal redirects, or error bodies.
-    if (response.status >= 400) return unavailable();
+    if (response.status >= 400) {
+      console.error("Insights proxy request failed", {
+        path,
+        status: response.status,
+      });
+      return unavailable();
+    }
     return new Response(
       response.status === 204 || response.status === 304 ? null : response.body,
       { status: response.status, headers: output },
     );
   } catch {
+    console.error("Insights proxy request failed", {
+      path,
+      reason: "configuration, network or timeout; provider details withheld",
+    });
     return unavailable();
   }
 }

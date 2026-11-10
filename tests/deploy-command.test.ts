@@ -73,9 +73,9 @@ test("workflow publish arguments pass the pinned Netlify CLI validation without 
     createDeployCommand(program);
     await program.parseAsync(args, { from: "user" });
     assert.equal(calls.length, 1);
-    assert.equal(calls[0].build, false);
+    assert.equal(calls[0].build, true);
     assert.equal(calls[0].prod, true);
-    assert.equal(calls[0].context, undefined);
+    assert.equal(calls[0].context, "production");
     assert.equal(calls[0].json, true);
 
     const invalid = new Program();
