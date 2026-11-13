@@ -13,6 +13,11 @@ const keys = [
   ),
   "NETLIFY_AUTH_TOKEN",
   "NETLIFY_SITE_ID",
+  "CONTENTFUL_MANAGEMENT_TOKEN",
+  "CONTENTFUL_PREVIEW_TOKEN",
+  "AI_EVAL_JUDGE_URL",
+  "AI_EVAL_JUDGE_API_KEY",
+  "AI_EVAL_JUDGE_MODEL",
 ];
 const values = keys
   .filter((key) => process.env[key]?.length >= 8)

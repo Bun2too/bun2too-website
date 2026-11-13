@@ -134,8 +134,8 @@ function ConnectedAccount() {
       </PageHero>
       {error && (
         <p role="alert" className="form-message error-message">
-          Sign-in could not complete. Please try again. If this continues, check
-          that this website address is allowed by the Auth0 application.
+          Sign-in could not complete. Please try again. If this continues,{" "}
+          <Link href="/contact">contact our team</Link> for help.
         </p>
       )}
       {isLoading ? (

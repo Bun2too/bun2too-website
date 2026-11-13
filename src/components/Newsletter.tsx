@@ -4,6 +4,8 @@ import Link from "next/link";
 import Script from "next/script";
 import Icon from "./Icon";
 import { TOPICS } from "@/lib/consent";
+import type { RichDocument } from "@/lib/cms-types";
+import CmsRichText from "./CmsRichText";
 declare global {
   interface Window {
     turnstile?: {
@@ -18,8 +20,10 @@ declare global {
 }
 export default function Newsletter({
   insights = false,
+  content,
 }: {
   insights?: boolean;
+  content?: { eyebrow: string; heading: RichDocument; body: RichDocument };
 }) {
   const id = useId();
   const widget = useRef<HTMLDivElement>(null);
@@ -96,16 +100,26 @@ export default function Newsletter({
       aria-labelledby={`${id}-heading`}
     >
       <div className="newsletter-copy">
-        <p className="eyebrow">STAY IN THE LOOP</p>
+        <p className="eyebrow">{content?.eyebrow || "STAY IN THE LOOP"}</p>
         <h2 id={`${id}-heading`}>
-          A little curiosity.
-          <br />
-          <em>In your inbox.</em>
+          {content ? (
+            <CmsRichText document={content.heading} inline />
+          ) : (
+            <>
+              A little curiosity.
+              <br />
+              <em>In your inbox.</em>
+            </>
+          )}
         </h2>
         <p>
-          {insights
-            ? "A weekly reading list of our latest AI and engineering insights. Choose AI & automation below to receive the digest."
-            : "Get Bun2Too updates about customer technology, AI, and the occasional fintech experiment. Choose what interests you."}
+          {content ? (
+            <CmsRichText document={content.body} inline />
+          ) : insights ? (
+            "A weekly reading list of our latest AI and engineering insights. Choose AI & automation below to receive the digest."
+          ) : (
+            "Get Bun2Too updates about customer technology, AI, and the occasional fintech experiment. Choose what interests you."
+          )}
         </p>
       </div>
       <form className="newsletter-form" onSubmit={submit}>

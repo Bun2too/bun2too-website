@@ -2,6 +2,8 @@
 
 This repository includes project-specific context so future assistants can work from the same architecture, product positioning, and integration boundaries. Start with the root guide, then read only the domain guidance needed for the task. All links are repository-relative; no personal home directory or optional connected plugin is required.
 
+CMS presentation/content work starts with [Contentful design and publishing](contentful-design.md): it explains the seven models, safe server reader, ordered block registry, fallback snapshot, migration commands and environment split. Never put real space identifiers or API credentials into guides, fixtures or skills.
+
 ## Scoped agent guidance
 
 | File                                                          | Scope                                                                              |

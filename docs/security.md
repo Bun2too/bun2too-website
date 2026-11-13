@@ -21,14 +21,27 @@ These names appear under `secrets.NAME` in `.github/workflows/ci-cd.yml`. “Pri
 | `AUTH0_MANAGEMENT_CLIENT_SECRET` | M2M credential. Grant only the Management permissions in [identity setup](setup.md). |
 | `TURNSTILE_SECRET_KEY` | Cloudflare Turnstile server verification key; pair with the public site key. |
 | `SUPPORT_SESSION_SECRET` | Independently generated random value of at least 32 characters per environment; signs visitor cookies. |
+| `SUPPORT_SES_SMTP_HOST` | SES SMTP host for the verified inquiry sender’s region. |
+| `SUPPORT_SES_SMTP_PORT` | SMTP port, with mandatory STARTTLS or implicit TLS. |
+| `SUPPORT_SES_SMTP_USERNAME` | Dedicated SES SMTP username. |
+| `SUPPORT_SES_SMTP_PASSWORD` | Matching SES SMTP password; not an AWS API secret. |
+| `SUPPORT_INQUIRY_FROM_EMAIL` | Verified SES sender mailbox; server-only. |
+| `SUPPORT_INQUIRY_TO_EMAIL` | Private management inbox; browser/CMS cannot select a recipient. |
+| `CONTENTFUL_SPACE_ID` | Optional server-only Contentful space setting; required when CMS delivery is enabled. |
+| `CONTENTFUL_DELIVERY_TOKEN` | Published-content read key; server-only and required when CMS delivery is enabled. |
 | `INSIGHTS_API_ORIGIN` | Editorial backend's HTTPS origin, without credentials, query, or API path. Used server-side for builds and runtime requests. |
 | `OPENWEBUI_BASE_URL` | Optional AI service HTTPS origin, no API suffix. Server-only; see [support setup](support.md). |
 | `OPENWEBUI_API_KEY` | Optional dedicated non-admin public-support service credential. |
 | `OPENWEBUI_MODEL_ID` | Optional approved public support model ID, never a browser-selected model. |
 | `OPENWEBUI_KNOWLEDGE_ID` | Optional approved public-only knowledge collection ID. |
+| `AI_EVAL_JUDGE_URL` | CI-only full HTTPS OpenAI-compatible chat-completions endpoint for the independent evaluation judge. Never synchronized to Netlify. |
+| `AI_EVAL_JUDGE_API_KEY` | CI-only judge credential; separate from the support candidate credential. |
+| `AI_EVAL_JUDGE_MODEL` | CI-only judge model setting. |
 | `INSIGHTS_EMBED_ORIGINS` | Optional comma-separated HTTPS origins permitted to frame signup. Leave absent if unnecessary. Configured origins become observable in the public CSP header. |
 
-All listed secrets except optional `INSIGHTS_EMBED_ORIGINS` and `OPENWEBUI_*` are required for the full-site release. The four Open WebUI Secrets are required only when its enable Variable is true. Configuration validation stops deployment before syncing when required values are absent, malformed, or inconsistent. Missing optional values clear old synced values, rather than silently retaining obsolete configuration.
+Runtime deployment requires the Netlify, Auth0 Management, Turnstile, session, inquiry email and Insights-origin settings above. All six SMTP/sender/recipient settings are required for inquiry availability and release preflight; a missing value stops configuration before publication. Contentful space/delivery settings become required when `CONTENTFUL_ENABLED=true`. Runtime validation requires the four Open WebUI connection Secrets when its enable Variable is true; `INSIGHTS_EMBED_ORIGINS` is optional. The judge settings are CI-only. Configuration validation stops deployment before syncing when required values are absent, malformed, or inconsistent. Missing optional values clear old synced values, rather than silently retaining obsolete configuration.
+
+The current trusted-branch **CI evaluation gate** always exercises the support candidate, so all four `OPENWEBUI_*` connection Secrets and all three `AI_EVAL_JUDGE_*` Secrets are required for that job, including when the deployed support enable Variable is false. Runtime enablement and evaluation access are separate. See [agent evaluation setup](agent-evaluations.md) for the required `agent-production-review` environment and human scorecard; bulk uploading settings does not configure reviewers.
 
 ### Environment Variables
 
@@ -40,6 +53,7 @@ These appear under `vars.NAME`. They are public configuration, not credentials. 
 | `NEXT_PUBLIC_AUTH0_DOMAIN` | SPA login hostname, no scheme or path. |
 | `NEXT_PUBLIC_AUTH0_CLIENT_ID` | Public SPA application ID. No SPA client secret exists in the browser flow. |
 | `NEXT_PUBLIC_AUTH0_AUDIENCE` | Exact custom Auth0 API Identifier. CI uses this single value for both SPA requests and server `AUTH0_AUDIENCE`; the former duplicate GitHub Secret is unused. |
+| `CONTENTFUL_ENABLED` | Optional `true`/`false`, default false; enables published website content. |
 | `OPENWEBUI_PUBLIC_SUPPORT_ENABLED` | Optional `true`/`false`, default false. Enable only after approving public-only model/knowledge permissions; synced server-side. |
 | `NEXT_PUBLIC_AUTH0_EMAIL_CONNECTION` | Passwordless connection name; defaults to `email`, also mirrored as `AUTH0_EMAIL_CONNECTION`. |
 | `NEXT_PUBLIC_TURNSTILE_SITE_KEY` | Public CAPTCHA widget site key. |
@@ -49,7 +63,26 @@ These appear under `vars.NAME`. They are public configuration, not credentials. 
 | `GOOGLE_SITE_VERIFICATION` | Optional public search ownership token, intentionally published in page metadata. |
 | `BING_SITE_VERIFICATION` | Optional public search ownership token. |
 
+`CONTENTFUL_ENVIRONMENT` is derived as `master` for production and `qa` for dev/QA and synchronized with the other server-only CMS settings. `CONTENTFUL_MANAGEMENT_TOKEN` and optional `CONTENTFUL_PREVIEW_TOKEN` belong only in ignored local authoring configuration and are never synchronized to Netlify. Published image URLs are public; tokens are not serialized into HTML. See [CMS design and configuration](contentful-design.md).
+
 `SITE_ENVIRONMENT` is derived by the workflow, not manually supplied: `dev`, `qa`, or `prod`. `NEXT_TELEMETRY_DISABLED` is a non-secret build setting. All actual SPA/tag identifiers were removed from defaults and documentation; obtain them from the relevant provider's authorized dashboard.
+
+### Bulk upload with GitHub CLI
+
+Keep the local `.env.secrets` and `.env.variables` files separate. `.gitignore` excludes `.env*` except the tracked blank `.env.example`; do not force-add filled files. Match each name to `secrets.NAME` or `vars.NAME` in the workflow. `.env.secrets` holds private settings as well as credentials; `.env.variables` contains only the explicitly public/non-sensitive configuration above. Use `KEY=VALUE` or quoted dotenv values, and pass the files directly to `gh` rather than sourcing them in a shell.
+
+For production, review every prefilled local value, fill required blanks, then run from the repository root:
+
+```sh
+gh secret set -f .env.secrets --env prod --repo Bun2too/bun2too-website
+gh variable set -f .env.variables --env prod --repo Bun2too/bun2too-website
+```
+
+Both commands create or overwrite named settings; blank entries do not preserve existing values. Keep an existing production `SUPPORT_SESSION_SECRET` when moving configuration into GitHub, or deliberately generate a separate production signing key. Changing it invalidates existing visitor cookies. Do not automatically copy the local development signing secret into production.
+
+For dev and QA, use separately reviewed pairs such as `.env.secrets.dev`/`.env.variables.dev` and `.env.secrets.qa`/`.env.variables.qa`, with `--env dev` or `--env qa`. These filenames are also ignored. Each environment needs its own Netlify site ID, public URL, appropriate provider application/widget settings and signing key; do not upload the production pair unchanged to another environment. The workflow derives the Contentful environment (`master` for prod, `qa` for dev/QA), server Auth0 audience/connection and `SITE_ENVIRONMENT`. Do not upload Contentful Management/Preview tokens, `GITHUB_TOKEN` or report digests.
+
+After settings are ready, configure required human reviewers on `agent-production-review` and ensure provider allowed origins/hostnames and Netlify domains match. Committing/merging alone does not create this configuration or establish passing live model evaluations.
 
 ## How runtime configuration reaches Netlify
 

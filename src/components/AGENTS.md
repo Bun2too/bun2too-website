@@ -2,7 +2,7 @@
 
 Use the root guide, `../../docs/product.md`, and the applicable integration guide. Keep the current design and assets; use `BrandLogo` and the official `public/bun2too/` artwork without distorting it.
 
-- Capability data and stable anchor slugs come from `../lib/site.ts`. AI engineering and AI infrastructure are the featured first pair; customer technology remains visible. Keep homepage, Services, use cases, FAQs, and discovery copy aligned.
+- Capability data and stable anchors come from the CMS graph/fallback snapshot; `CmsBlocks.tsx` owns the approved component registry. Read `../../docs/contentful-design.md` for model/layout changes. AI engineering and infrastructure remain the featured first pair. Keep homepage, Services, use cases, FAQs, and discovery aligned; keep credentials server-only.
 - Avoid unnecessary client components. Browser objects belong in client effects or event handlers; the Auth0 provider initializes after mounting so public server rendering remains usable.
 - Login/signup/logout use the official Auth0 SDK. Do not place private Management credentials or private service keys in props, client imports, or browser persistence.
 - The newsletter is shared with Insights/embed views. Consent stays unchecked; success must reflect the API result. Missing configuration and upstream failures need honest states.

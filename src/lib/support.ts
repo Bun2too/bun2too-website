@@ -1,6 +1,6 @@
 import { createHmac, randomUUID, timingSafeEqual } from "node:crypto";
 import { object, RequestError } from "./consent";
-export const SUPPORT_CONSENT_VERSION = "2026-11-08.2";
+export const SUPPORT_CONSENT_VERSION = "2026-11-12.2";
 export const SUPPORT_COOKIE = "bun2too_support";
 export const DAY = 86400000;
 export interface SupportStore {
@@ -19,11 +19,16 @@ export const uuid = (value: unknown): value is string =>
   );
 export function supportSecret() {
   const secret = process.env.SUPPORT_SESSION_SECRET;
-  if (!secret || secret.length < 32)
+  if (!secret || secret.length < 32) {
+    console.error("Support configuration unavailable", {
+      setting: "SUPPORT_SESSION_SECRET",
+      reason: secret ? "too-short" : "missing",
+    });
     throw new RequestError(
       503,
-      "Support is being connected. Please use the contact page for now.",
+      "Support is currently unavailable. Please email our team or read the support FAQs.",
     );
+  }
   return secret;
 }
 export function digest(value: string, secret: string) {

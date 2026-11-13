@@ -12,6 +12,10 @@ const env = {
   ...fixtures,
   NEXT_PUBLIC_TURNSTILE_SITE_KEY: "",
   INSIGHTS_API_ORIGIN: "https://editorial.example.invalid",
+  CONTENTFUL_ENABLED: "true",
+  CONTENTFUL_SPACE_ID: "fixture-space",
+  CONTENTFUL_DELIVERY_TOKEN: "fixture-delivery-token",
+  CONTENTFUL_ENVIRONMENT: "qa",
   NODE_OPTIONS: [
     process.env.NODE_OPTIONS,
     `--import=${new URL("../tests/fixtures/insights-fetch.mjs", import.meta.url).href}`,

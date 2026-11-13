@@ -52,10 +52,83 @@ jobs:
             test-results/
           retention-days: 3
 
-  deploy:
-    name: Configure and publish the selected environment
+  agent_evaluations:
+    name: Agent component / trajectory quality gate
     needs: verify
     if: github.event_name != 'pull_request' && github.ref_type == 'branch' && contains(fromJSON('["dev","qa","main"]'), github.ref_name)
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    environment:
+      name: ${{ github.ref_name == 'main' && 'prod' || github.ref_name }}
+    outputs:
+      report_sha256: ${{ steps.evaluate.outputs.report_sha256 }}
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+      - run: npm ci
+      - name: Evaluate every registered agent call and workflow
+        id: evaluate
+        env:
+          OPENWEBUI_PUBLIC_SUPPORT_ENABLED: "true"
+          OPENWEBUI_BASE_URL: ${{ secrets.OPENWEBUI_BASE_URL }}
+          OPENWEBUI_API_KEY: ${{ secrets.OPENWEBUI_API_KEY }}
+          OPENWEBUI_MODEL_ID: ${{ secrets.OPENWEBUI_MODEL_ID }}
+          OPENWEBUI_KNOWLEDGE_ID: ${{ secrets.OPENWEBUI_KNOWLEDGE_ID }}
+          AI_EVAL_JUDGE_URL: ${{ secrets.AI_EVAL_JUDGE_URL }}
+          AI_EVAL_JUDGE_API_KEY: ${{ secrets.AI_EVAL_JUDGE_API_KEY }}
+          AI_EVAL_JUDGE_MODEL: ${{ secrets.AI_EVAL_JUDGE_MODEL }}
+          EVAL_SUITE: ${{ github.ref_name == 'dev' && 'component' || github.ref_name == 'qa' && 'trajectory' || 'all' }}
+        run: node --import tsx evals/run.mjs "$EVAL_SUITE"
+      - name: Preserve sanitized evaluation evidence for remediation and human review
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: agent-evaluation
+          path: artifacts/agent-evals/
+          if-no-files-found: error
+          retention-days: 14
+
+  human_evaluation:
+    name: Human evaluation of the exact production candidate
+    needs: agent_evaluations
+    if: github.ref_name == 'main' && github.event_name != 'pull_request'
+    runs-on: ubuntu-latest
+    environment: agent-production-review
+    permissions:
+      contents: read
+      actions: read
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version-file: .nvmrc
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4
+        with:
+          name: agent-evaluation
+          path: artifacts/agent-evals/
+      - name: Validate recorded human scorecard against this commit and report
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+          AI_EVAL_REPORT_SHA256: ${{ needs.agent_evaluations.outputs.report_sha256 }}
+        run: node evals/human-review.mjs artifacts/agent-evals/report.json artifacts/agent-evals/human-evaluation.json
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: human-evaluation
+          path: artifacts/agent-evals/human-evaluation.json
+          if-no-files-found: error
+          retention-days: 30
+
+  deploy:
+    name: Configure and publish the selected environment
+    needs: [verify, agent_evaluations, human_evaluation]
+    if: always() && !cancelled() && needs.verify.result == 'success' && needs.agent_evaluations.result == 'success' && (github.ref_name != 'main' || needs.human_evaluation.result == 'success') && github.event_name != 'pull_request' && github.ref_type == 'branch' && contains(fromJSON('["dev","qa","main"]'), github.ref_name)
     runs-on: ubuntu-latest
     timeout-minutes: 20
     environment:
@@ -74,6 +147,10 @@ jobs:
       SITE_ENVIRONMENT: ${{ github.ref_name == 'main' && 'prod' || github.ref_name }}
       GOOGLE_SITE_VERIFICATION: ${{ vars.GOOGLE_SITE_VERIFICATION }}
       BING_SITE_VERIFICATION: ${{ vars.BING_SITE_VERIFICATION }}
+      CONTENTFUL_ENABLED: ${{ vars.CONTENTFUL_ENABLED || 'false' }}
+      CONTENTFUL_SPACE_ID: ${{ secrets.CONTENTFUL_SPACE_ID }}
+      CONTENTFUL_DELIVERY_TOKEN: ${{ secrets.CONTENTFUL_DELIVERY_TOKEN }}
+      CONTENTFUL_ENVIRONMENT: ${{ github.ref_name == 'main' && 'master' || 'qa' }}
     steps:
       - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
         with:
@@ -96,6 +173,12 @@ jobs:
           AUTH0_EMAIL_CONNECTION: ${{ vars.NEXT_PUBLIC_AUTH0_EMAIL_CONNECTION || 'email' }}
           TURNSTILE_SECRET_KEY: ${{ secrets.TURNSTILE_SECRET_KEY }}
           SUPPORT_SESSION_SECRET: ${{ secrets.SUPPORT_SESSION_SECRET }}
+          SUPPORT_SES_SMTP_HOST: ${{ secrets.SUPPORT_SES_SMTP_HOST }}
+          SUPPORT_SES_SMTP_PORT: ${{ secrets.SUPPORT_SES_SMTP_PORT }}
+          SUPPORT_SES_SMTP_USERNAME: ${{ secrets.SUPPORT_SES_SMTP_USERNAME }}
+          SUPPORT_SES_SMTP_PASSWORD: ${{ secrets.SUPPORT_SES_SMTP_PASSWORD }}
+          SUPPORT_INQUIRY_FROM_EMAIL: ${{ secrets.SUPPORT_INQUIRY_FROM_EMAIL }}
+          SUPPORT_INQUIRY_TO_EMAIL: ${{ secrets.SUPPORT_INQUIRY_TO_EMAIL }}
           INSIGHTS_API_ORIGIN: ${{ secrets.INSIGHTS_API_ORIGIN }}
           INSIGHTS_EMBED_ORIGINS: ${{ secrets.INSIGHTS_EMBED_ORIGINS }}
           OPENWEBUI_BASE_URL: ${{ secrets.OPENWEBUI_BASE_URL }}

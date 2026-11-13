@@ -1,0 +1,5962 @@
+{
+  "version": 1,
+  "locale": "en-US",
+  "assets": [
+    {
+      "id": "b2t-asset-ai-foundation",
+      "title": "A foundation for useful AI.",
+      "description": "Architectural AI infrastructure with interconnected green server forms, glass layers, and a floating illuminated cube.",
+      "localPath": "/images/artwork/ai-foundation.webp",
+      "fileName": "ai-foundation.webp",
+      "contentType": "image/webp",
+      "width": 1536,
+      "height": 1024
+    },
+    {
+      "id": "b2t-asset-human-connection",
+      "title": "A little closer to what’s next.",
+      "description": "Two ivory architectural arches connected by a luminous green bridge and a warm amber meeting point.",
+      "localPath": "/images/artwork/human-connection.webp",
+      "fileName": "human-connection.webp",
+      "contentType": "image/webp",
+      "width": 1536,
+      "height": 1024
+    },
+    {
+      "id": "b2t-asset-delivery-journey",
+      "title": "Progress, with purpose.",
+      "description": "An ivory pathway connects four sculptural platforms through luminous green gateways.",
+      "localPath": "/images/artwork/delivery-journey.webp",
+      "fileName": "delivery-journey.webp",
+      "contentType": "image/webp",
+      "width": 1536,
+      "height": 1024
+    },
+    {
+      "id": "b2t-asset-connected-intelligence",
+      "title": "Intelligence, connected.",
+      "description": "Sculptural lime intelligence core connected to ivory orbital arches and small data nodes.",
+      "localPath": "/images/artwork/connected-intelligence.webp",
+      "fileName": "connected-intelligence.webp",
+      "contentType": "image/webp",
+      "width": 1536,
+      "height": 1024
+    },
+    {
+      "id": "b2t-asset-knowledge-library",
+      "title": "A new perspective, shared.",
+      "description": "Translucent knowledge panels arranged around a luminous sphere, representing connected research and ideas.",
+      "localPath": "/images/artwork/knowledge-library.webp",
+      "fileName": "knowledge-library.webp",
+      "contentType": "image/webp",
+      "width": 1536,
+      "height": 1024
+    },
+    {
+      "id": "b2t-asset-trust-by-design",
+      "title": "Trust, built into the experience.",
+      "description": "Protective ivory and sage arches surrounding a softly illuminated glass sphere.",
+      "localPath": "/images/artwork/trust-by-design.webp",
+      "fileName": "trust-by-design.webp",
+      "contentType": "image/webp",
+      "width": 1536,
+      "height": 1024
+    }
+  ],
+  "entries": [
+    {
+      "id": "b2t-action-cookie-settings",
+      "type": "b2tAction",
+      "fields": {
+        "name": "Cookie settings",
+        "label": "Cookie settings",
+        "href": "",
+        "variant": "text",
+        "kind": "cookieSettings"
+      }
+    },
+    {
+      "id": "b2t-action-legal-email",
+      "type": "b2tAction",
+      "fields": {
+        "name": "info@bun2too.com",
+        "label": "info@bun2too.com",
+        "href": "",
+        "variant": "text",
+        "kind": "email"
+      }
+    },
+    {
+      "id": "b2t-art-ai-foundation",
+      "type": "b2tArtwork",
+      "fields": {
+        "name": "A foundation for useful AI.",
+        "key": "ai-foundation",
+        "image": {
+          "sys": {
+            "type": "Link",
+            "linkType": "Asset",
+            "id": "b2t-asset-ai-foundation"
+          }
+        },
+        "alt": "Architectural AI infrastructure with interconnected green server forms, glass layers, and a floating illuminated cube.",
+        "label": "ENGINEERED FOR THE EVERYDAY",
+        "caption": "A foundation for useful AI."
+      }
+    },
+    {
+      "id": "b2t-art-human-connection",
+      "type": "b2tArtwork",
+      "fields": {
+        "name": "A little closer to what’s next.",
+        "key": "human-connection",
+        "image": {
+          "sys": {
+            "type": "Link",
+            "linkType": "Asset",
+            "id": "b2t-asset-human-connection"
+          }
+        },
+        "alt": "Two ivory architectural arches connected by a luminous green bridge and a warm amber meeting point.",
+        "label": "GOOD THINGS START WITH A CONVERSATION",
+        "caption": "A little closer to what’s next."
+      }
+    },
+    {
+      "id": "b2t-art-delivery-journey",
+      "type": "b2tArtwork",
+      "fields": {
+        "name": "Progress, with purpose.",
+        "key": "delivery-journey",
+        "image": {
+          "sys": {
+            "type": "Link",
+            "linkType": "Asset",
+            "id": "b2t-asset-delivery-journey"
+          }
+        },
+        "alt": "An ivory pathway connects four sculptural platforms through luminous green gateways.",
+        "label": "DISCOVER / DESIGN / DELIVER / EVOLVE",
+        "caption": "Progress, with purpose."
+      }
+    },
+    {
+      "id": "b2t-art-connected-intelligence",
+      "type": "b2tArtwork",
+      "fields": {
+        "name": "Intelligence, connected.",
+        "key": "connected-intelligence",
+        "image": {
+          "sys": {
+            "type": "Link",
+            "linkType": "Asset",
+            "id": "b2t-asset-connected-intelligence"
+          }
+        },
+        "alt": "Sculptural lime intelligence core connected to ivory orbital arches and small data nodes.",
+        "label": "PEOPLE, DATA & POSSIBILITY",
+        "caption": "Intelligence, connected."
+      }
+    },
+    {
+      "id": "b2t-art-knowledge-library",
+      "type": "b2tArtwork",
+      "fields": {
+        "name": "A new perspective, shared.",
+        "key": "knowledge-library",
+        "image": {
+          "sys": {
+            "type": "Link",
+            "linkType": "Asset",
+            "id": "b2t-asset-knowledge-library"
+          }
+        },
+        "alt": "Translucent knowledge panels arranged around a luminous sphere, representing connected research and ideas.",
+        "label": "CURIOSITY, WITH CONNECTIONS",
+        "caption": "A new perspective, shared."
+      }
+    },
+    {
+      "id": "b2t-art-trust-by-design",
+      "type": "b2tArtwork",
+      "fields": {
+        "name": "Trust, built into the experience.",
+        "key": "trust-by-design",
+        "image": {
+          "sys": {
+            "type": "Link",
+            "linkType": "Asset",
+            "id": "b2t-asset-trust-by-design"
+          }
+        },
+        "alt": "Protective ivory and sage arches surrounding a softly illuminated glass sphere.",
+        "label": "YOUR IDENTITY / YOUR CHOICES",
+        "caption": "Trust, built into the experience."
+      }
+    },
+    {
+      "id": "b2t-service-ai-forward-deployed-engineering",
+      "type": "b2tCard",
+      "fields": {
+        "name": "AI forward-deployed engineering",
+        "slug": "ai-forward-deployed-engineering",
+        "number": "01",
+        "featured": true,
+        "icon": "engineering",
+        "eyebrow": "AI forward-deployed engineering",
+        "title": "Build useful AI, with your team.",
+        "body": "Work alongside your team to turn business problems into production AI applications. We build RAG and agent workflows, connect them to existing systems, and iterate against real operational needs.",
+        "tags": [
+          "Embedded engineering",
+          "AI applications & agents",
+          "RAG integration"
+        ]
+      }
+    },
+    {
+      "id": "b2t-service-ai-infrastructure",
+      "type": "b2tCard",
+      "fields": {
+        "name": "AI infrastructure & environment setup",
+        "slug": "ai-infrastructure",
+        "number": "02",
+        "featured": true,
+        "icon": "infrastructure",
+        "eyebrow": "AI infrastructure & environment setup",
+        "title": "Give AI a dependable foundation.",
+        "body": "Set up the environments behind AI: model serving, retrieval and vector data stores, secure access, deployment pipelines, observability, and cost controls. Build a foundation your team can operate in the cloud or on your own infrastructure.",
+        "tags": [
+          "Cloud & self-hosted AI",
+          "Model serving & retrieval",
+          "Deployment & operations"
+        ]
+      }
+    },
+    {
+      "id": "b2t-service-cdp",
+      "type": "b2tCard",
+      "fields": {
+        "name": "CDP & integration",
+        "slug": "cdp",
+        "number": "03",
+        "featured": false,
+        "icon": "data",
+        "eyebrow": "CDP & integration",
+        "title": "Customer data, connected.",
+        "body": "Bring scattered customer signals into a useful, consistent view. Connect your CDP, CRM, product, and operational systems with dependable data pipelines.",
+        "tags": [
+          "Customer data platforms",
+          "Event pipelines",
+          "Data quality"
+        ]
+      }
+    },
+    {
+      "id": "b2t-service-customer",
+      "type": "b2tCard",
+      "fields": {
+        "name": "Customer identity",
+        "slug": "customer",
+        "number": "04",
+        "featured": false,
+        "icon": "identity",
+        "eyebrow": "Customer identity",
+        "title": "Identity that opens doors.",
+        "body": "Make signing in feel effortless. Design customer identity and access management (CIAM), single sign-on, and secure account journeys around the people using them.",
+        "tags": [
+          "CIAM & Auth0",
+          "Single sign-on",
+          "Account journeys"
+        ]
+      }
+    },
+    {
+      "id": "b2t-service-analytics",
+      "type": "b2tCard",
+      "fields": {
+        "name": "Analytics & AI",
+        "slug": "analytics",
+        "number": "05",
+        "featured": false,
+        "icon": "insight",
+        "eyebrow": "Analytics & AI",
+        "title": "Signals into understanding.",
+        "body": "Understand customer journeys and turn data into practical decisions. Build analytics, useful AI workflows, and automation that support your team.",
+        "tags": [
+          "Journey analytics",
+          "Customer insights",
+          "AI automation"
+        ]
+      }
+    },
+    {
+      "id": "b2t-service-consent",
+      "type": "b2tCard",
+      "fields": {
+        "name": "Consent & preferences",
+        "slug": "consent",
+        "number": "06",
+        "featured": false,
+        "icon": "consent",
+        "eyebrow": "Consent & preferences",
+        "title": "Trust, built into the system.",
+        "body": "Give customers a clear choice about their data. Connect consent, communication preferences, and subscription states across the customer lifecycle.",
+        "tags": [
+          "Consent management",
+          "Preference centers",
+          "Data governance"
+        ]
+      }
+    },
+    {
+      "id": "b2t-step-discover",
+      "type": "b2tCard",
+      "fields": {
+        "name": "Discover",
+        "slug": "discover",
+        "number": "01",
+        "eyebrow": "Discover",
+        "title": "Understand the whole journey.",
+        "body": "Map customer touchpoints, existing systems, identity flows, and data responsibilities. Agree on a focused problem and a useful measure of success.",
+        "detail": "Journey map & agreed outcomes"
+      }
+    },
+    {
+      "id": "b2t-step-design",
+      "type": "b2tCard",
+      "fields": {
+        "name": "Design",
+        "slug": "design",
+        "number": "02",
+        "eyebrow": "Design",
+        "title": "Connect the right pieces.",
+        "body": "Design the architecture, integration contracts, and consent model together. Make the tradeoffs visible before moving into delivery.",
+        "detail": "Architecture & delivery plan"
+      }
+    },
+    {
+      "id": "b2t-step-deliver",
+      "type": "b2tCard",
+      "fields": {
+        "name": "Deliver",
+        "slug": "deliver",
+        "number": "03",
+        "eyebrow": "Deliver",
+        "title": "Build something that works.",
+        "body": "Implement in small increments. Test data quality, sign-in journeys, accessibility, and subscription behavior before releasing changes.",
+        "detail": "Tested integrations & working journeys"
+      }
+    },
+    {
+      "id": "b2t-step-evolve",
+      "type": "b2tCard",
+      "fields": {
+        "name": "Evolve",
+        "slug": "evolve",
+        "number": "04",
+        "eyebrow": "Evolve",
+        "title": "Learn. Improve. Repeat.",
+        "body": "Monitor the experience after launch, document how it runs, and use what you learn to choose the next improvement.",
+        "detail": "Operational handover & next steps"
+      }
+    },
+    {
+      "id": "b2t-usecase-1",
+      "type": "b2tCard",
+      "fields": {
+        "name": "From a prototype to the workday.",
+        "eyebrow": "AI FORWARD-DEPLOYED ENGINEERING",
+        "title": "From a prototype to the workday.",
+        "body": "Work alongside a business team to put AI into a real workflow. Connect approved knowledge to a RAG assistant, integrate with existing systems, and evaluate the result against the team's day-to-day needs.",
+        "detail": "Embedded delivery + AI applications + evaluation",
+        "icon": "engineering",
+        "slug": "usecase-1"
+      }
+    },
+    {
+      "id": "b2t-usecase-2",
+      "type": "b2tCard",
+      "fields": {
+        "name": "An environment your team can own.",
+        "eyebrow": "AI INFRASTRUCTURE & ENVIRONMENTS",
+        "title": "An environment your team can own.",
+        "body": "Bring model serving, retrieval, secrets, monitoring, and release processes into a documented AI environment configured for your cloud or self-hosted setup.",
+        "detail": "Model serving + retrieval + operations",
+        "icon": "infrastructure",
+        "slug": "usecase-2"
+      }
+    },
+    {
+      "id": "b2t-usecase-3",
+      "type": "b2tCard",
+      "fields": {
+        "name": "One customer. A clearer picture.",
+        "eyebrow": "CUSTOMER DATA",
+        "title": "One customer. A clearer picture.",
+        "body": "Connect CRM, product events, and support interactions into a consistent customer profile, with consent carried alongside each signal.",
+        "detail": "CDP + integration + data quality",
+        "icon": "data",
+        "slug": "usecase-3"
+      }
+    },
+    {
+      "id": "b2t-usecase-4",
+      "type": "b2tCard",
+      "fields": {
+        "name": "A welcome without the friction.",
+        "eyebrow": "IDENTITY & TRUST",
+        "title": "A welcome without the friction.",
+        "body": "Bring sign-in, account creation, and communication choices into a coherent customer journey, with identity managed through a trusted provider.",
+        "detail": "CIAM + Auth0 + preferences",
+        "icon": "identity",
+        "slug": "usecase-4"
+      }
+    },
+    {
+      "id": "b2t-usecase-5",
+      "type": "b2tCard",
+      "fields": {
+        "name": "Find the moments that matter.",
+        "eyebrow": "CUSTOMER INTELLIGENCE",
+        "title": "Find the moments that matter.",
+        "body": "Make customer journeys easier to understand. Connect analytics to operational workflows so teams can act on meaningful signals.",
+        "detail": "Journey analytics + AI automation",
+        "icon": "insight",
+        "slug": "usecase-5"
+      }
+    },
+    {
+      "id": "b2t-usecase-6",
+      "type": "b2tCard",
+      "fields": {
+        "name": "Room for the next experiment.",
+        "eyebrow": "FINTECH EXPLORATION",
+        "title": "Room for the next experiment.",
+        "body": "Explore stock-pick research and financial data workflows as part of our wider interest in useful, applied technology.",
+        "detail": "Financial data + research workflows",
+        "icon": "consent",
+        "slug": "usecase-6"
+      }
+    },
+    {
+      "id": "b2t-faq-1",
+      "type": "b2tFaq",
+      "fields": {
+        "name": "What does Bun2Too help businesses build?",
+        "question": "What does Bun2Too help businesses build?",
+        "answer": "Bun2Too helps businesses build and operate AI applications through forward-deployed engineering and AI infrastructure setup. Our customer technology services cover customer data platforms (CDP) and integrations, customer identity and access management (CIAM), analytics and AI automation, and consent and communication preferences.",
+        "path": "/services"
+      }
+    },
+    {
+      "id": "b2t-faq-2",
+      "type": "b2tFaq",
+      "fields": {
+        "name": "What is AI forward-deployed engineering?",
+        "question": "What is AI forward-deployed engineering?",
+        "answer": "It means working alongside a business team to turn a concrete problem into a working AI application. Bun2Too helps with RAG and agent workflows, integration into existing systems, evaluation, deployment, and iteration based on operational needs.",
+        "path": "/services#ai-forward-deployed-engineering"
+      }
+    },
+    {
+      "id": "b2t-faq-3",
+      "type": "b2tFaq",
+      "fields": {
+        "name": "Can Bun2Too help set up AI infrastructure and environments?",
+        "question": "Can Bun2Too help set up AI infrastructure and environments?",
+        "answer": "Yes. Bun2Too helps set up cloud or self-hosted AI environments, including model serving, retrieval and vector data stores, secure access, deployment pipelines, observability, and cost controls. The setup is designed around the business's requirements and how its team will operate it.",
+        "path": "/services#ai-infrastructure"
+      }
+    },
+    {
+      "id": "b2t-faq-4",
+      "type": "b2tFaq",
+      "fields": {
+        "name": "How are customer data platforms and customer identity connected?",
+        "question": "How are customer data platforms and customer identity connected?",
+        "answer": "A customer data platform brings together customer signals from business systems. CIAM manages how customers sign in and access accounts. Bun2Too designs the integration between these systems so identity, customer context, and consent can work together.",
+        "path": "/services"
+      }
+    },
+    {
+      "id": "b2t-faq-5",
+      "type": "b2tFaq",
+      "fields": {
+        "name": "How do I sign in or create a Bun2Too account?",
+        "question": "How do I sign in or create a Bun2Too account?",
+        "answer": "Open My account and choose Log in or Create an account. Auth0 manages authentication. If you requested email updates without a password, use Continue with email and the same email address to access that passwordless identity.",
+        "path": "/account"
+      }
+    },
+    {
+      "id": "b2t-faq-6",
+      "type": "b2tFaq",
+      "fields": {
+        "name": "Does creating an account subscribe me to email updates?",
+        "question": "Does creating an account subscribe me to email updates?",
+        "answer": "No. Newsletter signup requires a separate choice. A request stays pending until the email address is verified and the subscription topics are confirmed in your account. You can change topics or unsubscribe there.",
+        "path": "/privacy"
+      }
+    },
+    {
+      "id": "b2t-faq-7",
+      "type": "b2tFaq",
+      "fields": {
+        "name": "Where can I read Bun2Too articles?",
+        "question": "Where can I read Bun2Too articles?",
+        "answer": "Visit Insights for Bun2Too field notes about AI, engineering, and customer technology. The Insights hub offers RSS and Atom feeds, as well as optional update subscriptions.",
+        "path": "/insights"
+      }
+    },
+    {
+      "id": "b2t-faq-8",
+      "type": "b2tFaq",
+      "fields": {
+        "name": "How can I ask for help or discuss a project?",
+        "question": "How can I ask for help or discuss a project?",
+        "answer": "Read our support FAQs or open Contact Bun2Too to send a private inquiry with your contact email and a description of what you need. Sending an inquiry does not subscribe you to marketing.",
+        "path": "/contact"
+      }
+    },
+    {
+      "id": "b2t-action-cta-0",
+      "type": "b2tAction",
+      "fields": {
+        "name": "Start a conversation",
+        "label": "Start a conversation",
+        "href": "/contact",
+        "variant": "lime",
+        "kind": "link"
+      }
+    },
+    {
+      "id": "b2t-block-cta",
+      "type": "b2tBlock",
+      "fields": {
+        "name": "cta",
+        "kind": "cta",
+        "variant": "default",
+        "eyebrow": "LET’S CONNECT THE DOTS",
+        "heading": {
+          "nodeType": "document",
+          "data": {},
+          "content": [
+            {
+              "nodeType": "paragraph",
+              "data": {},
+              "content": [
+                {
+                  "nodeType": "text",
+                  "value": "Your next chapter.",
+                  "marks": [],
+                  "data": {}
+                },
+                {
+                  "nodeType": "text",
+                  "value": "\n",
+                  "marks": [],
+                  "data": {}
+                },
+                {
+                  "nodeType": "text",
+                  "value": "Better connected.",
+                  "marks": [
+                    {
+                      "type": "italic"
+                    }
+                  ],
+                  "data": {}
+                }
+              ]
+            }
+          ]
+        },
+        "body": {
+          "nodeType": "document",
+          "data": {},
+          "content": [
+            {
+              "nodeType": "paragraph",
+              "data": {},
+              "content": [
+                {
+                  "nodeType": "text",
+                  "value": "Have an AI application, infrastructure, or customer technology challenge? Tell us where you want to go.",
+                  "marks": [],
+                  "data": {}
+                }
+              ]
+            }
+          ]
+        },
+        "artwork": {
+          "sys": {
+            "type": "Link",
+            "linkType": "Entry",
+            "id": "b2t-art-human-connection"
+          }
+        },
+        "actions": [
+          {
+            "sys": {
+              "type": "Link",
+              "linkType": "Entry",
+              "id": "b2t-action-cta-0"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "b2t-block-newsletter",
+      "type": "b2tBlock",
+      "fields": {
+        "name": "newsletter",
+        "kind": "newsletter",
+        "variant": "default",
+        "eyebrow": "STAY IN THE LOOP",
+        "heading": {
+          "nodeType": "document",
+          "data": {},
+          "content": [
+            {
+              "nodeType": "paragraph",
+              "data": {},
+              "content": [
+                {
+                  "nodeType": "text",
+                  "value": "A little curiosity.",
+                  "marks": [],
+                  "data": {}
+                },
+                {
+                  "nodeType": "text",
+                  "value": "\n",
+                  "marks": [],
+                  "data": {}
+                },
+                {
+                  "nodeType": "text",
+                  "value": "In your inbox.",
+                  "marks": [
+                    {
+                      "type": "italic"
+                    }
+                  ],
+                  "data": {}
+                }
+              ]
+            }
+          ]
+        },
+        "body": {
+          "nodeType": "document",
+          "data": {},
+          "content": [
+            {
+              "nodeType": "paragraph",
+              "data": {},
+              "content": [
+                {
+                  "nodeType": "text",
+                  "value": "Get Bun2Too updates about customer technology, AI, and the occasional fintech experiment. Choose what interests you.",
+                  "marks": [],
+                  "data": {}
+                }
+              ]
+            }
+          ]
+        },
+        "artwork": null,
+        "actions": []
+      }
+    },
+    {
+      "id": "b2t-block-newsletter-insights",
+      "type": "b2tBlock",
+      "fields": {
+        "name": "newsletter insights",
+        "kind": "newsletter",
+        "variant": "insights",
+        "eyebrow": "STAY IN THE LOOP",
+        "heading": {
+          "nodeType": "document",
+          "data": {},
+          "content": [
+            {
+              "nodeType": "paragraph",
+              "data": {},
+              "content": [
+                {
+                  "nodeType": "text",
+                  "value": "A little curiosity.",
+                  "marks": [],
+                  "data": {}
+                },
+                {
+                  "nodeType": "text",
+                  "value": "\n",
+                  "marks": [],
+                  "data": {}
+                },
+                {
+                  "nodeType": "text",
+                  "value": "In your inbox.",
+                  "marks": [
+                    {
+                      "type": "italic"
+                    }
+                  ],
+                  "data": {}
+                }
+              ]
+            }
+          ]
+        },
+        "body": {
+          "nodeType": "document",
+          "data": {},
+          "content": [
+            {
+              "nodeType": "paragraph",
+              "data": {},
+              "content": [
+                {
+                  "nodeType": "text",
+                  "value": "A weekly reading list of our latest AI and engineering insights. Choose AI & automation below to receive the digest.",
+                  "marks": [],
+                  "data": {}
+                }
+              ]
+            }
+          ]
+        },
+        "artwork": null,
+        "actions": []
+      }
+    },
+    {
+      "id": "b2t-block-services-home",
+      "type": "b2tBlock",
+      "fields": {
+        "name": "services home",
+        "kind": "services",
+        "variant": "default",
+        "eyebrow": "WHAT WE BUILD",
+        "heading": {
+          "nodeType": "document",
+          "data": {},
+          "content": [
+            {
+              "nodeType": "paragraph",
+              "data": {},
+              "content": [
+                {
+                  "nodeType": "text",
+                  "value": "Good technology.",
+                  "marks": [],
+                  "data": {}
+                },
+                {
+                  "nodeType": "text",
+                  "value": "\n",
+                  "marks": [],
+                  "data": {}
+                },
+                {
+                  "nodeType": "text",
+                  "value": "Better connections.",
+                  "marks": [
+                    {
+                      "type": "italic"
+                    }
+                  ],
+                  "data": {}
+                }
+              ]
+            }
+          ]
+        },
+        "body": {
+          "nodeType": "document",
+          "data": {},
+          "content": [
+            {
+              "nodeType": "paragraph",
+              "data": {},
+              "content": [
+                {
+                  "nodeType": "text",
+                  "value": "Hands-on AI engineering, dependable AI environments, and connected customer technology. From the first workflow to systems your team can operate.",
+                  "marks": [],
+                  "data": {}
+                }
+              ]
+            }
+          ]
+        },
+        "artwork": {
+          "sys": {
+            "type": "Link",
+            "linkType": "Entry",
+            "id": "b2t-art-ai-foundation"
+          }
+        },
+        "actions": [],
+        "items": [
+          {
+            "sys": {
+              "type": "Link",
+              "linkType": "Entry",
+              "id": "b2t-service-ai-forward-deployed-engineering"
+            }
+          },
+          {
+            "sys": {
+              "type": "Link",
+              "linkType": "Entry",
+              "id": "b2t-service-ai-infrastructure"
+            }
+          },
+          {
+            "sys": {
+              "type": "Link",
+              "linkType": "Entry",
+              "id": "b2t-service-cdp"
+            }
+          },
+          {
+            "sys": {
+              "type": "Link",
+              "linkType": "Entry",
+              "id": "b2t-service-customer"
+            }
+          },
+          {
+            "sys": {
+              "type": "Link",
+              "linkType": "Entry",
+              "id": "b2t-service-analytics"
+            }
+          },
+          {
+            "sys": {
+              "type": "Link",
+              "linkType": "Entry",
+              "id": "b2t-service-consent"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "b2t-block-fintech",
+      "type": "b2tBlock",
+      "fields": {
+        "name": "fintech",
+        "kind": "richText",
+        "variant": "default",
+        "eyebrow": "ALSO IN OUR TOOLKIT",
+        "heading": {
+          "nodeType": "document",
+          "data": {},
+          "content": [
+            {
+              "nodeType": "paragraph",
+              "data": {},
+              "content": [
+                {
+                  "nodeType": "text",
+                  "value": "Fintech & applied experiments",
+                  "marks": [],
+                  "data": {}
+                }
+              ]
+            }
+          ]
+        },
+        "body": {
+          "nodeType": "document",
+          "data": {},
+          "content": [
+            {
+              "nodeType": "paragraph",
+              "data": {},
+              "content": [
+                {
+                  "nodeType": "text",
+                  "value": "We continue exploring financial technology, including stock-pick research and data-driven finance initiatives. These experiments sit alongside our core work in customer technology.",
+                  "marks": [],
+                  "data": {}
+                }
+              ]
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "b2t-block-services-full",
+      "type": "b2tBlock",
+      "fields": {
+        "name": "services full",
+        "kind": "services",
+        "variant": "full",
+        "eyebrow": "WHAT WE BUILD",
+        "heading": {
+          "nodeType": "document",
+          "data": {},
+          "content": [
+            {
+              "nodeType": "paragraph",
+              "data": {},
+              "content": [
+                {
+                  "nodeType": "text",
+                  "value": "Good technology.",
+                  "marks": [],
+                  "data": {}
+                },
+                {
+                  "nodeType": "text",
+                  "value": "\n",
+                  "marks": [],
+                  "data": {}
+                },
+                {
+                  "nodeType": "text",
+                  "value": "Better connections.",
+                  "marks": [
+                    {
+                      "type": "italic"
+                    }
+                  ],
+                  "data": {}
+                }
+              ]
+            }
+          ]
+        },
+        "body": {
+          "nodeType": "document",
+          "data": {},
+          "content": [
+            {
+              "nodeType": "paragraph",
+              "data": {},
+              "content": [
+                {
+                  "nodeType": "text",
+                  "value": "Hands-on AI engineering, dependable AI environments, and connected customer technology. From the first workflow to systems your team can operate.",
+                  "marks": [],
+                  "data": {}
+                }
+              ]
+            }
+          ]
+        },
+        "artwork": null,
+        "actions": [],
+        "items": [
+          {
+            "sys": {
+              "type": "Link",
+              "linkType": "Entry",
+              "id": "b2t-service-ai-forward-deployed-engineering"
+            }
+          },
+          {
+            "sys": {
+              "type": "Link",
+              "linkType": "Entry",
+              "id": "b2t-service-ai-infrastructure"
+            }
+          },
+          {
+            "sys": {
+              "type": "Link",
+              "linkType": "Entry",
+              "id": "b2t-service-cdp"
+            }
+          },
+          {
+            "sys": {
+              "type": "Link",
+              "linkType": "Entry",
+              "id": "b2t-service-customer"
+            }
+          },
+          {
+            "sys": {
+              "type": "Link",
+              "linkType": "Entry",
+              "id": "b2t-service-analytics"
+            }
+          },
+          {
+            "sys": {
+              "type": "Link",
+              "linkType": "Entry",
+              "id": "b2t-service-consent"
+            }
+          }
+        ],
+        "secondary": {
+          "sys": {
+            "type": "Link",
+            "linkType": "Entry",
+            "id": "b2t-block-fintech"
+          }
+        }
+      }
+    },
+    {
+      "id": "b2t-action-home-hero-0",
+      "type": "b2tAction",
+      "fields": {
+        "name": "Explore what we build",
+        "label": "Explore what we build",
+        "href": "/services",
+        "variant": "lime",
+        "kind": "link"
+      }
+    },
+    {
+      "id": "b2t-action-home-hero-1",
+      "type": "b2tAction",
+      "fields": {
+        "name": "Our approach",
+        "label": "Our approach",
+        "href": "/process",
+        "variant": "text",
+        "kind": "link"
+      }
+    },
+    {
+      "id": "b2t-block-home-hero",
+      "type": "b2tBlock",
+      "fields": {
+        "name": "home hero",
+        "kind": "hero",
+        "variant": "default",
+        "eyebrow": "TECHNOLOGY WITH PEOPLE AT THE CENTER",
+        "heading": {
+          "nodeType": "document",
+          "data": {},
+          "content": [
+            {
+              "nodeType": "paragraph",
+              "data": {},
+              "content": [
+                {
+                  "nodeType": "text",
+                  "value": "Make every",
+                  "marks": [],
+                  "data": {}
+                },
+                {
+                  "nodeType": "text",
+                  "value": "\n",
+                  "marks": [],
+                  "data": {}
+                },
+                {
+                  "nodeType": "text",
+                  "value": "customer",
+                  "marks": [],
+                  "data": {}
+                },
+                {
+                  "nodeType": "text",
+                  "value": "\n",
+                  "marks": [],
+                  "data": {}
+                },
+                {
+                  "nodeType": "text",
+                  "value": "connection",
+                  "marks": [
+                    {
+                      "type": "italic"
+                    }
+                  ],
+                  "data": {}
+                },
+                {
+                  "nodeType": "text",
+                  "value": " count.",
+                  "marks": [],
+                  "data": {}
+                }
+              ]
+            }
+          ]
+        },
+        "body": {
+          "nodeType": "document",
+          "data": {},
+          "content": [
+            {
+              "nodeType": "paragraph",
+              "data": {},
+              "content": [
+                {
+                  "nodeType": "text",
+                  "value": "Hands-on AI engineering. Connected data. Seamless identity.",
+                  "marks": [],
+                  "data": {}
+                },
+                {
+                  "nodeType": "text",
+                  "value": "\n",
+                  "marks": [],
+                  "data": {}
+                },
+                {
+                  "nodeType": "text",
+                  "value": " We build the technology and AI environments behind better customer experiences.",
+                  "marks": [],
+                  "data": {}
+                }
+              ]
+            }
+          ]
+        },
+        "artwork": null,
+        "actions": [
+          {
+            "sys": {
+              "type": "Link",
+              "linkType": "Entry",
+              "id": "b2t-action-home-hero-0"
+            }
+          },
+          {
+            "sys": {
+              "type": "Link",
+              "linkType": "Entry",
+              "id": "b2t-action-home-hero-1"
+            }
+          }
+        ],
+        "labels": [
+          "INDEPENDENT THINKING.",
+          "CONNECTED SYSTEMS."
+        ],
+        "note": {
+          "nodeType": "document",
+          "data": {},
+          "content": [
+            {
+              "nodeType": "paragraph",
+              "data": {},
+              "content": [
+                {
+                  "nodeType": "text",
+                  "value": "IDEAS IN MOTION / BUN2TOO",
+                  "marks": [],
+                  "data": {}
+                }
+              ]
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "b2t-block-focus",
+      "type": "b2tBlock",
+      "fields": {
+        "name": "focus",
+        "kind": "focusStrip",
+        "variant": "default",
+        "labels": [
+          "BUILT TO ENABLE YOUR BUSINESS",
+          "AI engineering",
+          "AI infrastructure",
+          "Data & integration",
+          "Identity & consent",
+          "Analytics & AI"
+        ]
+      }
+    },
+    {
+      "id": "b2t-action-approach-0",
+      "type": "b2tAction",
+      "fields": {
+        "name": "See how we work",
+        "label": "See how we work",
+        "href": "/process",
+        "variant": "text",
+        "kind": "link"
+      }
+    },
+    {
+      "id": "b2t-block-approach",
+      "type": "b2tBlock",
+      "fields": {
+        "name": "approach",
+        "kind": "approach",
+        "variant": "default",
+        "eyebrow": "CONNECTED THINKING, FROM DAY ONE",
+        "heading": {
+          "nodeType": "document",
+          "data": {},
+          "content": [
+            {
+              "nodeType": "paragraph",
+              "data": {},
+              "content": [
+                {
+                  "nodeType": "text",
+                  "value": "A collection of tools",
+                  "marks": [],
+                  "data": {}
+                },
+                {
+                  "nodeType": "text",
+                  "value": "\n",
+                  "marks": [],
+                  "data": {}
+                },
+                {
+                  "nodeType": "text",
+                  "value": "isn’t a ",
+                  "marks": [],
+                  "data": {}
+                },
+                {
+                  "nodeType": "text",
+                  "value": "connected experience.",
+                  "marks": [
+                    {
+                      "type": "italic"
+                    }
+                  ],
+                  "data": {}
+                }
+              ]
+            }
+          ]
+        },
+        "body": {
+          "nodeType": "document",
+          "data": {},
+          "content": [
+            {
+              "nodeType": "paragraph",
+              "data": {},
+              "content": [
+                {
+                  "nodeType": "text",
+                  "value": "We look at the whole journey: how data moves, how people sign in, and how their choices are respected. Then we build the connections that make it work.",
+                  "marks": [],
+                  "data": {}
+                }
+              ]
+            }
+          ]
+        },
+        "artwork": null,
+        "actions": [
+          {
+            "sys": {
+              "type": "Link",
+              "linkType": "Entry",
+              "id": "b2t-action-approach-0"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "b2t-action-insights-promotion-0",
+      "type": "b2tAction",
+      "fields": {
+        "name": "Read our articles",
+        "label": "Read our articles",
+        "href": "/insights",
+        "variant": "cream",
+        "kind": "link"
+      }
+    },
+    {
+      "id": "b2t-block-insights-promotion",
+      "type": "b2tBlock",
+      "fields": {
+        "name": "insights promotion",
+        "kind": "insightsPromotion",
+        "variant": "default",
+        "eyebrow": "THE BUN2TOO NOTEBOOK",
+        "heading": {
+          "nodeType": "document",
+          "data": {},
+          "content": [
+            {
+              "nodeType": "paragraph",
+              "data": {},
+              "content": [
+                {
+                  "nodeType": "text",
+                  "value": "Curiosity is",
+                  "marks": [],
+                  "data": {}
+                },
+                {
+                  "nodeType": "text",
+                  "value": "\n",
+                  "marks": [],
+                  "data": {}
+                },
+                {
+                  "nodeType": "text",
+                  "value": "part of the process.",
+                  "marks": [],
+                  "data": {}
+                }
+              ]
+            }
+          ]
+        },
+        "body": {
+          "nodeType": "document",
+          "data": {},
+          "content": [
+            {
+              "nodeType": "paragraph",
+              "data": {},
+              "content": [
+                {
+                  "nodeType": "text",
+                  "value": "Explore the Bun2Too article hub for ideas and experiments from our wider work in technology and AI.",
+                  "marks": [],
+                  "data": {}
+                }
+              ]
+            }
+          ]
+        },
+        "artwork": null,
+        "actions": [
+          {
+            "sys": {
+              "type": "Link",
+              "linkType": "Entry",
+              "id": "b2t-action-insights-promotion-0"
+            }
+          }
+        ],
+        "note": {
+          "nodeType": "document",
+          "data": {},
+          "content": [
+            {
+              "nodeType": "paragraph",
+              "data": {},
+              "content": [
+                {
+                  "nodeType": "text",
+                  "value": "Published here on Bun2Too",
+                  "marks": [],
+                  "data": {}
+                }
+              ]
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "b2t-block-services-intro",
+      "type": "b2tBlock",
+      "fields": {
+        "name": "services intro",
+        "kind": "intro",
+        "variant": "default",
+        "eyebrow": "OUR CAPABILITIES",
+        "heading": {
+          "nodeType": "document",
+          "data": {},
+          "content": [
+            {
+              "nodeType": "paragraph",
+              "data": {},
+              "content": [
+                {
+                  "nodeType": "text",
+                  "value": "AI that works.",
+                  "marks": [],
+                  "data": {}
+                },
+                {
+                  "nodeType": "text",
+                  "value": "\n",
+                  "marks": [],
+                  "data": {}
+                },
+                {
+                  "nodeType": "text",
+                  "value": "Technology that connects.",
+                  "marks": [
+                    {
+                      "type": "italic"
+                    }
+                  ],
+                  "data": {}
+                }
+              ]
+            }
+          ]
+        },
+        "body": {
+          "nodeType": "document",
+          "data": {},
+          "content": [
+            {
+              "nodeType": "paragraph",
+              "data": {},
+              "content": [
+                {
+                  "nodeType": "text",
+                  "value": "AI forward-deployed engineering and infrastructure setup, alongside customer data platforms, CIAM, analytics, and consent management. We help your team build, deploy, and operate technology around real business needs.",
+                  "marks": [],
+                  "data": {}
+                }
+              ]
+            }
+          ]
+        },
+        "artwork": {
+          "sys": {
+            "type": "Link",
+            "linkType": "Entry",
+            "id": "b2t-art-ai-foundation"
+          }
+        },
+        "actions": [],
+        "note": {
+          "nodeType": "document",
+          "data": {},
+          "content": []
+        }
+      }
+    },
+    {
+      "id": "b2t-block-process-intro",
+      "type": "b2tBlock",
+      "fields": {
+        "name": "process intro",
+        "kind": "intro",
+        "variant": "default",
+        "eyebrow": "THE BUN2TOO APPROACH",
+        "heading": {
+          "nodeType": "document",
+          "data": {},
+          "content": [
+            {
+              "nodeType": "paragraph",
+              "data": {},
+              "content": [
+                {
+                  "nodeType": "text",
+                  "value": "A clear path.",
+                  "marks": [],
+                  "data": {}
+                },
+                {
+                  "nodeType": "text",
+                  "value": "\n",
+                  "marks": [],
+                  "data": {}
+                },
+                {
+                  "nodeType": "text",
+                  "value": "A shared direction.",
+                  "marks": [
+                    {
+                      "type": "italic"
+                    }
+                  ],
+                  "data": {}
+                }
+              ]
+            }
+          ]
+        },
+        "body": {
+          "nodeType": "document",
+          "data": {},
+          "content": [
+            {
+              "nodeType": "paragraph",
+              "data": {},
+              "content": [
+                {
+                  "nodeType": "text",
+                  "value": "A collaborative route from the first question to technology your team can run. Discover what matters, design the connections, deliver useful systems, and keep improving.",
+                  "marks": [],
+                  "data": {}
+                }
+              ]
+            }
+          ]
+        },
+        "artwork": {
+          "sys": {
+            "type": "Link",
+            "linkType": "Entry",
+            "id": "b2t-art-delivery-journey"
+          }
+        },
+        "actions": [],
+        "note": {
+          "nodeType": "document",
+          "data": {},
+          "content": []
+        }
+      }
+    },
+    {
+      "id": "b2t-block-process",
+      "type": "b2tBlock",
+      "fields": {
+        "name": "process",
+        "kind": "process",
+        "variant": "default",
+        "eyebrow": "HOW WE WORK",
+        "heading": {
+          "nodeType": "document",
+          "data": {},
+          "content": [
+            {
+              "nodeType": "paragraph",
+              "data": {},
+              "content": [
+                {
+                  "nodeType": "text",
+                  "value": "Start with people.",
+                  "marks": [],
+                  "data": {}
+                },
+                {
+                  "nodeType": "text",
+                  "value": "\n",
+                  "marks": [],
+                  "data": {}
+                },
+                {
+                  "nodeType": "text",
+                  "value": "Build the connections.",
+                  "marks": [
+                    {
+                      "type": "italic"
+                    }
+                  ],
+                  "data": {}
+                }
+              ]
+            }
+          ]
+        },
+        "body": {
+          "nodeType": "document",
+          "data": {},
+          "content": [
+            {
+              "nodeType": "paragraph",
+              "data": {},
+              "content": [
+                {
+                  "nodeType": "text",
+                  "value": "Clear thinking, practical delivery, and room to learn. A collaborative path from disconnected tools to a connected customer experience.",
+                  "marks": [],
+                  "data": {}
+                }
+              ]
+            }
+          ]
+        },
+        "artwork": null,
+        "actions": [],
+        "items": [
+          {
+            "sys": {
+              "type": "Link",
+              "linkType": "Entry",
+              "id": "b2t-step-discover"
+            }
+          },
+          {
+            "sys": {
+              "type": "Link",
+              "linkType": "Entry",
+              "id": "b2t-step-design"
+            }
+          },
+          {
+            "sys": {
+              "type": "Link",
+              "linkType": "Entry",
+              "id": "b2t-step-deliver"
+            }
+          },
+          {
+            "sys": {
+              "type": "Link",
+              "linkType": "Entry",
+              "id": "b2t-step-evolve"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "b2t-block-usecases-intro",
+      "type": "b2tBlock",
+      "fields": {
+        "name": "usecases intro",
+        "kind": "intro",
+        "variant": "default",
+        "eyebrow": "POSSIBILITIES, MADE PRACTICAL",
+        "heading": {
+          "nodeType": "document",
+          "data": {},
+          "content": [
+            {
+              "nodeType": "paragraph",
+              "data": {},
+              "content": [
+                {
+                  "nodeType": "text",
+                  "value": "Better experiences",
+                  "marks": [],
+                  "data": {}
+                },
+                {
+                  "nodeType": "text",
+                  "value": "\n",
+                  "marks": [],
+                  "data": {}
+                },
+                {
+                  "nodeType": "text",
+                  "value": "start ",
+                  "marks": [],
+                  "data": {}
+                },
+                {
+                  "nodeType": "text",
+                  "value": "behind the scenes.",
+                  "marks": [
+                    {
+                      "type": "italic"
+                    }
+                  ],
+                  "data": {}
+                }
+              ]
+            }
+          ]
+        },
+        "body": {
+          "nodeType": "document",
+          "data": {},
+          "content": [
+            {
+              "nodeType": "paragraph",
+              "data": {},
+              "content": [
+                {
+                  "nodeType": "text",
+                  "value": "Illustrative ways AI and customer technology can solve everyday problems. Every engagement starts with your systems and your customers.",
+                  "marks": [],
+                  "data": {}
+                }
+              ]
+            }
+          ]
+        },
+        "artwork": {
+          "sys": {
+            "type": "Link",
+            "linkType": "Entry",
+            "id": "b2t-art-connected-intelligence"
+          }
+        },
+        "actions": []
+      }
+    },
+    {
+      "id": "b2t-action-usecases-0",
+      "type": "b2tAction",
+      "fields": {
+        "name": "Talk about your use case",
+        "label": "Talk about your use case",
+        "href": "/contact",
+        "variant": "lime",
+        "kind": "link"
+      }
+    },
+    {
+      "id": "b2t-block-usecases",
+      "type": "b2tBlock",
+      "fields": {
+        "name": "usecases",
+        "kind": "useCases",
+        "variant": "default",
+        "items": [
+          {
+            "sys": {
+              "type": "Link",
+              "linkType": "Entry",
+              "id": "b2t-usecase-1"
+            }
+          },
+          {
+            "sys": {
+              "type": "Link",
+              "linkType": "Entry",
+              "id": "b2t-usecase-2"
+            }
+          },
+          {
+            "sys": {
+              "type": "Link",
+              "linkType": "Entry",
+              "id": "b2t-usecase-3"
+            }
+          },
+          {
+            "sys": {
+              "type": "Link",
+              "linkType": "Entry",
+              "id": "b2t-usecase-4"
+            }
+          },
+          {
+            "sys": {
+              "type": "Link",
+              "linkType": "Entry",
+              "id": "b2t-usecase-5"
+            }
+          },
+          {
+            "sys": {
+              "type": "Link",
+              "linkType": "Entry",
+              "id": "b2t-usecase-6"
+            }
+          }
+        ],
+        "actions": [
+          {
+            "sys": {
+              "type": "Link",
+              "linkType": "Entry",
+              "id": "b2t-action-usecases-0"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "b2t-action-contact-intro-0",
+      "type": "b2tAction",
+      "fields": {
+        "name": "Send a private inquiry",
+        "label": "Send a private inquiry",
+        "href": "",
+        "variant": "lime",
+        "kind": "inquiry"
+      }
+    },
+    {
+      "id": "b2t-action-contact-intro-1",
+      "type": "b2tAction",
+      "fields": {
+        "name": "Email Bun2Too",
+        "label": "Email Bun2Too",
+        "href": "",
+        "variant": "outline",
+        "kind": "email"
+      }
+    },
+    {
+      "id": "b2t-block-contact-intro",
+      "type": "b2tBlock",
+      "fields": {
+        "name": "contact intro",
+        "kind": "intro",
+        "variant": "default",
+        "eyebrow": "A GOOD PLACE TO START",
+        "heading": {
+          "nodeType": "document",
+          "data": {},
+          "content": [
+            {
+              "nodeType": "paragraph",
+              "data": {},
+              "content": [
+                {
+                  "nodeType": "text",
+                  "value": "What could we",
+                  "marks": [],
+                  "data": {}
+                },
+                {
+                  "nodeType": "text",
+                  "value": "\n",
+                  "marks": [],
+                  "data": {}
+                },
+                {
+                  "nodeType": "text",
+                  "value": "connect for you?",
+                  "marks": [
+                    {
+                      "type": "italic"
+                    }
+                  ],
+                  "data": {}
+                }
+              ]
+            }
+          ]
+        },
+        "body": {
+          "nodeType": "document",
+          "data": {},
+          "content": [
+            {
+              "nodeType": "paragraph",
+              "data": {},
+              "content": [
+                {
+                  "nodeType": "text",
+                  "value": "Tell us about the systems you use, the customer experience you want, and what’s getting in the way.",
+                  "marks": [],
+                  "data": {}
+                }
+              ]
+            }
+          ]
+        },
+        "artwork": {
+          "sys": {
+            "type": "Link",
+            "linkType": "Entry",
+            "id": "b2t-art-human-connection"
+          }
+        },
+        "actions": [
+          {
+            "sys": {
+              "type": "Link",
+              "linkType": "Entry",
+              "id": "b2t-action-contact-intro-0"
+            }
+          },
+          {
+            "sys": {
+              "type": "Link",
+              "linkType": "Entry",
+              "id": "b2t-action-contact-intro-1"
+            }
+          }
+        ],
+        "note": {
+          "nodeType": "document",
+          "data": {},
+          "content": [
+            {
+              "nodeType": "paragraph",
+              "data": {},
+              "content": [
+                {
+                  "nodeType": "text",
+                  "value": "Explore our ",
+                  "marks": [],
+                  "data": {}
+                },
+                {
+                  "nodeType": "hyperlink",
+                  "data": {
+                    "uri": "/process"
+                  },
+                  "content": [
+                    {
+                      "nodeType": "text",
+                      "value": "process",
+                      "marks": [],
+                      "data": {}
+                    }
+                  ]
+                },
+                {
+                  "nodeType": "text",
+                  "value": " before you get started, or ",
+                  "marks": [],
+                  "data": {}
+                },
+                {
+                  "nodeType": "hyperlink",
+                  "data": {
+                    "uri": "/account"
+                  },
+                  "content": [
+                    {
+                      "nodeType": "text",
+                      "value": "manage your account",
+                      "marks": [],
+                      "data": {}
+                    }
+                  ]
+                },
+                {
+                  "nodeType": "text",
+                  "value": ".",
+                  "marks": [],
+                  "data": {}
+                }
+              ]
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "b2t-block-contact-strip",
+      "type": "b2tBlock",
+      "fields": {
+        "name": "contact strip",
+        "kind": "focusStrip",
+        "variant": "contact",
+        "labels": [
+          "AI engineering & infrastructure",
+          "Customer data & identity",
+          "Analytics, automation & consent"
+        ]
+      }
+    },
+    {
+      "id": "b2t-action-support-intro-0",
+      "type": "b2tAction",
+      "fields": {
+        "name": "Send a private inquiry",
+        "label": "Send a private inquiry",
+        "href": "",
+        "variant": "lime",
+        "kind": "inquiry"
+      }
+    },
+    {
+      "id": "b2t-block-support-intro",
+      "type": "b2tBlock",
+      "fields": {
+        "name": "support intro",
+        "kind": "intro",
+        "variant": "support",
+        "eyebrow": "A LITTLE HELP, BETTER CONNECTED",
+        "heading": {
+          "nodeType": "document",
+          "data": {},
+          "content": [
+            {
+              "nodeType": "paragraph",
+              "data": {},
+              "content": [
+                {
+                  "nodeType": "text",
+                  "value": "Good questions.",
+                  "marks": [],
+                  "data": {}
+                },
+                {
+                  "nodeType": "text",
+                  "value": "\n",
+                  "marks": [],
+                  "data": {}
+                },
+                {
+                  "nodeType": "text",
+                  "value": "A place to start.",
+                  "marks": [
+                    {
+                      "type": "italic"
+                    }
+                  ],
+                  "data": {}
+                }
+              ]
+            }
+          ]
+        },
+        "body": {
+          "nodeType": "document",
+          "data": {},
+          "content": [
+            {
+              "nodeType": "paragraph",
+              "data": {},
+              "content": [
+                {
+                  "nodeType": "text",
+                  "value": "Get help with Bun2Too’s customer technology, applications, accounts, and website. Explore common questions or send the team a private inquiry.",
+                  "marks": [],
+                  "data": {}
+                }
+              ]
+            }
+          ]
+        },
+        "artwork": {
+          "sys": {
+            "type": "Link",
+            "linkType": "Entry",
+            "id": "b2t-art-human-connection"
+          }
+        },
+        "actions": [
+          {
+            "sys": {
+              "type": "Link",
+              "linkType": "Entry",
+              "id": "b2t-action-support-intro-0"
+            }
+          }
+        ],
+        "note": {
+          "nodeType": "document",
+          "data": {},
+          "content": [
+            {
+              "nodeType": "paragraph",
+              "data": {},
+              "content": [
+                {
+                  "nodeType": "text",
+                  "value": "Your inquiry goes to the Bun2Too team. We use the contact details you provide to respond.",
+                  "marks": [],
+                  "data": {}
+                },
+                {
+                  "nodeType": "text",
+                  "value": " ",
+                  "marks": [],
+                  "data": {}
+                },
+                {
+                  "nodeType": "hyperlink",
+                  "data": {
+                    "uri": "/privacy"
+                  },
+                  "content": [
+                    {
+                      "nodeType": "text",
+                      "value": "Privacy & consent ↗",
+                      "marks": [],
+                      "data": {}
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "b2t-block-faqs",
+      "type": "b2tBlock",
+      "fields": {
+        "name": "faqs",
+        "kind": "faq",
+        "variant": "default",
+        "faqs": [
+          {
+            "sys": {
+              "type": "Link",
+              "linkType": "Entry",
+              "id": "b2t-faq-1"
+            }
+          },
+          {
+            "sys": {
+              "type": "Link",
+              "linkType": "Entry",
+              "id": "b2t-faq-2"
+            }
+          },
+          {
+            "sys": {
+              "type": "Link",
+              "linkType": "Entry",
+              "id": "b2t-faq-3"
+            }
+          },
+          {
+            "sys": {
+              "type": "Link",
+              "linkType": "Entry",
+              "id": "b2t-faq-4"
+            }
+          },
+          {
+            "sys": {
+              "type": "Link",
+              "linkType": "Entry",
+              "id": "b2t-faq-5"
+            }
+          },
+          {
+            "sys": {
+              "type": "Link",
+              "linkType": "Entry",
+              "id": "b2t-faq-6"
+            }
+          },
+          {
+            "sys": {
+              "type": "Link",
+              "linkType": "Entry",
+              "id": "b2t-faq-7"
+            }
+          },
+          {
+            "sys": {
+              "type": "Link",
+              "linkType": "Entry",
+              "id": "b2t-faq-8"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "b2t-block-insights-intro",
+      "type": "b2tBlock",
+      "fields": {
+        "name": "insights intro",
+        "kind": "intro",
+        "variant": "insights",
+        "eyebrow": "BUN2TOO / FIELD NOTES",
+        "heading": {
+          "nodeType": "document",
+          "data": {},
+          "content": [
+            {
+              "nodeType": "paragraph",
+              "data": {},
+              "content": [
+                {
+                  "nodeType": "text",
+                  "value": "Human thinking.",
+                  "marks": [],
+                  "data": {}
+                },
+                {
+                  "nodeType": "text",
+                  "value": "\n",
+                  "marks": [],
+                  "data": {}
+                },
+                {
+                  "nodeType": "text",
+                  "value": "New possibilities.",
+                  "marks": [
+                    {
+                      "type": "italic"
+                    }
+                  ],
+                  "data": {}
+                }
+              ]
+            }
+          ]
+        },
+        "body": {
+          "nodeType": "document",
+          "data": {},
+          "content": [
+            {
+              "nodeType": "paragraph",
+              "data": {},
+              "content": [
+                {
+                  "nodeType": "text",
+                  "value": "Practical perspectives on AI, software engineering, and customer technology. Ideas with sources. Lessons you can use.",
+                  "marks": [],
+                  "data": {}
+                }
+              ]
+            }
+          ]
+        },
+        "artwork": {
+          "sys": {
+            "type": "Link",
+            "linkType": "Entry",
+            "id": "b2t-art-knowledge-library"
+          }
+        },
+        "actions": [],
+        "labels": [
+          "AI & automation",
+          "Engineering practice",
+          "Customer technology"
+        ]
+      }
+    },
+    {
+      "id": "b2t-block-insights-feed",
+      "type": "b2tBlock",
+      "fields": {
+        "name": "insights feed",
+        "kind": "insightsFeed",
+        "variant": "default"
+      }
+    },
+    {
+      "id": "b2t-block-privacy-intro",
+      "type": "b2tBlock",
+      "fields": {
+        "name": "privacy intro",
+        "kind": "intro",
+        "variant": "legal",
+        "eyebrow": "YOUR DATA, YOUR CHOICE",
+        "heading": {
+          "nodeType": "document",
+          "data": {},
+          "content": [
+            {
+              "nodeType": "paragraph",
+              "data": {},
+              "content": [
+                {
+                  "nodeType": "text",
+                  "value": "Privacy & consent.",
+                  "marks": [],
+                  "data": {}
+                }
+              ]
+            }
+          ]
+        },
+        "body": {
+          "nodeType": "document",
+          "data": {},
+          "content": []
+        },
+        "artwork": {
+          "sys": {
+            "type": "Link",
+            "linkType": "Entry",
+            "id": "b2t-art-trust-by-design"
+          }
+        },
+        "actions": []
+      }
+    },
+    {
+      "id": "b2t-block-privacy-0",
+      "type": "b2tBlock",
+      "fields": {
+        "name": "privacy 0",
+        "kind": "richText",
+        "variant": "default",
+        "body": {
+          "nodeType": "document",
+          "data": {},
+          "content": [
+            {
+              "nodeType": "paragraph",
+              "data": {},
+              "content": [
+                {
+                  "nodeType": "text",
+                  "value": "This website is operated by Bun2too, Inc. See our",
+                  "marks": [],
+                  "data": {}
+                },
+                {
+                  "nodeType": "text",
+                  "value": " ",
+                  "marks": [],
+                  "data": {}
+                },
+                {
+                  "nodeType": "hyperlink",
+                  "data": {
+                    "uri": "/terms"
+                  },
+                  "content": [
+                    {
+                      "nodeType": "text",
+                      "value": "Terms & conditions",
+                      "marks": [],
+                      "data": {}
+                    }
+                  ]
+                },
+                {
+                  "nodeType": "text",
+                  "value": " and",
+                  "marks": [],
+                  "data": {}
+                },
+                {
+                  "nodeType": "text",
+                  "value": " ",
+                  "marks": [],
+                  "data": {}
+                },
+                {
+                  "nodeType": "hyperlink",
+                  "data": {
+                    "uri": "/cookies"
+                  },
+                  "content": [
+                    {
+                      "nodeType": "text",
+                      "value": "cookie policy",
+                      "marks": [],
+                      "data": {}
+                    }
+                  ]
+                },
+                {
+                  "nodeType": "text",
+                  "value": ".",
+                  "marks": [],
+                  "data": {}
+                }
+              ]
+            },
+            {
+              "nodeType": "paragraph",
+              "data": {},
+              "content": [
+                {
+                  "nodeType": "text",
+                  "value": "When you sign in, Auth0 manages your identity. Bun2Too uses your identity profile to display your account and manage the choices you make on this website.",
+                  "marks": [],
+                  "data": {}
+                }
+              ]
+            }
+          ]
+        },
+        "note": {
+          "nodeType": "document",
+          "data": {},
+          "content": []
+        },
+        "anchor": ""
+      }
+    },
+    {
+      "id": "b2t-block-privacy-1",
+      "type": "b2tBlock",
+      "fields": {
+        "name": "privacy 1",
+        "kind": "richText",
+        "variant": "default",
+        "body": {
+          "nodeType": "document",
+          "data": {},
+          "content": [
+            {
+              "nodeType": "heading-2",
+              "data": {},
+              "content": [
+                {
+                  "nodeType": "text",
+                  "value": "Email subscriptions",
+                  "marks": [],
+                  "data": {}
+                }
+              ]
+            },
+            {
+              "nodeType": "paragraph",
+              "data": {},
+              "content": [
+                {
+                  "nodeType": "text",
+                  "value": "When you request email updates, we store your email address, selected topics, the time and source of your request, and the version of the consent wording in Auth0. No password is created for an email-only subscriber. A request stays pending until you verify your email and confirm your choices in your account. Creating an account does not automatically subscribe you.",
+                  "marks": [],
+                  "data": {}
+                }
+              ]
+            }
+          ]
+        },
+        "note": {
+          "nodeType": "document",
+          "data": {},
+          "content": []
+        },
+        "anchor": ""
+      }
+    },
+    {
+      "id": "b2t-block-privacy-2",
+      "type": "b2tBlock",
+      "fields": {
+        "name": "privacy 2",
+        "kind": "richText",
+        "variant": "default",
+        "body": {
+          "nodeType": "document",
+          "data": {},
+          "content": [
+            {
+              "nodeType": "heading-2",
+              "data": {},
+              "content": [
+                {
+                  "nodeType": "text",
+                  "value": "Change your choices",
+                  "marks": [],
+                  "data": {}
+                }
+              ]
+            },
+            {
+              "nodeType": "paragraph",
+              "data": {},
+              "content": [
+                {
+                  "nodeType": "text",
+                  "value": "Sign in to your account to confirm, update, or withdraw your email subscription. Withdrawing your subscription stops future marketing eligibility; it does not delete your identity account. Separate Auth0 identities are not automatically merged just because they share an email address. Use the passwordless email sign-in option to manage an email-only subscription.",
+                  "marks": [],
+                  "data": {}
+                }
+              ]
+            }
+          ]
+        },
+        "note": {
+          "nodeType": "document",
+          "data": {},
+          "content": []
+        },
+        "anchor": ""
+      }
+    },
+    {
+      "id": "b2t-block-privacy-3",
+      "type": "b2tBlock",
+      "fields": {
+        "name": "privacy 3",
+        "kind": "richText",
+        "variant": "default",
+        "body": {
+          "nodeType": "document",
+          "data": {},
+          "content": [
+            {
+              "nodeType": "heading-2",
+              "data": {},
+              "content": [
+                {
+                  "nodeType": "text",
+                  "value": "Storage and service providers",
+                  "marks": [],
+                  "data": {}
+                }
+              ]
+            },
+            {
+              "nodeType": "paragraph",
+              "data": {},
+              "content": [
+                {
+                  "nodeType": "text",
+                  "value": "Auth0 stores identity and subscription preferences. Netlify hosts this website. Cloudflare Turnstile verifies public signup requests to help prevent automated abuse and may process browser and network signals for that purpose. See the",
+                  "marks": [],
+                  "data": {}
+                },
+                {
+                  "nodeType": "text",
+                  "value": " ",
+                  "marks": [],
+                  "data": {}
+                },
+                {
+                  "nodeType": "hyperlink",
+                  "data": {
+                    "uri": "https://www.cloudflare.com/turnstile-privacy-policy/"
+                  },
+                  "content": [
+                    {
+                      "nodeType": "text",
+                      "value": "Turnstile privacy addendum",
+                      "marks": [],
+                      "data": {}
+                    }
+                  ]
+                },
+                {
+                  "nodeType": "text",
+                  "value": ". Essential authentication cookies and session storage may be used to complete sign-in. Google Tag Manager loads Google Analytics for public-site measurement only with Analytics consent. Advertising-related consent signals require a separate Marketing choice as well. No standalone advertising pixel is installed. Google may process device, network, and usage data under its",
+                  "marks": [],
+                  "data": {}
+                },
+                {
+                  "nodeType": "text",
+                  "value": " ",
+                  "marks": [],
+                  "data": {}
+                },
+                {
+                  "nodeType": "hyperlink",
+                  "data": {
+                    "uri": "https://policies.google.com/privacy"
+                  },
+                  "content": [
+                    {
+                      "nodeType": "text",
+                      "value": "privacy policy",
+                      "marks": [],
+                      "data": {}
+                    }
+                  ]
+                },
+                {
+                  "nodeType": "text",
+                  "value": ". Insights articles are displayed within this site using our public editorial backend. Feed, unsubscribe, and optional push registration requests are handled by that editorial service.",
+                  "marks": [],
+                  "data": {}
+                }
+              ]
+            }
+          ]
+        },
+        "note": {
+          "nodeType": "document",
+          "data": {},
+          "content": []
+        },
+        "anchor": ""
+      }
+    },
+    {
+      "id": "b2t-block-privacy-4",
+      "type": "b2tBlock",
+      "fields": {
+        "name": "privacy 4",
+        "kind": "richText",
+        "variant": "default",
+        "body": {
+          "nodeType": "document",
+          "data": {},
+          "content": [
+            {
+              "nodeType": "heading-2",
+              "data": {},
+              "content": [
+                {
+                  "nodeType": "text",
+                  "value": "Cookies and browser preferences",
+                  "marks": [],
+                  "data": {}
+                }
+              ]
+            },
+            {
+              "nodeType": "paragraph",
+              "data": {},
+              "content": [
+                {
+                  "nodeType": "text",
+                  "value": "Necessary storage supports requested authentication, security, support, and remembering your cookie choices. Optional preferences start off and let Insights remember read articles on this device. Withdrawing that permission removes saved reading status. Analytics and Marketing are separate optional choices, off by default. Withdrawing them clears accessible matching Google cookies and may reload the page to stop loaded tags. Cookie choices do not change authentication or support data. Choose ",
+                  "marks": [],
+                  "data": {}
+                },
+                {
+                  "nodeType": "embedded-entry-inline",
+                  "data": {
+                    "target": {
+                      "sys": {
+                        "type": "Link",
+                        "linkType": "Entry",
+                        "id": "b2t-action-cookie-settings"
+                      }
+                    }
+                  },
+                  "content": []
+                },
+                {
+                  "nodeType": "text",
+                  "value": "here or in the footer; the ",
+                  "marks": [],
+                  "data": {}
+                },
+                {
+                  "nodeType": "hyperlink",
+                  "data": {
+                    "uri": "/cookies"
+                  },
+                  "content": [
+                    {
+                      "nodeType": "text",
+                      "value": "cookie policy",
+                      "marks": [],
+                      "data": {}
+                    }
+                  ]
+                },
+                {
+                  "nodeType": "text",
+                  "value": "lists storage purposes and durations. These choices do not change email subscriptions or browser notification permissions, which require their own opt-ins.",
+                  "marks": [],
+                  "data": {}
+                }
+              ]
+            }
+          ]
+        },
+        "note": {
+          "nodeType": "document",
+          "data": {},
+          "content": []
+        },
+        "anchor": ""
+      }
+    },
+    {
+      "id": "b2t-block-privacy-5",
+      "type": "b2tBlock",
+      "fields": {
+        "name": "privacy 5",
+        "kind": "richText",
+        "variant": "default",
+        "body": {
+          "nodeType": "document",
+          "data": {},
+          "content": [
+            {
+              "nodeType": "heading-2",
+              "data": {},
+              "content": [
+                {
+                  "nodeType": "text",
+                  "value": "Private support inquiries",
+                  "marks": [],
+                  "data": {}
+                }
+              ]
+            },
+            {
+              "nodeType": "paragraph",
+              "data": {},
+              "content": [
+                {
+                  "nodeType": "text",
+                  "value": "When you open the inquiry form, an essential signed, HTTP-only cookie identifies your browser for up to 24 hours. It helps isolate submission ownership and safely handle retries. Do not include passwords, authentication codes, payment details, or sensitive personal information.",
+                  "marks": [],
+                  "data": {}
+                }
+              ]
+            },
+            {
+              "nodeType": "paragraph",
+              "data": {},
+              "content": [
+                {
+                  "nodeType": "text",
+                  "value": "When you send a private inquiry, we store your name, contact email, topic, message, and consent timestamp in Netlify and send those details through Amazon SES to our team’s configured management inbox. We also send a generic acknowledgment with your inquiry reference to the contact address you provide. Mailbox and email-provider retention are managed separately. Inquiry records become eligible for cleanup after 90 days; scheduled cleanup runs daily. No AI provider processes new inquiries, and the form does not attach chat transcripts. A pseudonymous rate-limit identifier may be derived from the hosting platform’s connection address to reduce abuse. Sending an inquiry does not subscribe you to marketing.",
+                  "marks": [],
+                  "data": {}
+                }
+              ]
+            }
+          ]
+        },
+        "note": {
+          "nodeType": "document",
+          "data": {},
+          "content": []
+        },
+        "anchor": ""
+      }
+    },
+    {
+      "id": "b2t-block-privacy-6",
+      "type": "b2tBlock",
+      "fields": {
+        "name": "privacy 6",
+        "kind": "richText",
+        "variant": "default",
+        "body": {
+          "nodeType": "document",
+          "data": {},
+          "content": [
+            {
+              "nodeType": "heading-2",
+              "data": {},
+              "content": [
+                {
+                  "nodeType": "text",
+                  "value": "Optional AI support questions",
+                  "marks": [],
+                  "data": {}
+                }
+              ]
+            },
+            {
+              "nodeType": "paragraph",
+              "data": {},
+              "content": [
+                {
+                  "nodeType": "text",
+                  "value": "If AI answers are enabled, a separate consent asks permission to send your question to our Open WebUI service and its configured model provider. Answers use approved public knowledge and may be inaccurate. Each question is independent. Do not share confidential or personal information. The website does not save question/answer transcripts or attach them to inquiries. The latest answer remains in page memory until a full reload or closing the page; closing the dialog or following an internal link does not necessarily clear it. Open WebUI, the model provider and hosting infrastructure may process and retain API or security logs under their configured retention policies. You can use the private inquiry form without using AI. AI cannot access your account, submit an inquiry, or subscribe you. Signed visitor cookies and pseudonymous rate counters help limit abuse.",
+                  "marks": [],
+                  "data": {}
+                }
+              ]
+            }
+          ]
+        },
+        "note": {
+          "nodeType": "document",
+          "data": {},
+          "content": []
+        },
+        "anchor": ""
+      }
+    },
+    {
+      "id": "b2t-block-privacy-7",
+      "type": "b2tBlock",
+      "fields": {
+        "name": "privacy 7",
+        "kind": "richText",
+        "variant": "default",
+        "body": {
+          "nodeType": "document",
+          "data": {},
+          "content": [
+            {
+              "nodeType": "heading-2",
+              "data": {},
+              "content": [
+                {
+                  "nodeType": "text",
+                  "value": "Retention and questions",
+                  "marks": [],
+                  "data": {}
+                }
+              ]
+            },
+            {
+              "nodeType": "paragraph",
+              "data": {},
+              "content": [
+                {
+                  "nodeType": "text",
+                  "value": "Identity and subscription records remain until removed by Bun2Too’s tenant administrators or through an applicable deletion request. For questions or to request access or deletion, email",
+                  "marks": [],
+                  "data": {}
+                },
+                {
+                  "nodeType": "text",
+                  "value": " ",
+                  "marks": [],
+                  "data": {}
+                },
+                {
+                  "nodeType": "embedded-entry-inline",
+                  "data": {
+                    "target": {
+                      "sys": {
+                        "type": "Link",
+                        "linkType": "Entry",
+                        "id": "b2t-action-legal-email"
+                      }
+                    }
+                  },
+                  "content": []
+                },
+                {
+                  "nodeType": "text",
+                  "value": " or use our",
+                  "marks": [],
+                  "data": {}
+                },
+                {
+                  "nodeType": "text",
+                  "value": " ",
+                  "marks": [],
+                  "data": {}
+                },
+                {
+                  "nodeType": "hyperlink",
+                  "data": {
+                    "uri": "/contact"
+                  },
+                  "content": [
+                    {
+                      "nodeType": "text",
+                      "value": "contact page",
+                      "marks": [],
+                      "data": {}
+                    }
+                  ]
+                },
+                {
+                  "nodeType": "text",
+                  "value": ". This page describes the current website implementation; it is not a statement that all future services share these practices.",
+                  "marks": [],
+                  "data": {}
+                }
+              ]
+            }
+          ]
+        },
+        "note": {
+          "nodeType": "document",
+          "data": {},
+          "content": [
+            {
+              "nodeType": "paragraph",
+              "data": {},
+              "content": [
+                {
+                  "nodeType": "text",
+                  "value": "Notice updated: November 12, 2026. Email consent version: 2026-11-07; inquiry consent version: 2026-11-12.2.",
+                  "marks": [],
+                  "data": {}
+                }
+              ]
+            }
+          ]
+        },
+        "anchor": ""
+      }
+    },
+    {
+      "id": "b2t-block-cookies-intro",
+      "type": "b2tBlock",
+      "fields": {
+        "name": "cookies intro",
+        "kind": "intro",
+        "variant": "legal",
+        "eyebrow": "YOUR DEVICE. YOUR CHOICE.",
+        "heading": {
+          "nodeType": "document",
+          "data": {},
+          "content": [
+            {
+              "nodeType": "paragraph",
+              "data": {},
+              "content": [
+                {
+                  "nodeType": "text",
+                  "value": "Cookies, with clarity.",
+                  "marks": [],
+                  "data": {}
+                }
+              ]
+            }
+          ]
+        },
+        "body": {
+          "nodeType": "document",
+          "data": {},
+          "content": []
+        },
+        "artwork": {
+          "sys": {
+            "type": "Link",
+            "linkType": "Entry",
+            "id": "b2t-art-trust-by-design"
+          }
+        },
+        "actions": []
+      }
+    },
+    {
+      "id": "b2t-block-cookies-0",
+      "type": "b2tBlock",
+      "fields": {
+        "name": "cookies 0",
+        "kind": "richText",
+        "variant": "default",
+        "body": {
+          "nodeType": "document",
+          "data": {},
+          "content": [
+            {
+              "nodeType": "paragraph",
+              "data": {},
+              "content": [
+                {
+                  "nodeType": "text",
+                  "value": "Bun2too, Inc. uses cookies and similar browser storage to operate requested features and, with your permission, remember your Insights reading status and measure public-site use. Optional categories start off. Our configured Google Tag Manager container loads Google Analytics only after you enable Analytics. Advertising-related storage and personalization require the separate Marketing choice as well. No standalone advertising pixel is currently installed.",
+                  "marks": [],
+                  "data": {}
+                }
+              ]
+            },
+            {
+              "nodeType": "paragraph",
+              "data": {},
+              "content": [
+                {
+                  "nodeType": "embedded-entry-inline",
+                  "data": {
+                    "target": {
+                      "sys": {
+                        "type": "Link",
+                        "linkType": "Entry",
+                        "id": "b2t-action-cookie-settings"
+                      }
+                    }
+                  },
+                  "content": []
+                }
+              ]
+            }
+          ]
+        },
+        "note": {
+          "nodeType": "document",
+          "data": {},
+          "content": []
+        },
+        "anchor": ""
+      }
+    },
+    {
+      "id": "b2t-block-cookies-1",
+      "type": "b2tBlock",
+      "fields": {
+        "name": "cookies 1",
+        "kind": "richText",
+        "variant": "default",
+        "body": {
+          "nodeType": "document",
+          "data": {},
+          "content": [
+            {
+              "nodeType": "heading-2",
+              "data": {},
+              "content": [
+                {
+                  "nodeType": "text",
+                  "value": "Choose what stays on your device",
+                  "marks": [],
+                  "data": {}
+                }
+              ]
+            },
+            {
+              "nodeType": "paragraph",
+              "data": {},
+              "content": [
+                {
+                  "nodeType": "text",
+                  "value": "Necessary:",
+                  "marks": [
+                    {
+                      "type": "bold"
+                    }
+                  ],
+                  "data": {}
+                },
+                {
+                  "nodeType": "text",
+                  "value": " remember cookie choices and support sign-in, security, and inquiries you submit. These cannot be switched off through our preference controls. You can block storage in your browser, but sign-in or support may stop working.",
+                  "marks": [],
+                  "data": {}
+                }
+              ]
+            },
+            {
+              "nodeType": "paragraph",
+              "data": {},
+              "content": [
+                {
+                  "nodeType": "text",
+                  "value": "Preferences:",
+                  "marks": [
+                    {
+                      "type": "bold"
+                    }
+                  ],
+                  "data": {}
+                },
+                {
+                  "nodeType": "text",
+                  "value": " optionally remember articles marked as read in Insights. With preferences off, reading status lasts only for the current view. Turning preferences off removes the saved reading list from this origin.",
+                  "marks": [],
+                  "data": {}
+                }
+              ]
+            },
+            {
+              "nodeType": "paragraph",
+              "data": {},
+              "content": [
+                {
+                  "nodeType": "text",
+                  "value": "Analytics:",
+                  "marks": [
+                    {
+                      "type": "bold"
+                    }
+                  ],
+                  "data": {}
+                },
+                {
+                  "nodeType": "text",
+                  "value": " optionally load Google Tag Manager and Google Analytics to understand use of public pages. Necessary-only and preferences-only choices do not load Google tags or send measurement requests from this integration. Account pages, signup embeds, and initial URLs containing query strings or fragments do not initialize the container.",
+                  "marks": [],
+                  "data": {}
+                }
+              ]
+            },
+            {
+              "nodeType": "paragraph",
+              "data": {},
+              "content": [
+                {
+                  "nodeType": "text",
+                  "value": "Marketing:",
+                  "marks": [
+                    {
+                      "type": "bold"
+                    }
+                  ],
+                  "data": {}
+                },
+                {
+                  "nodeType": "text",
+                  "value": " optionally allow advertising-related storage, advertising user data, and personalization in supported Google tags. These Google consent signals remain denied unless both Analytics and Marketing are enabled. Marketing alone does not load the container. Choosing Analytics does not automatically enable Marketing, email subscriptions, or browser notifications.",
+                  "marks": [],
+                  "data": {}
+                }
+              ]
+            }
+          ]
+        },
+        "note": {
+          "nodeType": "document",
+          "data": {},
+          "content": []
+        },
+        "anchor": ""
+      }
+    },
+    {
+      "id": "b2t-block-cookies-2",
+      "type": "b2tBlock",
+      "fields": {
+        "name": "cookies 2",
+        "kind": "richText",
+        "variant": "default",
+        "body": {
+          "nodeType": "document",
+          "data": {},
+          "content": [
+            {
+              "nodeType": "heading-2",
+              "data": {},
+              "content": [
+                {
+                  "nodeType": "text",
+                  "value": "Storage used by this site",
+                  "marks": [],
+                  "data": {}
+                }
+              ]
+            },
+            {
+              "nodeType": "table",
+              "data": {},
+              "content": [
+                {
+                  "nodeType": "table-row",
+                  "data": {},
+                  "content": [
+                    {
+                      "nodeType": "table-header-cell",
+                      "data": {},
+                      "content": [
+                        {
+                          "nodeType": "paragraph",
+                          "data": {},
+                          "content": [
+                            {
+                              "nodeType": "text",
+                              "value": "Storage / provider",
+                              "marks": [],
+                              "data": {}
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "nodeType": "table-header-cell",
+                      "data": {},
+                      "content": [
+                        {
+                          "nodeType": "paragraph",
+                          "data": {},
+                          "content": [
+                            {
+                              "nodeType": "text",
+                              "value": "Purpose & category",
+                              "marks": [],
+                              "data": {}
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "nodeType": "table-header-cell",
+                      "data": {},
+                      "content": [
+                        {
+                          "nodeType": "paragraph",
+                          "data": {},
+                          "content": [
+                            {
+                              "nodeType": "text",
+                              "value": "Duration",
+                              "marks": [],
+                              "data": {}
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "nodeType": "table-row",
+                  "data": {},
+                  "content": [
+                    {
+                      "nodeType": "table-header-cell",
+                      "data": {},
+                      "content": [
+                        {
+                          "nodeType": "paragraph",
+                          "data": {},
+                          "content": [
+                            {
+                              "nodeType": "text",
+                              "value": "_ga / _ga_*",
+                              "marks": [],
+                              "data": {}
+                            },
+                            {
+                              "nodeType": "text",
+                              "value": "\n",
+                              "marks": [],
+                              "data": {}
+                            },
+                            {
+                              "nodeType": "text",
+                              "value": "Google Analytics",
+                              "marks": [],
+                              "data": {}
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "nodeType": "table-cell",
+                      "data": {},
+                      "content": [
+                        {
+                          "nodeType": "paragraph",
+                          "data": {},
+                          "content": [
+                            {
+                              "nodeType": "text",
+                              "value": "Optional Analytics. Browser identifiers and measurement session state may be set by the configured GA4 tag. Only loaded with Analytics permission.",
+                              "marks": [],
+                              "data": {}
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "nodeType": "table-cell",
+                      "data": {},
+                      "content": [
+                        {
+                          "nodeType": "paragraph",
+                          "data": {},
+                          "content": [
+                            {
+                              "nodeType": "text",
+                              "value": "Google’s default can be up to 2 years, subject to container configuration and browser limits. Accessible matching cookies are removed when Analytics is withdrawn.",
+                              "marks": [],
+                              "data": {}
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "nodeType": "table-row",
+                  "data": {},
+                  "content": [
+                    {
+                      "nodeType": "table-header-cell",
+                      "data": {},
+                      "content": [
+                        {
+                          "nodeType": "paragraph",
+                          "data": {},
+                          "content": [
+                            {
+                              "nodeType": "text",
+                              "value": "_gcl_* / _gac_*",
+                              "marks": [],
+                              "data": {}
+                            },
+                            {
+                              "nodeType": "text",
+                              "value": "\n",
+                              "marks": [],
+                              "data": {}
+                            },
+                            {
+                              "nodeType": "text",
+                              "value": "Google advertising-related tags, if configured",
+                              "marks": [],
+                              "data": {}
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "nodeType": "table-cell",
+                      "data": {},
+                      "content": [
+                        {
+                          "nodeType": "paragraph",
+                          "data": {},
+                          "content": [
+                            {
+                              "nodeType": "text",
+                              "value": "Optional Marketing, also requiring Analytics. Advertising/conversion storage may be used by supported configured Google tags. These names describe conditional storage, not a claim that a separate advertising pixel is installed.",
+                              "marks": [],
+                              "data": {}
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "nodeType": "table-cell",
+                      "data": {},
+                      "content": [
+                        {
+                          "nodeType": "paragraph",
+                          "data": {},
+                          "content": [
+                            {
+                              "nodeType": "text",
+                              "value": "Provider/configuration dependent. Accessible matching cookies are removed on withdrawal.",
+                              "marks": [],
+                              "data": {}
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "nodeType": "table-row",
+                  "data": {},
+                  "content": [
+                    {
+                      "nodeType": "table-header-cell",
+                      "data": {},
+                      "content": [
+                        {
+                          "nodeType": "paragraph",
+                          "data": {},
+                          "content": [
+                            {
+                              "nodeType": "text",
+                              "value": "bun2too_cookie_consent",
+                              "marks": [],
+                              "data": {}
+                            },
+                            {
+                              "nodeType": "text",
+                              "value": "\n",
+                              "marks": [],
+                              "data": {}
+                            },
+                            {
+                              "nodeType": "text",
+                              "value": "Bun2Too cookie",
+                              "marks": [],
+                              "data": {}
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "nodeType": "table-cell",
+                      "data": {},
+                      "content": [
+                        {
+                          "nodeType": "paragraph",
+                          "data": {},
+                          "content": [
+                            {
+                              "nodeType": "text",
+                              "value": "Necessary. Stores the policy version, category choices, and timestamps; contains no email or account ID.",
+                              "marks": [],
+                              "data": {}
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "nodeType": "table-cell",
+                      "data": {},
+                      "content": [
+                        {
+                          "nodeType": "paragraph",
+                          "data": {},
+                          "content": [
+                            {
+                              "nodeType": "text",
+                              "value": "180 days from saving your choice.",
+                              "marks": [],
+                              "data": {}
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "nodeType": "table-row",
+                  "data": {},
+                  "content": [
+                    {
+                      "nodeType": "table-header-cell",
+                      "data": {},
+                      "content": [
+                        {
+                          "nodeType": "paragraph",
+                          "data": {},
+                          "content": [
+                            {
+                              "nodeType": "text",
+                              "value": "bun2too-read-insights",
+                              "marks": [],
+                              "data": {}
+                            },
+                            {
+                              "nodeType": "text",
+                              "value": "\n",
+                              "marks": [],
+                              "data": {}
+                            },
+                            {
+                              "nodeType": "text",
+                              "value": "Bun2Too local storage",
+                              "marks": [],
+                              "data": {}
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "nodeType": "table-cell",
+                      "data": {},
+                      "content": [
+                        {
+                          "nodeType": "paragraph",
+                          "data": {},
+                          "content": [
+                            {
+                              "nodeType": "text",
+                              "value": "Optional preferences. Stores article IDs marked as read; accessed only with permission.",
+                              "marks": [],
+                              "data": {}
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "nodeType": "table-cell",
+                      "data": {},
+                      "content": [
+                        {
+                          "nodeType": "paragraph",
+                          "data": {},
+                          "content": [
+                            {
+                              "nodeType": "text",
+                              "value": "Until preferences are withdrawn, browser storage is cleared, or consent expires and you next visit the site. No independent browser expiry.",
+                              "marks": [],
+                              "data": {}
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "nodeType": "table-row",
+                  "data": {},
+                  "content": [
+                    {
+                      "nodeType": "table-header-cell",
+                      "data": {},
+                      "content": [
+                        {
+                          "nodeType": "paragraph",
+                          "data": {},
+                          "content": [
+                            {
+                              "nodeType": "text",
+                              "value": "bun2too_support",
+                              "marks": [],
+                              "data": {}
+                            },
+                            {
+                              "nodeType": "text",
+                              "value": "\n",
+                              "marks": [],
+                              "data": {}
+                            },
+                            {
+                              "nodeType": "text",
+                              "value": "Bun2Too HttpOnly cookie",
+                              "marks": [],
+                              "data": {}
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "nodeType": "table-cell",
+                      "data": {},
+                      "content": [
+                        {
+                          "nodeType": "paragraph",
+                          "data": {},
+                          "content": [
+                            {
+                              "nodeType": "text",
+                              "value": "Necessary when you open support. Signed visitor identifier protects inquiry ownership.",
+                              "marks": [],
+                              "data": {}
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "nodeType": "table-cell",
+                      "data": {},
+                      "content": [
+                        {
+                          "nodeType": "paragraph",
+                          "data": {},
+                          "content": [
+                            {
+                              "nodeType": "text",
+                              "value": "Up to 24 hours.",
+                              "marks": [],
+                              "data": {}
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "nodeType": "table-row",
+                  "data": {},
+                  "content": [
+                    {
+                      "nodeType": "table-header-cell",
+                      "data": {},
+                      "content": [
+                        {
+                          "nodeType": "paragraph",
+                          "data": {},
+                          "content": [
+                            {
+                              "nodeType": "text",
+                              "value": "auth0.*.is.authenticated / auth0.*.organization_hint",
+                              "marks": [],
+                              "data": {}
+                            },
+                            {
+                              "nodeType": "text",
+                              "value": "\n",
+                              "marks": [],
+                              "data": {}
+                            },
+                            {
+                              "nodeType": "text",
+                              "value": "Auth0 SDK cookies, including compatibility variants where applicable",
+                              "marks": [],
+                              "data": {}
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "nodeType": "table-cell",
+                      "data": {},
+                      "content": [
+                        {
+                          "nodeType": "paragraph",
+                          "data": {},
+                          "content": [
+                            {
+                              "nodeType": "text",
+                              "value": "Necessary for requested authentication. Remember sign-in or organization hints. Access tokens stay in SDK memory.",
+                              "marks": [],
+                              "data": {}
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "nodeType": "table-cell",
+                      "data": {},
+                      "content": [
+                        {
+                          "nodeType": "paragraph",
+                          "data": {},
+                          "content": [
+                            {
+                              "nodeType": "text",
+                              "value": "Normally 1 day with the current SDK configuration; cleared by logout where applicable.",
+                              "marks": [],
+                              "data": {}
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "nodeType": "table-row",
+                  "data": {},
+                  "content": [
+                    {
+                      "nodeType": "table-header-cell",
+                      "data": {},
+                      "content": [
+                        {
+                          "nodeType": "paragraph",
+                          "data": {},
+                          "content": [
+                            {
+                              "nodeType": "text",
+                              "value": "a0.spajs.txs.*",
+                              "marks": [],
+                              "data": {}
+                            },
+                            {
+                              "nodeType": "text",
+                              "value": "\n",
+                              "marks": [],
+                              "data": {}
+                            },
+                            {
+                              "nodeType": "text",
+                              "value": "Auth0 SDK session storage",
+                              "marks": [],
+                              "data": {}
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "nodeType": "table-cell",
+                      "data": {},
+                      "content": [
+                        {
+                          "nodeType": "paragraph",
+                          "data": {},
+                          "content": [
+                            {
+                              "nodeType": "text",
+                              "value": "Necessary for a requested login transaction, including state and PKCE verification.",
+                              "marks": [],
+                              "data": {}
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "nodeType": "table-cell",
+                      "data": {},
+                      "content": [
+                        {
+                          "nodeType": "paragraph",
+                          "data": {},
+                          "content": [
+                            {
+                              "nodeType": "text",
+                              "value": "Removed when the transaction completes or the browser session ends.",
+                              "marks": [],
+                              "data": {}
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "nodeType": "table-row",
+                  "data": {},
+                  "content": [
+                    {
+                      "nodeType": "table-header-cell",
+                      "data": {},
+                      "content": [
+                        {
+                          "nodeType": "paragraph",
+                          "data": {},
+                          "content": [
+                            {
+                              "nodeType": "text",
+                              "value": "Auth0-hosted login / hosting security providers",
+                              "marks": [],
+                              "data": {}
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "nodeType": "table-cell",
+                      "data": {},
+                      "content": [
+                        {
+                          "nodeType": "paragraph",
+                          "data": {},
+                          "content": [
+                            {
+                              "nodeType": "text",
+                              "value": "Necessary service-side session, security, or infrastructure storage may apply when a feature is used. Provider-domain storage is controlled by the provider.",
+                              "marks": [],
+                              "data": {}
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "nodeType": "table-cell",
+                      "data": {},
+                      "content": [
+                        {
+                          "nodeType": "paragraph",
+                          "data": {},
+                          "content": [
+                            {
+                              "nodeType": "text",
+                              "value": "Varies by provider configuration and session. See",
+                              "marks": [],
+                              "data": {}
+                            },
+                            {
+                              "nodeType": "text",
+                              "value": " ",
+                              "marks": [],
+                              "data": {}
+                            },
+                            {
+                              "nodeType": "hyperlink",
+                              "data": {
+                                "uri": "https://auth0.com/docs/manage-users/cookies"
+                              },
+                              "content": [
+                                {
+                                  "nodeType": "text",
+                                  "value": "Auth0’s cookie documentation",
+                                  "marks": [],
+                                  "data": {}
+                                }
+                              ]
+                            },
+                            {
+                              "nodeType": "text",
+                              "value": ".",
+                              "marks": [],
+                              "data": {}
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        "note": {
+          "nodeType": "document",
+          "data": {},
+          "content": []
+        },
+        "anchor": ""
+      }
+    },
+    {
+      "id": "b2t-block-cookies-3",
+      "type": "b2tBlock",
+      "fields": {
+        "name": "cookies 3",
+        "kind": "richText",
+        "variant": "default",
+        "body": {
+          "nodeType": "document",
+          "data": {},
+          "content": [
+            {
+              "nodeType": "heading-2",
+              "data": {},
+              "content": [
+                {
+                  "nodeType": "text",
+                  "value": "Security and separate opt-ins",
+                  "marks": [],
+                  "data": {}
+                }
+              ]
+            },
+            {
+              "nodeType": "paragraph",
+              "data": {},
+              "content": [
+                {
+                  "nodeType": "text",
+                  "value": "If Cloudflare Turnstile is configured, signup forms load its anti-abuse check. It processes browser and network signals for security; it is not a marketing integration. See",
+                  "marks": [],
+                  "data": {}
+                },
+                {
+                  "nodeType": "text",
+                  "value": " ",
+                  "marks": [],
+                  "data": {}
+                },
+                {
+                  "nodeType": "hyperlink",
+                  "data": {
+                    "uri": "https://www.cloudflare.com/turnstile-privacy-policy/"
+                  },
+                  "content": [
+                    {
+                      "nodeType": "text",
+                      "value": "Turnstile privacy information",
+                      "marks": [],
+                      "data": {}
+                    }
+                  ]
+                },
+                {
+                  "nodeType": "text",
+                  "value": ".",
+                  "marks": [],
+                  "data": {}
+                }
+              ]
+            },
+            {
+              "nodeType": "paragraph",
+              "data": {},
+              "content": [
+                {
+                  "nodeType": "text",
+                  "value": "Browser notifications require a separate action and browser permission. If enabled, the service worker and push subscription persist until you turn notifications off or clear/revoke them in your browser. Cookie preferences do not unsubscribe notifications or email. Newsletter subscription, account creation, support inquiry consent, and cookie choices are independent.",
+                  "marks": [],
+                  "data": {}
+                }
+              ]
+            }
+          ]
+        },
+        "note": {
+          "nodeType": "document",
+          "data": {},
+          "content": []
+        },
+        "anchor": ""
+      }
+    },
+    {
+      "id": "b2t-block-cookies-4",
+      "type": "b2tBlock",
+      "fields": {
+        "name": "cookies 4",
+        "kind": "richText",
+        "variant": "default",
+        "body": {
+          "nodeType": "document",
+          "data": {},
+          "content": [
+            {
+              "nodeType": "heading-2",
+              "data": {},
+              "content": [
+                {
+                  "nodeType": "text",
+                  "value": "Change or withdraw permission",
+                  "marks": [],
+                  "data": {}
+                }
+              ]
+            },
+            {
+              "nodeType": "paragraph",
+              "data": {},
+              "content": [
+                {
+                  "nodeType": "text",
+                  "value": "Use ",
+                  "marks": [],
+                  "data": {}
+                },
+                {
+                  "nodeType": "embedded-entry-inline",
+                  "data": {
+                    "target": {
+                      "sys": {
+                        "type": "Link",
+                        "linkType": "Entry",
+                        "id": "b2t-action-cookie-settings"
+                      }
+                    }
+                  },
+                  "content": []
+                },
+                {
+                  "nodeType": "text",
+                  "value": " here or in any page footer. “Necessary only” withdraws optional permission and deletes our saved reading-list key and accessible matching Google cookies. When previously loaded tags need to be stopped, the page reloads after saving your new choice to unload their runtime. It does not log you out, erase support messages, or remove provider-domain cookies. Manage those in the relevant account, browser, or provider settings.",
+                  "marks": [],
+                  "data": {}
+                }
+              ]
+            },
+            {
+              "nodeType": "paragraph",
+              "data": {},
+              "content": [
+                {
+                  "nodeType": "text",
+                  "value": "Your choice applies to this browser and website origin, not every device or subdomain. We ask again when the choice expires, the policy version changes, or storage is cleared. If your browser prevents saving the choice, we tell you and may ask again. No optional storage is enabled just by browsing, closing preferences, or accepting the site terms.",
+                  "marks": [],
+                  "data": {}
+                }
+              ]
+            },
+            {
+              "nodeType": "paragraph",
+              "data": {},
+              "content": [
+                {
+                  "nodeType": "text",
+                  "value": "Google may process browser, device, network, page, and measurement data under its",
+                  "marks": [],
+                  "data": {}
+                },
+                {
+                  "nodeType": "text",
+                  "value": " ",
+                  "marks": [],
+                  "data": {}
+                },
+                {
+                  "nodeType": "hyperlink",
+                  "data": {
+                    "uri": "https://policies.google.com/privacy"
+                  },
+                  "content": [
+                    {
+                      "nodeType": "text",
+                      "value": "privacy policy",
+                      "marks": [],
+                      "data": {}
+                    }
+                  ]
+                },
+                {
+                  "nodeType": "text",
+                  "value": ". The website does not send account IDs, support messages, inquiry fields, or email subscription data to the data layer. Container administrators must keep tags and consent requirements aligned with this policy.",
+                  "marks": [],
+                  "data": {}
+                }
+              ]
+            },
+            {
+              "nodeType": "paragraph",
+              "data": {},
+              "content": [
+                {
+                  "nodeType": "text",
+                  "value": "Questions? Email ",
+                  "marks": [],
+                  "data": {}
+                },
+                {
+                  "nodeType": "embedded-entry-inline",
+                  "data": {
+                    "target": {
+                      "sys": {
+                        "type": "Link",
+                        "linkType": "Entry",
+                        "id": "b2t-action-legal-email"
+                      }
+                    }
+                  },
+                  "content": []
+                },
+                {
+                  "nodeType": "text",
+                  "value": " or",
+                  "marks": [],
+                  "data": {}
+                },
+                {
+                  "nodeType": "text",
+                  "value": " ",
+                  "marks": [],
+                  "data": {}
+                },
+                {
+                  "nodeType": "hyperlink",
+                  "data": {
+                    "uri": "/contact"
+                  },
+                  "content": [
+                    {
+                      "nodeType": "text",
+                      "value": "contact Bun2too, Inc.",
+                      "marks": [],
+                      "data": {}
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        "note": {
+          "nodeType": "document",
+          "data": {},
+          "content": [
+            {
+              "nodeType": "paragraph",
+              "data": {},
+              "content": [
+                {
+                  "nodeType": "text",
+                  "value": "Last updated: November 8, 2026.",
+                  "marks": [],
+                  "data": {}
+                }
+              ]
+            }
+          ]
+        },
+        "anchor": ""
+      }
+    },
+    {
+      "id": "b2t-block-terms-intro",
+      "type": "b2tBlock",
+      "fields": {
+        "name": "terms intro",
+        "kind": "intro",
+        "variant": "legal",
+        "eyebrow": "THE TERMS OF USING BUN2TOO",
+        "heading": {
+          "nodeType": "document",
+          "data": {},
+          "content": [
+            {
+              "nodeType": "paragraph",
+              "data": {},
+              "content": [
+                {
+                  "nodeType": "text",
+                  "value": "Terms & conditions.",
+                  "marks": [],
+                  "data": {}
+                }
+              ]
+            }
+          ]
+        },
+        "body": {
+          "nodeType": "document",
+          "data": {},
+          "content": []
+        },
+        "artwork": {
+          "sys": {
+            "type": "Link",
+            "linkType": "Entry",
+            "id": "b2t-art-trust-by-design"
+          }
+        },
+        "actions": []
+      }
+    },
+    {
+      "id": "b2t-block-terms-0",
+      "type": "b2tBlock",
+      "fields": {
+        "name": "terms 0",
+        "kind": "richText",
+        "variant": "default",
+        "body": {
+          "nodeType": "document",
+          "data": {},
+          "content": [
+            {
+              "nodeType": "paragraph",
+              "data": {},
+              "content": [
+                {
+                  "nodeType": "text",
+                  "value": "These terms govern your use of bun2too.com, including its public pages, Insights, account features, and support inquiry tools (the “Site”). “Bun2Too,” “we,” and “us” mean Bun2too, Inc.; “you” means the person using the Site and any organization they are authorized to represent. By using the Site, you agree to these terms. If you do not agree, stop using the Site.",
+                  "marks": [],
+                  "data": {}
+                }
+              ]
+            },
+            {
+              "nodeType": "paragraph",
+              "data": {},
+              "content": [
+                {
+                  "nodeType": "hyperlink",
+                  "data": {
+                    "uri": "#use"
+                  },
+                  "content": [
+                    {
+                      "nodeType": "text",
+                      "value": "Using the Site",
+                      "marks": [],
+                      "data": {}
+                    }
+                  ]
+                },
+                {
+                  "nodeType": "text",
+                  "value": " · ",
+                  "marks": [],
+                  "data": {}
+                },
+                {
+                  "nodeType": "hyperlink",
+                  "data": {
+                    "uri": "#ai"
+                  },
+                  "content": [
+                    {
+                      "nodeType": "text",
+                      "value": "AI & information",
+                      "marks": [],
+                      "data": {}
+                    }
+                  ]
+                },
+                {
+                  "nodeType": "text",
+                  "value": " · ",
+                  "marks": [],
+                  "data": {}
+                },
+                {
+                  "nodeType": "hyperlink",
+                  "data": {
+                    "uri": "#liability"
+                  },
+                  "content": [
+                    {
+                      "nodeType": "text",
+                      "value": "Risk & liability",
+                      "marks": [],
+                      "data": {}
+                    }
+                  ]
+                },
+                {
+                  "nodeType": "text",
+                  "value": " · ",
+                  "marks": [],
+                  "data": {}
+                },
+                {
+                  "nodeType": "hyperlink",
+                  "data": {
+                    "uri": "#disputes"
+                  },
+                  "content": [
+                    {
+                      "nodeType": "text",
+                      "value": "Law & disputes",
+                      "marks": [],
+                      "data": {}
+                    }
+                  ]
+                },
+                {
+                  "nodeType": "text",
+                  "value": " · ",
+                  "marks": [],
+                  "data": {}
+                },
+                {
+                  "nodeType": "hyperlink",
+                  "data": {
+                    "uri": "/privacy"
+                  },
+                  "content": [
+                    {
+                      "nodeType": "text",
+                      "value": "Privacy",
+                      "marks": [],
+                      "data": {}
+                    }
+                  ]
+                },
+                {
+                  "nodeType": "text",
+                  "value": " · ",
+                  "marks": [],
+                  "data": {}
+                },
+                {
+                  "nodeType": "hyperlink",
+                  "data": {
+                    "uri": "/cookies"
+                  },
+                  "content": [
+                    {
+                      "nodeType": "text",
+                      "value": "Cookies",
+                      "marks": [],
+                      "data": {}
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        "note": {
+          "nodeType": "document",
+          "data": {},
+          "content": [
+            {
+              "nodeType": "paragraph",
+              "data": {},
+              "content": [
+                {
+                  "nodeType": "text",
+                  "value": "Effective: November 8, 2026 · Operator: Bun2too, Inc.",
+                  "marks": [],
+                  "data": {}
+                }
+              ]
+            }
+          ]
+        },
+        "anchor": ""
+      }
+    },
+    {
+      "id": "b2t-block-terms-1",
+      "type": "b2tBlock",
+      "fields": {
+        "name": "terms 1",
+        "kind": "richText",
+        "variant": "default",
+        "body": {
+          "nodeType": "document",
+          "data": {},
+          "content": [
+            {
+              "nodeType": "heading-2",
+              "data": {},
+              "content": [
+                {
+                  "nodeType": "text",
+                  "value": "1. Eligibility and accounts",
+                  "marks": [],
+                  "data": {}
+                }
+              ]
+            },
+            {
+              "nodeType": "paragraph",
+              "data": {},
+              "content": [
+                {
+                  "nodeType": "text",
+                  "value": "Account creation and interactive services are intended for people at least 18 years old who can enter a binding agreement. If you act for an organization, you confirm you have authority to bind it. Provide accurate account and contact information, protect your credentials, and promptly tell us about suspected unauthorized use. You are responsible for activity you authorize through your account, subject to applicable law. Do not share another person’s identity or bypass authentication controls.",
+                  "marks": [],
+                  "data": {}
+                }
+              ]
+            }
+          ]
+        },
+        "note": {
+          "nodeType": "document",
+          "data": {},
+          "content": []
+        },
+        "anchor": "use"
+      }
+    },
+    {
+      "id": "b2t-block-terms-2",
+      "type": "b2tBlock",
+      "fields": {
+        "name": "terms 2",
+        "kind": "richText",
+        "variant": "default",
+        "body": {
+          "nodeType": "document",
+          "data": {},
+          "content": [
+            {
+              "nodeType": "heading-2",
+              "data": {},
+              "content": [
+                {
+                  "nodeType": "text",
+                  "value": "2. Website information and business engagements",
+                  "marks": [],
+                  "data": {}
+                }
+              ]
+            },
+            {
+              "nodeType": "paragraph",
+              "data": {},
+              "content": [
+                {
+                  "nodeType": "text",
+                  "value": "The Site describes capabilities and illustrative use cases. Statements about AI engineering, infrastructure, customer data, identity, analytics, consent, and fintech experiments are general information, not a promise of a particular result, regulatory status, service level, security certification, or delivery schedule. Submitting an inquiry does not create a client, fiduciary, advisory, or confidential professional relationship.",
+                  "marks": [],
+                  "data": {}
+                }
+              ]
+            },
+            {
+              "nodeType": "paragraph",
+              "data": {},
+              "content": [
+                {
+                  "nodeType": "text",
+                  "value": "Paid consulting, implementation, hosting, and other business services require a separate written agreement. That agreement controls its scope, deliverables, fees, intellectual property, confidentiality, data processing, warranties, and liability if they conflict with these website terms. No purchase or paid engagement is created by using this Site.",
+                  "marks": [],
+                  "data": {}
+                }
+              ]
+            }
+          ]
+        },
+        "note": {
+          "nodeType": "document",
+          "data": {},
+          "content": []
+        },
+        "anchor": ""
+      }
+    },
+    {
+      "id": "b2t-block-terms-3",
+      "type": "b2tBlock",
+      "fields": {
+        "name": "terms 3",
+        "kind": "richText",
+        "variant": "default",
+        "body": {
+          "nodeType": "document",
+          "data": {},
+          "content": [
+            {
+              "nodeType": "heading-2",
+              "data": {},
+              "content": [
+                {
+                  "nodeType": "text",
+                  "value": "3. Permitted use and security",
+                  "marks": [],
+                  "data": {}
+                }
+              ]
+            },
+            {
+              "nodeType": "paragraph",
+              "data": {},
+              "content": [
+                {
+                  "nodeType": "text",
+                  "value": "You may use the Site lawfully to learn about our work and interact with the features we make available. Do not use it to infringe rights, impersonate others, send spam, upload malware, harass people, commit fraud, or violate applicable sanctions or export restrictions. Do not probe private systems without authorization, circumvent access or rate limits, disrupt availability, extract private records, or use the Site to obtain secrets or evade its access controls.",
+                  "marks": [],
+                  "data": {}
+                }
+              ]
+            },
+            {
+              "nodeType": "paragraph",
+              "data": {},
+              "content": [
+                {
+                  "nodeType": "text",
+                  "value": "Public search engines and AI discovery agents may index public pages in accordance with our published crawler rules, reasonable rate limits, and applicable law. This permission does not grant access to private accounts, private inquiries, internal APIs, or restricted content, or a license to republish our entire site or imply our endorsement. Legal rights that cannot be restricted by contract remain unaffected.",
+                  "marks": [],
+                  "data": {}
+                }
+              ]
+            }
+          ]
+        },
+        "note": {
+          "nodeType": "document",
+          "data": {},
+          "content": []
+        },
+        "anchor": ""
+      }
+    },
+    {
+      "id": "b2t-block-terms-4",
+      "type": "b2tBlock",
+      "fields": {
+        "name": "terms 4",
+        "kind": "richText",
+        "variant": "default",
+        "body": {
+          "nodeType": "document",
+          "data": {},
+          "content": [
+            {
+              "nodeType": "heading-2",
+              "data": {},
+              "content": [
+                {
+                  "nodeType": "text",
+                  "value": "4. Site content and intellectual property",
+                  "marks": [],
+                  "data": {}
+                }
+              ]
+            },
+            {
+              "nodeType": "paragraph",
+              "data": {},
+              "content": [
+                {
+                  "nodeType": "text",
+                  "value": "We and our licensors retain rights in our branding, designs, software, and original Site content. You receive a limited permission to access and use the Site for its intended purposes. Keep attribution and ownership notices intact. You may link to public pages and use brief, attributed quotations where permitted by law. Broader reproduction, commercial redistribution, or use of our trademarks requires permission. Third-party names, logos, code, and cited material remain subject to their owners’ rights and any applicable licenses. References to providers do not imply partnership or endorsement.",
+                  "marks": [],
+                  "data": {}
+                }
+              ]
+            }
+          ]
+        },
+        "note": {
+          "nodeType": "document",
+          "data": {},
+          "content": []
+        },
+        "anchor": ""
+      }
+    },
+    {
+      "id": "b2t-block-terms-5",
+      "type": "b2tBlock",
+      "fields": {
+        "name": "terms 5",
+        "kind": "richText",
+        "variant": "default",
+        "body": {
+          "nodeType": "document",
+          "data": {},
+          "content": [
+            {
+              "nodeType": "heading-2",
+              "data": {},
+              "content": [
+                {
+                  "nodeType": "text",
+                  "value": "5. Information you submit",
+                  "marks": [],
+                  "data": {}
+                }
+              ]
+            },
+            {
+              "nodeType": "paragraph",
+              "data": {},
+              "content": [
+                {
+                  "nodeType": "text",
+                  "value": "You retain your rights in questions, inquiry messages, and other material you submit. You confirm that you have the permissions needed to share it and allow us and the service providers involved to process it to operate, secure, and respond through the feature you use, as described in our ",
+                  "marks": [],
+                  "data": {}
+                },
+                {
+                  "nodeType": "hyperlink",
+                  "data": {
+                    "uri": "/privacy"
+                  },
+                  "content": [
+                    {
+                      "nodeType": "text",
+                      "value": "Privacy & consent notice",
+                      "marks": [],
+                      "data": {}
+                    }
+                  ]
+                },
+                {
+                  "nodeType": "text",
+                  "value": ". This permission does not transfer ownership or give us a blanket right to sell your submissions or use them to train a general-purpose model.",
+                  "marks": [],
+                  "data": {}
+                }
+              ]
+            },
+            {
+              "nodeType": "paragraph",
+              "data": {},
+              "content": [
+                {
+                  "nodeType": "text",
+                  "value": "Do not submit passwords, authentication codes, payment credentials, confidential client records, sensitive personal data, or information requiring special regulatory handling. Public inquiry forms are not approved channels for regulated or confidential project data. Agree an appropriate secure channel and written protections with us before sharing such material.",
+                  "marks": [],
+                  "data": {}
+                }
+              ]
+            }
+          ]
+        },
+        "note": {
+          "nodeType": "document",
+          "data": {},
+          "content": []
+        },
+        "anchor": ""
+      }
+    },
+    {
+      "id": "b2t-block-terms-6",
+      "type": "b2tBlock",
+      "fields": {
+        "name": "terms 6",
+        "kind": "richText",
+        "variant": "default",
+        "body": {
+          "nodeType": "document",
+          "data": {},
+          "content": [
+            {
+              "nodeType": "heading-2",
+              "data": {},
+              "content": [
+                {
+                  "nodeType": "text",
+                  "value": "6. AI-generated editorial material",
+                  "marks": [],
+                  "data": {}
+                }
+              ]
+            },
+            {
+              "nodeType": "paragraph",
+              "data": {},
+              "content": [
+                {
+                  "nodeType": "text",
+                  "value": "Some articles, illustrations, and demonstrations may include AI-generated material. Such material and its citations may be incomplete, outdated, or inaccurate. Check the original sources before relying on a statement. Outputs may resemble other material or be subject to third-party rights; we do not guarantee exclusivity or ownership of every output.",
+                  "marks": [],
+                  "data": {}
+                }
+              ]
+            },
+            {
+              "nodeType": "paragraph",
+              "data": {},
+              "content": [
+                {
+                  "nodeType": "text",
+                  "value": "The Site currently does not provide an AI support chat. Editorial content and demonstrations cannot bind Bun2Too to contracts, pricing, refunds, delivery dates, or legal commitments. Review consequential decisions with an appropriately qualified person.",
+                  "marks": [],
+                  "data": {}
+                }
+              ]
+            }
+          ]
+        },
+        "note": {
+          "nodeType": "document",
+          "data": {},
+          "content": []
+        },
+        "anchor": "ai"
+      }
+    },
+    {
+      "id": "b2t-block-terms-7",
+      "type": "b2tBlock",
+      "fields": {
+        "name": "terms 7",
+        "kind": "richText",
+        "variant": "default",
+        "body": {
+          "nodeType": "document",
+          "data": {},
+          "content": [
+            {
+              "nodeType": "heading-2",
+              "data": {},
+              "content": [
+                {
+                  "nodeType": "text",
+                  "value": "7. No professional or investment advice",
+                  "marks": [],
+                  "data": {}
+                }
+              ]
+            },
+            {
+              "nodeType": "paragraph",
+              "data": {},
+              "content": [
+                {
+                  "nodeType": "text",
+                  "value": "Articles, demonstrations, stock picks, forecasts, and experiments are educational or illustrative. They are not investment recommendations, offers to trade securities, or legal, medical, tax, financial, or compliance advice. Historical or simulated results do not predict future performance. You remain responsible for your decisions and for obtaining independent advice appropriate to your situation.",
+                  "marks": [],
+                  "data": {}
+                }
+              ]
+            }
+          ]
+        },
+        "note": {
+          "nodeType": "document",
+          "data": {},
+          "content": []
+        },
+        "anchor": ""
+      }
+    },
+    {
+      "id": "b2t-block-terms-8",
+      "type": "b2tBlock",
+      "fields": {
+        "name": "terms 8",
+        "kind": "richText",
+        "variant": "default",
+        "body": {
+          "nodeType": "document",
+          "data": {},
+          "content": [
+            {
+              "nodeType": "heading-2",
+              "data": {},
+              "content": [
+                {
+                  "nodeType": "text",
+                  "value": "8. Privacy, cookies, and communications",
+                  "marks": [],
+                  "data": {}
+                }
+              ]
+            },
+            {
+              "nodeType": "paragraph",
+              "data": {},
+              "content": [
+                {
+                  "nodeType": "text",
+                  "value": "Our ",
+                  "marks": [],
+                  "data": {}
+                },
+                {
+                  "nodeType": "hyperlink",
+                  "data": {
+                    "uri": "/privacy"
+                  },
+                  "content": [
+                    {
+                      "nodeType": "text",
+                      "value": "privacy notice",
+                      "marks": [],
+                      "data": {}
+                    }
+                  ]
+                },
+                {
+                  "nodeType": "text",
+                  "value": " and",
+                  "marks": [],
+                  "data": {}
+                },
+                {
+                  "nodeType": "text",
+                  "value": " ",
+                  "marks": [],
+                  "data": {}
+                },
+                {
+                  "nodeType": "hyperlink",
+                  "data": {
+                    "uri": "/cookies"
+                  },
+                  "content": [
+                    {
+                      "nodeType": "text",
+                      "value": "cookie policy",
+                      "marks": [],
+                      "data": {}
+                    }
+                  ]
+                },
+                {
+                  "nodeType": "text",
+                  "value": " explain current data processing, storage, and choices. Agreeing to these terms does not opt you into marketing, optional browser storage, push notifications, or inquiry processing. Those choices are separate. Account creation alone does not subscribe you to email updates. You may withdraw optional consent through the relevant controls without accepting optional cookies to browse public pages.",
+                  "marks": [],
+                  "data": {}
+                }
+              ]
+            }
+          ]
+        },
+        "note": {
+          "nodeType": "document",
+          "data": {},
+          "content": []
+        },
+        "anchor": ""
+      }
+    },
+    {
+      "id": "b2t-block-terms-9",
+      "type": "b2tBlock",
+      "fields": {
+        "name": "terms 9",
+        "kind": "richText",
+        "variant": "default",
+        "body": {
+          "nodeType": "document",
+          "data": {},
+          "content": [
+            {
+              "nodeType": "heading-2",
+              "data": {},
+              "content": [
+                {
+                  "nodeType": "text",
+                  "value": "9. Third-party services and links",
+                  "marks": [],
+                  "data": {}
+                }
+              ]
+            },
+            {
+              "nodeType": "paragraph",
+              "data": {},
+              "content": [
+                {
+                  "nodeType": "text",
+                  "value": "Authentication, hosting, AI responses, editorial content, and other features depend on providers and linked sources. When you visit or use a provider’s service, its applicable terms and notices also apply. We do not control external sites or guarantee their accuracy, continued availability, security, or suitability. An external link does not transfer responsibility for a third party’s independent conduct to Bun2Too. This does not exclude responsibilities that applicable law places on us.",
+                  "marks": [],
+                  "data": {}
+                }
+              ]
+            }
+          ]
+        },
+        "note": {
+          "nodeType": "document",
+          "data": {},
+          "content": []
+        },
+        "anchor": ""
+      }
+    },
+    {
+      "id": "b2t-block-terms-10",
+      "type": "b2tBlock",
+      "fields": {
+        "name": "terms 10",
+        "kind": "richText",
+        "variant": "default",
+        "body": {
+          "nodeType": "document",
+          "data": {},
+          "content": [
+            {
+              "nodeType": "heading-2",
+              "data": {},
+              "content": [
+                {
+                  "nodeType": "text",
+                  "value": "10. Availability, changes, and suspension",
+                  "marks": [],
+                  "data": {}
+                }
+              ]
+            },
+            {
+              "nodeType": "paragraph",
+              "data": {},
+              "content": [
+                {
+                  "nodeType": "text",
+                  "value": "We may update or discontinue free Site features and apply reasonable usage limits. We may restrict access to address misuse, a security incident, legal requirements, or material breach. Where practicable and appropriate, we will explain a restriction and provide a way to contact us; urgent security or legal action may require acting first. No uptime, response-time, backup, or support-service commitment is created by these website terms. Obligations under a separate signed agreement remain governed by that agreement.",
+                  "marks": [],
+                  "data": {}
+                }
+              ]
+            }
+          ]
+        },
+        "note": {
+          "nodeType": "document",
+          "data": {},
+          "content": []
+        },
+        "anchor": ""
+      }
+    },
+    {
+      "id": "b2t-block-terms-11",
+      "type": "b2tBlock",
+      "fields": {
+        "name": "terms 11",
+        "kind": "richText",
+        "variant": "default",
+        "body": {
+          "nodeType": "document",
+          "data": {},
+          "content": [
+            {
+              "nodeType": "heading-2",
+              "data": {},
+              "content": [
+                {
+                  "nodeType": "text",
+                  "value": "11. Warranty disclaimer",
+                  "marks": [],
+                  "data": {}
+                }
+              ]
+            },
+            {
+              "nodeType": "paragraph",
+              "data": {},
+              "content": [
+                {
+                  "nodeType": "text",
+                  "value": "To the extent permitted by law, the Site and its information, demonstrations, and AI responses are provided as available, without contractual warranties of accuracy, uninterrupted operation, fitness for a particular purpose, merchantability, or non-infringement.",
+                  "marks": [
+                    {
+                      "type": "bold"
+                    }
+                  ],
+                  "data": {}
+                },
+                {
+                  "nodeType": "text",
+                  "value": " ",
+                  "marks": [],
+                  "data": {}
+                },
+                {
+                  "nodeType": "text",
+                  "value": "We do not promise that a demonstration will suit your production environment or that the Site will be free of errors or vulnerabilities. Any warranties or consumer protections that cannot lawfully be excluded remain in effect.",
+                  "marks": [],
+                  "data": {}
+                }
+              ]
+            }
+          ]
+        },
+        "note": {
+          "nodeType": "document",
+          "data": {},
+          "content": []
+        },
+        "anchor": "liability"
+      }
+    },
+    {
+      "id": "b2t-block-terms-12",
+      "type": "b2tBlock",
+      "fields": {
+        "name": "terms 12",
+        "kind": "richText",
+        "variant": "default",
+        "body": {
+          "nodeType": "document",
+          "data": {},
+          "content": [
+            {
+              "nodeType": "heading-2",
+              "data": {},
+              "content": [
+                {
+                  "nodeType": "text",
+                  "value": "12. Limits of liability",
+                  "marks": [],
+                  "data": {}
+                }
+              ]
+            },
+            {
+              "nodeType": "paragraph",
+              "data": {},
+              "content": [
+                {
+                  "nodeType": "text",
+                  "value": "To the fullest extent permitted by applicable law, Bun2too, Inc. and its officers, employees, and agents will not be liable under these website terms for indirect or consequential loss, lost profits, lost business opportunities, or loss of data arising from your use of the free Site. Our combined total liability for claims arising from the free Site or these terms is limited to US $100.",
+                  "marks": [
+                    {
+                      "type": "bold"
+                    }
+                  ],
+                  "data": {}
+                },
+                {
+                  "nodeType": "text",
+                  "value": " ",
+                  "marks": [],
+                  "data": {}
+                },
+                {
+                  "nodeType": "text",
+                  "value": "These limits apply regardless of the legal theory and only where legally enforceable.",
+                  "marks": [],
+                  "data": {}
+                }
+              ]
+            },
+            {
+              "nodeType": "paragraph",
+              "data": {},
+              "content": [
+                {
+                  "nodeType": "text",
+                  "value": "These exclusions and limits do not apply to fraud, willful misconduct, gross negligence, death or personal injury caused by negligence, or any liability or remedy that cannot lawfully be excluded or limited. Separate signed service agreements govern liability for paid engagements. Nothing here removes mandatory consumer rights or other non-waivable statutory protections.",
+                  "marks": [],
+                  "data": {}
+                }
+              ]
+            }
+          ]
+        },
+        "note": {
+          "nodeType": "document",
+          "data": {},
+          "content": []
+        },
+        "anchor": ""
+      }
+    },
+    {
+      "id": "b2t-block-terms-13",
+      "type": "b2tBlock",
+      "fields": {
+        "name": "terms 13",
+        "kind": "richText",
+        "variant": "default",
+        "body": {
+          "nodeType": "document",
+          "data": {},
+          "content": [
+            {
+              "nodeType": "heading-2",
+              "data": {},
+              "content": [
+                {
+                  "nodeType": "text",
+                  "value": "13. Business-user indemnity",
+                  "marks": [],
+                  "data": {}
+                }
+              ]
+            },
+            {
+              "nodeType": "paragraph",
+              "data": {},
+              "content": [
+                {
+                  "nodeType": "text",
+                  "value": "If you use the Site on behalf of a business, that business agrees, where permitted by law, to indemnify Bun2too, Inc. for third-party claims and reasonable related costs to the extent caused by its unlawful use, material breach of these terms, or submitted content that infringes another person’s rights. This obligation does not cover loss caused by our own breach, negligence, or misconduct. We will promptly notify you of a claim, allow reasonable participation in its defense, and will not agree to a settlement imposing an admission or non-monetary obligation on you without your consent. This section does not impose an indemnity on consumers using the Site personally.",
+                  "marks": [],
+                  "data": {}
+                }
+              ]
+            }
+          ]
+        },
+        "note": {
+          "nodeType": "document",
+          "data": {},
+          "content": []
+        },
+        "anchor": ""
+      }
+    },
+    {
+      "id": "b2t-block-terms-14",
+      "type": "b2tBlock",
+      "fields": {
+        "name": "terms 14",
+        "kind": "richText",
+        "variant": "default",
+        "body": {
+          "nodeType": "document",
+          "data": {},
+          "content": [
+            {
+              "nodeType": "heading-2",
+              "data": {},
+              "content": [
+                {
+                  "nodeType": "text",
+                  "value": "14. Governing law and disputes",
+                  "marks": [],
+                  "data": {}
+                }
+              ]
+            },
+            {
+              "nodeType": "paragraph",
+              "data": {},
+              "content": [
+                {
+                  "nodeType": "text",
+                  "value": "Texas law governs these terms, excluding its choice-of-law rules, except where mandatory law requires otherwise. Subject to any non-waivable right to bring a claim elsewhere, disputes will be brought in the state courts in Collin County, Texas, or the federal courts serving that county where federal jurisdiction exists. Each party consents to those courts’ jurisdiction. Mandatory protections in your place of residence continue to apply when required by law.",
+                  "marks": [],
+                  "data": {}
+                }
+              ]
+            },
+            {
+              "nodeType": "paragraph",
+              "data": {},
+              "content": [
+                {
+                  "nodeType": "text",
+                  "value": "Please ",
+                  "marks": [],
+                  "data": {}
+                },
+                {
+                  "nodeType": "hyperlink",
+                  "data": {
+                    "uri": "/contact"
+                  },
+                  "content": [
+                    {
+                      "nodeType": "text",
+                      "value": "contact us",
+                      "marks": [],
+                      "data": {}
+                    }
+                  ]
+                },
+                {
+                  "nodeType": "text",
+                  "value": " first so we can try to resolve a concern. This request does not delay a filing deadline, prevent urgent relief, or require arbitration. These terms do not impose a class-action waiver.",
+                  "marks": [],
+                  "data": {}
+                }
+              ]
+            }
+          ]
+        },
+        "note": {
+          "nodeType": "document",
+          "data": {},
+          "content": []
+        },
+        "anchor": "disputes"
+      }
+    },
+    {
+      "id": "b2t-block-terms-15",
+      "type": "b2tBlock",
+      "fields": {
+        "name": "terms 15",
+        "kind": "richText",
+        "variant": "default",
+        "body": {
+          "nodeType": "document",
+          "data": {},
+          "content": [
+            {
+              "nodeType": "heading-2",
+              "data": {},
+              "content": [
+                {
+                  "nodeType": "text",
+                  "value": "15. Updates and general provisions",
+                  "marks": [],
+                  "data": {}
+                }
+              ]
+            },
+            {
+              "nodeType": "paragraph",
+              "data": {},
+              "content": [
+                {
+                  "nodeType": "text",
+                  "value": "We will publish updated terms with a new effective date. For material changes, we will provide reasonable advance notice on the Site or through an appropriate contact channel where practicable; urgent legal or security changes may take effect sooner. Changes apply prospectively, subject to any acceptance required by law. If you disagree with revised terms, stop using the affected features. Keeping a dated copy is recommended.",
+                  "marks": [],
+                  "data": {}
+                }
+              ]
+            },
+            {
+              "nodeType": "paragraph",
+              "data": {},
+              "content": [
+                {
+                  "nodeType": "text",
+                  "value": "If a provision cannot be enforced, the remaining provisions continue where legally possible. A delay in enforcement is not a waiver. You may not transfer your obligations without our consent, except where the law allows it. We may transfer these terms with a lawful business succession without reducing mandatory protections. These terms concern the Site and do not replace a signed services agreement or any rights that cannot be waived.",
+                  "marks": [],
+                  "data": {}
+                }
+              ]
+            }
+          ]
+        },
+        "note": {
+          "nodeType": "document",
+          "data": {},
+          "content": []
+        },
+        "anchor": ""
+      }
+    },
+    {
+      "id": "b2t-block-terms-16",
+      "type": "b2tBlock",
+      "fields": {
+        "name": "terms 16",
+        "kind": "richText",
+        "variant": "default",
+        "body": {
+          "nodeType": "document",
+          "data": {},
+          "content": [
+            {
+              "nodeType": "heading-2",
+              "data": {},
+              "content": [
+                {
+                  "nodeType": "text",
+                  "value": "16. Contact Bun2too, Inc.",
+                  "marks": [],
+                  "data": {}
+                }
+              ]
+            },
+            {
+              "nodeType": "paragraph",
+              "data": {},
+              "content": [
+                {
+                  "nodeType": "text",
+                  "value": "Legal and privacy questions: ",
+                  "marks": [],
+                  "data": {}
+                },
+                {
+                  "nodeType": "embedded-entry-inline",
+                  "data": {
+                    "target": {
+                      "sys": {
+                        "type": "Link",
+                        "linkType": "Entry",
+                        "id": "b2t-action-legal-email"
+                      }
+                    }
+                  },
+                  "content": []
+                },
+                {
+                  "nodeType": "text",
+                  "value": ".",
+                  "marks": [],
+                  "data": {}
+                }
+              ]
+            },
+            {
+              "nodeType": "paragraph",
+              "data": {},
+              "content": [
+                {
+                  "nodeType": "text",
+                  "value": "For terms, privacy, intellectual-property concerns, or a request for an appropriate legal contact channel, use our",
+                  "marks": [],
+                  "data": {}
+                },
+                {
+                  "nodeType": "text",
+                  "value": " ",
+                  "marks": [],
+                  "data": {}
+                },
+                {
+                  "nodeType": "hyperlink",
+                  "data": {
+                    "uri": "/contact"
+                  },
+                  "content": [
+                    {
+                      "nodeType": "text",
+                      "value": "contact page",
+                      "marks": [],
+                      "data": {}
+                    }
+                  ]
+                },
+                {
+                  "nodeType": "text",
+                  "value": " and identify your request clearly. Do not include confidential documents in an initial public-site inquiry. Website support is not an agent for formal service of legal process unless separately authorized by law.",
+                  "marks": [],
+                  "data": {}
+                }
+              ]
+            }
+          ]
+        },
+        "note": {
+          "nodeType": "document",
+          "data": {},
+          "content": []
+        },
+        "anchor": ""
+      }
+    },
+    {
+      "id": "b2t-page-home",
+      "type": "b2tPage",
+      "fields": {
+        "name": "AI engineering & connected customer technology",
+        "path": "/",
+        "seoTitle": "AI engineering & connected customer technology",
+        "seoDescription": "Bun2Too helps businesses build and deploy AI, set up AI infrastructure, and connect customer data, identity, analytics, and consent.",
+        "layout": "default",
+        "blocks": [
+          {
+            "sys": {
+              "type": "Link",
+              "linkType": "Entry",
+              "id": "b2t-block-home-hero"
+            }
+          },
+          {
+            "sys": {
+              "type": "Link",
+              "linkType": "Entry",
+              "id": "b2t-block-focus"
+            }
+          },
+          {
+            "sys": {
+              "type": "Link",
+              "linkType": "Entry",
+              "id": "b2t-block-services-home"
+            }
+          },
+          {
+            "sys": {
+              "type": "Link",
+              "linkType": "Entry",
+              "id": "b2t-block-approach"
+            }
+          },
+          {
+            "sys": {
+              "type": "Link",
+              "linkType": "Entry",
+              "id": "b2t-block-insights-promotion"
+            }
+          },
+          {
+            "sys": {
+              "type": "Link",
+              "linkType": "Entry",
+              "id": "b2t-block-newsletter"
+            }
+          },
+          {
+            "sys": {
+              "type": "Link",
+              "linkType": "Entry",
+              "id": "b2t-block-cta"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "b2t-page-services",
+      "type": "b2tPage",
+      "fields": {
+        "name": "AI engineering, infrastructure & customer technology services",
+        "path": "/services",
+        "seoTitle": "AI engineering, infrastructure & customer technology services",
+        "seoDescription": "Build and deploy AI with Bun2Too: forward-deployed engineering, AI environments, CDP integration, CIAM, analytics, and consent.",
+        "layout": "default",
+        "blocks": [
+          {
+            "sys": {
+              "type": "Link",
+              "linkType": "Entry",
+              "id": "b2t-block-services-intro"
+            }
+          },
+          {
+            "sys": {
+              "type": "Link",
+              "linkType": "Entry",
+              "id": "b2t-block-services-full"
+            }
+          },
+          {
+            "sys": {
+              "type": "Link",
+              "linkType": "Entry",
+              "id": "b2t-block-cta"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "b2t-page-process",
+      "type": "b2tPage",
+      "fields": {
+        "name": "Our process: discover, design, deliver & evolve",
+        "path": "/process",
+        "seoTitle": "Our process: discover, design, deliver & evolve",
+        "seoDescription": "How Bun2Too maps customer journeys, designs connected systems, tests integrations and identity flows, and improves customer technology after launch.",
+        "layout": "default",
+        "blocks": [
+          {
+            "sys": {
+              "type": "Link",
+              "linkType": "Entry",
+              "id": "b2t-block-process-intro"
+            }
+          },
+          {
+            "sys": {
+              "type": "Link",
+              "linkType": "Entry",
+              "id": "b2t-block-process"
+            }
+          },
+          {
+            "sys": {
+              "type": "Link",
+              "linkType": "Entry",
+              "id": "b2t-block-cta"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "b2t-page-usecases",
+      "type": "b2tPage",
+      "fields": {
+        "name": "AI engineering, infrastructure & customer technology use cases",
+        "path": "/usecases",
+        "seoTitle": "AI engineering, infrastructure & customer technology use cases",
+        "seoDescription": "Explore AI application delivery, infrastructure setup, unified customer profiles, secure sign-in, analytics, consent, and applied fintech experiments.",
+        "layout": "default",
+        "blocks": [
+          {
+            "sys": {
+              "type": "Link",
+              "linkType": "Entry",
+              "id": "b2t-block-usecases-intro"
+            }
+          },
+          {
+            "sys": {
+              "type": "Link",
+              "linkType": "Entry",
+              "id": "b2t-block-usecases"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "b2t-page-insights",
+      "type": "b2tPage",
+      "fields": {
+        "name": "Insights on AI, engineering & customer technology",
+        "path": "/insights",
+        "seoTitle": "Insights on AI, engineering & customer technology",
+        "seoDescription": "Read Bun2Too field notes on AI, software engineering, customer data, identity, and consent, with sources and practical lessons.",
+        "layout": "insights",
+        "blocks": [
+          {
+            "sys": {
+              "type": "Link",
+              "linkType": "Entry",
+              "id": "b2t-block-insights-intro"
+            }
+          },
+          {
+            "sys": {
+              "type": "Link",
+              "linkType": "Entry",
+              "id": "b2t-block-insights-feed"
+            }
+          },
+          {
+            "sys": {
+              "type": "Link",
+              "linkType": "Entry",
+              "id": "b2t-block-newsletter-insights"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "b2t-page-contact",
+      "type": "b2tPage",
+      "fields": {
+        "name": "Contact Bun2Too about customer technology",
+        "path": "/contact",
+        "seoTitle": "Contact Bun2Too about customer technology",
+        "seoDescription": "Discuss AI engineering, infrastructure setup, or customer technology with Bun2Too. Send a private inquiry to our team.",
+        "layout": "default",
+        "blocks": [
+          {
+            "sys": {
+              "type": "Link",
+              "linkType": "Entry",
+              "id": "b2t-block-contact-intro"
+            }
+          },
+          {
+            "sys": {
+              "type": "Link",
+              "linkType": "Entry",
+              "id": "b2t-block-contact-strip"
+            }
+          },
+          {
+            "sys": {
+              "type": "Link",
+              "linkType": "Entry",
+              "id": "b2t-block-newsletter"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "b2t-page-support",
+      "type": "b2tPage",
+      "fields": {
+        "name": "Customer support & frequently asked questions",
+        "path": "/support",
+        "seoTitle": "Customer support & frequently asked questions",
+        "seoDescription": "Get help with Bun2Too services, applications, accounts, and subscriptions. Read our FAQs or send the team a private inquiry.",
+        "layout": "support",
+        "blocks": [
+          {
+            "sys": {
+              "type": "Link",
+              "linkType": "Entry",
+              "id": "b2t-block-support-intro"
+            }
+          },
+          {
+            "sys": {
+              "type": "Link",
+              "linkType": "Entry",
+              "id": "b2t-block-faqs"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "b2t-page-privacy",
+      "type": "b2tPage",
+      "fields": {
+        "name": "Privacy, consent & support data",
+        "path": "/privacy",
+        "seoTitle": "Privacy, consent & support data",
+        "seoDescription": "Learn how Bun2Too handles identity, email preferences, private inquiries, and your consent choices.",
+        "layout": "legal",
+        "blocks": [
+          {
+            "sys": {
+              "type": "Link",
+              "linkType": "Entry",
+              "id": "b2t-block-privacy-intro"
+            }
+          },
+          {
+            "sys": {
+              "type": "Link",
+              "linkType": "Entry",
+              "id": "b2t-block-privacy-0"
+            }
+          },
+          {
+            "sys": {
+              "type": "Link",
+              "linkType": "Entry",
+              "id": "b2t-block-privacy-1"
+            }
+          },
+          {
+            "sys": {
+              "type": "Link",
+              "linkType": "Entry",
+              "id": "b2t-block-privacy-2"
+            }
+          },
+          {
+            "sys": {
+              "type": "Link",
+              "linkType": "Entry",
+              "id": "b2t-block-privacy-3"
+            }
+          },
+          {
+            "sys": {
+              "type": "Link",
+              "linkType": "Entry",
+              "id": "b2t-block-privacy-4"
+            }
+          },
+          {
+            "sys": {
+              "type": "Link",
+              "linkType": "Entry",
+              "id": "b2t-block-privacy-5"
+            }
+          },
+          {
+            "sys": {
+              "type": "Link",
+              "linkType": "Entry",
+              "id": "b2t-block-privacy-6"
+            }
+          },
+          {
+            "sys": {
+              "type": "Link",
+              "linkType": "Entry",
+              "id": "b2t-block-privacy-7"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "b2t-page-cookies",
+      "type": "b2tPage",
+      "fields": {
+        "name": "Cookie policy & browser preferences",
+        "path": "/cookies",
+        "seoTitle": "Cookie policy & browser preferences",
+        "seoDescription": "Manage necessary storage, optional reading preferences, Google Analytics, and marketing choices on Bun2Too. Optional categories start off.",
+        "layout": "legal",
+        "blocks": [
+          {
+            "sys": {
+              "type": "Link",
+              "linkType": "Entry",
+              "id": "b2t-block-cookies-intro"
+            }
+          },
+          {
+            "sys": {
+              "type": "Link",
+              "linkType": "Entry",
+              "id": "b2t-block-cookies-0"
+            }
+          },
+          {
+            "sys": {
+              "type": "Link",
+              "linkType": "Entry",
+              "id": "b2t-block-cookies-1"
+            }
+          },
+          {
+            "sys": {
+              "type": "Link",
+              "linkType": "Entry",
+              "id": "b2t-block-cookies-2"
+            }
+          },
+          {
+            "sys": {
+              "type": "Link",
+              "linkType": "Entry",
+              "id": "b2t-block-cookies-3"
+            }
+          },
+          {
+            "sys": {
+              "type": "Link",
+              "linkType": "Entry",
+              "id": "b2t-block-cookies-4"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "b2t-page-terms",
+      "type": "b2tPage",
+      "fields": {
+        "name": "Website terms & conditions",
+        "path": "/terms",
+        "seoTitle": "Website terms & conditions",
+        "seoDescription": "Terms for using Bun2too, Inc.’s website, Insights, accounts, and AI support, including acceptable use, intellectual property, and service limitations.",
+        "layout": "legal",
+        "blocks": [
+          {
+            "sys": {
+              "type": "Link",
+              "linkType": "Entry",
+              "id": "b2t-block-terms-intro"
+            }
+          },
+          {
+            "sys": {
+              "type": "Link",
+              "linkType": "Entry",
+              "id": "b2t-block-terms-0"
+            }
+          },
+          {
+            "sys": {
+              "type": "Link",
+              "linkType": "Entry",
+              "id": "b2t-block-terms-1"
+            }
+          },
+          {
+            "sys": {
+              "type": "Link",
+              "linkType": "Entry",
+              "id": "b2t-block-terms-2"
+            }
+          },
+          {
+            "sys": {
+              "type": "Link",
+              "linkType": "Entry",
+              "id": "b2t-block-terms-3"
+            }
+          },
+          {
+            "sys": {
+              "type": "Link",
+              "linkType": "Entry",
+              "id": "b2t-block-terms-4"
+            }
+          },
+          {
+            "sys": {
+              "type": "Link",
+              "linkType": "Entry",
+              "id": "b2t-block-terms-5"
+            }
+          },
+          {
+            "sys": {
+              "type": "Link",
+              "linkType": "Entry",
+              "id": "b2t-block-terms-6"
+            }
+          },
+          {
+            "sys": {
+              "type": "Link",
+              "linkType": "Entry",
+              "id": "b2t-block-terms-7"
+            }
+          },
+          {
+            "sys": {
+              "type": "Link",
+              "linkType": "Entry",
+              "id": "b2t-block-terms-8"
+            }
+          },
+          {
+            "sys": {
+              "type": "Link",
+              "linkType": "Entry",
+              "id": "b2t-block-terms-9"
+            }
+          },
+          {
+            "sys": {
+              "type": "Link",
+              "linkType": "Entry",
+              "id": "b2t-block-terms-10"
+            }
+          },
+          {
+            "sys": {
+              "type": "Link",
+              "linkType": "Entry",
+              "id": "b2t-block-terms-11"
+            }
+          },
+          {
+            "sys": {
+              "type": "Link",
+              "linkType": "Entry",
+              "id": "b2t-block-terms-12"
+            }
+          },
+          {
+            "sys": {
+              "type": "Link",
+              "linkType": "Entry",
+              "id": "b2t-block-terms-13"
+            }
+          },
+          {
+            "sys": {
+              "type": "Link",
+              "linkType": "Entry",
+              "id": "b2t-block-terms-14"
+            }
+          },
+          {
+            "sys": {
+              "type": "Link",
+              "linkType": "Entry",
+              "id": "b2t-block-terms-15"
+            }
+          },
+          {
+            "sys": {
+              "type": "Link",
+              "linkType": "Entry",
+              "id": "b2t-block-terms-16"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "b2t-action-nav-0",
+      "type": "b2tAction",
+      "fields": {
+        "name": "Services",
+        "label": "Services",
+        "href": "/services",
+        "variant": "text",
+        "kind": "link"
+      }
+    },
+    {
+      "id": "b2t-action-nav-1",
+      "type": "b2tAction",
+      "fields": {
+        "name": "Our process",
+        "label": "Our process",
+        "href": "/process",
+        "variant": "text",
+        "kind": "link"
+      }
+    },
+    {
+      "id": "b2t-action-nav-2",
+      "type": "b2tAction",
+      "fields": {
+        "name": "Use cases",
+        "label": "Use cases",
+        "href": "/usecases",
+        "variant": "text",
+        "kind": "link"
+      }
+    },
+    {
+      "id": "b2t-action-nav-3",
+      "type": "b2tAction",
+      "fields": {
+        "name": "Insights",
+        "label": "Insights",
+        "href": "/insights",
+        "variant": "text",
+        "kind": "link"
+      }
+    },
+    {
+      "id": "b2t-action-footer-0",
+      "type": "b2tAction",
+      "fields": {
+        "name": "What we build",
+        "label": "What we build",
+        "href": "/services",
+        "variant": "text",
+        "kind": "link"
+      }
+    },
+    {
+      "id": "b2t-action-footer-1",
+      "type": "b2tAction",
+      "fields": {
+        "name": "Our process",
+        "label": "Our process",
+        "href": "/process",
+        "variant": "text",
+        "kind": "link"
+      }
+    },
+    {
+      "id": "b2t-action-footer-2",
+      "type": "b2tAction",
+      "fields": {
+        "name": "Get in touch",
+        "label": "Get in touch",
+        "href": "/contact",
+        "variant": "text",
+        "kind": "link"
+      }
+    },
+    {
+      "id": "b2t-action-footer-3",
+      "type": "b2tAction",
+      "fields": {
+        "name": "Support & FAQs",
+        "label": "Support & FAQs",
+        "href": "/support",
+        "variant": "text",
+        "kind": "link"
+      }
+    },
+    {
+      "id": "b2t-action-footer-4",
+      "type": "b2tAction",
+      "fields": {
+        "name": "Insights",
+        "label": "Insights",
+        "href": "/insights",
+        "variant": "text",
+        "kind": "link"
+      }
+    },
+    {
+      "id": "b2t-action-footer-5",
+      "type": "b2tAction",
+      "fields": {
+        "name": "GitHub ↗",
+        "label": "GitHub ↗",
+        "href": "https://github.com/Bun2too",
+        "variant": "text",
+        "kind": "link"
+      }
+    },
+    {
+      "id": "b2t-action-legal-0",
+      "type": "b2tAction",
+      "fields": {
+        "name": "Privacy & consent",
+        "label": "Privacy & consent",
+        "href": "/privacy",
+        "variant": "text",
+        "kind": "link"
+      }
+    },
+    {
+      "id": "b2t-action-legal-1",
+      "type": "b2tAction",
+      "fields": {
+        "name": "Cookies",
+        "label": "Cookies",
+        "href": "/cookies",
+        "variant": "text",
+        "kind": "link"
+      }
+    },
+    {
+      "id": "b2t-action-legal-2",
+      "type": "b2tAction",
+      "fields": {
+        "name": "Terms & conditions",
+        "label": "Terms & conditions",
+        "href": "/terms",
+        "variant": "text",
+        "kind": "link"
+      }
+    },
+    {
+      "id": "b2t-site",
+      "type": "b2tSite",
+      "fields": {
+        "name": "Bun2Too website",
+        "key": "website",
+        "tagline": "People. Data. Possibility.",
+        "slogan": "CUSTOMER TECHNOLOGY. HUMAN THINKING.",
+        "navigation": [
+          {
+            "sys": {
+              "type": "Link",
+              "linkType": "Entry",
+              "id": "b2t-action-nav-0"
+            }
+          },
+          {
+            "sys": {
+              "type": "Link",
+              "linkType": "Entry",
+              "id": "b2t-action-nav-1"
+            }
+          },
+          {
+            "sys": {
+              "type": "Link",
+              "linkType": "Entry",
+              "id": "b2t-action-nav-2"
+            }
+          },
+          {
+            "sys": {
+              "type": "Link",
+              "linkType": "Entry",
+              "id": "b2t-action-nav-3"
+            }
+          }
+        ],
+        "footerLinks": [
+          {
+            "sys": {
+              "type": "Link",
+              "linkType": "Entry",
+              "id": "b2t-action-footer-0"
+            }
+          },
+          {
+            "sys": {
+              "type": "Link",
+              "linkType": "Entry",
+              "id": "b2t-action-footer-1"
+            }
+          },
+          {
+            "sys": {
+              "type": "Link",
+              "linkType": "Entry",
+              "id": "b2t-action-footer-2"
+            }
+          },
+          {
+            "sys": {
+              "type": "Link",
+              "linkType": "Entry",
+              "id": "b2t-action-footer-3"
+            }
+          },
+          {
+            "sys": {
+              "type": "Link",
+              "linkType": "Entry",
+              "id": "b2t-action-footer-4"
+            }
+          },
+          {
+            "sys": {
+              "type": "Link",
+              "linkType": "Entry",
+              "id": "b2t-action-footer-5"
+            }
+          }
+        ],
+        "legalLinks": [
+          {
+            "sys": {
+              "type": "Link",
+              "linkType": "Entry",
+              "id": "b2t-action-legal-0"
+            }
+          },
+          {
+            "sys": {
+              "type": "Link",
+              "linkType": "Entry",
+              "id": "b2t-action-legal-1"
+            }
+          },
+          {
+            "sys": {
+              "type": "Link",
+              "linkType": "Entry",
+              "id": "b2t-action-legal-2"
+            }
+          }
+        ]
+      }
+    }
+  ]
+}

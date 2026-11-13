@@ -3,6 +3,12 @@ const nextConfig = {
   distDir: process.env.NEXT_BUILD_DIR || ".next",
   reactStrictMode: true,
   poweredByHeader: false,
+  images: {
+    remotePatterns: [
+      { protocol: "https", hostname: "images.ctfassets.net", pathname: "/**" },
+      { protocol: "https", hostname: "images.eu.ctfassets.net", pathname: "/**" },
+    ],
+  },
   async headers() {
     const canIndex =
       !["dev", "qa", "preview"].includes(process.env.SITE_ENVIRONMENT || "") &&

@@ -53,6 +53,8 @@ npm run dev
 
 Open **http://localhost:3000**. Public views render without private provider credentials. Auth0 login requires valid SPA settings/callbacks; subscription, private storage, and RAG behavior additionally require their server configuration. Missing configuration shows an unavailable state rather than a fabricated result.
 
+`npm run dev` starts Netlify's offline local runtime and Next.js together, including sandboxed local Blobs storage. It loads optional `.env.contentful.local` settings first, then `.env.local` overrides; existing shell variables take precedence. `dev:cms` and `dev:support` are aliases, not feature switches. Environment configuration controls CMS, inquiry and AI availability. Environment-file saves automatically restart the local runtime with fresh settings; changed shell exports require restarting the command. The browser origin stays on 3000; the internal Next.js process uses 3001.
+
 ## Views and site functions
 
 | View                                       | Function                                                                                                                      |
@@ -84,7 +86,7 @@ The active article experience is **https://bun2too.com/insights**, rendered insi
 | Auth0 Management API | `POST /api/subscriptions` records an explicit, pending, unverified passwordless email request. Anonymous duplicates do not overwrite existing choices.                                                                    |
 | Account preferences  | `GET/PATCH /api/preferences` checks access-token issuer/audience/client/scope/expiry. Activation requires verified email; authenticated users can change topics or unsubscribe.                                           |
 | Customer support | Lazy-loaded **Contact Bun2Too** private inquiry form and public FAQs. Optional Open WebUI questions require separate consent and approved public-only model/knowledge configuration. Inquiries remain independent; no transcripts attach. |
-| Private inquiries    | Separate consented form saves contact details in private Netlify Blobs. It never enrolls marketing.                                                                          |
+| Private inquiries    | Separate consented form saves contact details in private Netlify Blobs, notifies the configured management inbox through SES SMTP and sends a generic requester acknowledgment. It never enrolls marketing. |
 | Retention | Signed visitor cookie expires after 24 hours; inquiry records after 90 days. Daily cleanup also handles legacy expired conversation records. |
 | Insights updates     | Website-side reading/update controls, feeds, shared consent form, and a push/click service worker. Email digest and Web Push delivery belong to the editorial backend and require its configuration.                      |
 
@@ -93,6 +95,12 @@ The full endpoint/proxy and data-store map is in [architecture](docs/architectur
 The site-wide cookie banner offers necessary-only, optional categories, and customization. Footer **Cookie settings** reopens it. Insights read-status persistence requires preference permission. The configured GTM container loads only with Analytics permission; its container and GA4 IDs come from environment variables. Marketing controls Google advertising-related consent separately and defaults off; no standalone advertising pixel is installed. Withdrawal removes matching cookies and reloads when needed to unload running tags. Email, notifications, inquiries, and terms acceptance stay separate. [Terms/cookie documentation](docs/legal-and-cookies.md) contains the original legal draft references and review notes. Operator: **Bun2too, Inc.**; legal/privacy email: **info@bun2too.com**; proposed venue: **Collin County, Texas**.
 
 Six original hero artworks fill marketing, account, legal, and section headers. Local WebP assets, responsive `next/image` sizing, and lazy loading below the fold keep them lightweight. Official logos remain unchanged. [Visual design](docs/visual-design.md) records their prompts, locations, and consumers. Contact/legal email actions use a stable button that opens the browser’s mail handler on click, avoiding hydration mismatches caused by Gmail extensions rewriting `mailto:` anchors.
+
+## Contentful website content
+
+Public copy, page composition, navigation, FAQs, SEO and artwork support Contentful. The initial model/content is published in `master` (production) and `qa` (dev/QA); website deployment is separate. The existing design, Insights article API, Auth0 and private support integrations are preserved.
+
+See the [Contentful design and editor guide](docs/contentful-design.md) for diagrams, layout artwork, environment setup, publishing and curl checks. Configure `CONTENTFUL_ENABLED`, `CONTENTFUL_SPACE_ID`, and `CONTENTFUL_DELIVERY_TOKEN` before releasing the CMS-backed site. The workflow derives `CONTENTFUL_ENVIRONMENT`; Management/Preview tokens are not deployed. The standard `npm run dev` loads the optional ignored CMS file; `dev:cms` remains an alias. The `contentful:plan`, `contentful:check`, and `contentful:delivery:check` scripts provide the migration plan and read-only checks.
 
 ## Search and AI discovery
 
@@ -152,3 +160,7 @@ The source includes these views/integrations and local mocked checks. A live dep
 Support includes FAQs, private inquiries, and an optional Open WebUI adapter. AI remains disabled until a restricted service account, approved public knowledge collection and model are configured and explicitly enabled. See [support](docs/support.md).
 
 Deployment derives the server audience from the `NEXT_PUBLIC_AUTH0_AUDIENCE` GitHub environment Variable, checks the Management API grant, and verifies browser configuration before publication. [Deployment and form troubleshooting](docs/deployment-troubleshooting.md) explains exact setting names, provider setup, pending subscription activation, and live verification limits.
+
+## Agent evaluations
+
+Support-model component, trajectory and required production human-review gates are described in [the evaluation guide](docs/agent-evaluations.md). Commands: `npm run eval:component`, `npm run eval:trajectory`, `npm run eval:all` with explicit candidate and judge configuration.

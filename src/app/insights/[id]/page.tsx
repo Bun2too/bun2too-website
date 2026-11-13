@@ -2,7 +2,7 @@ import StructuredData from "@/components/StructuredData";
 import { absoluteUrl, pageMetadata } from "@/lib/seo";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import Newsletter from "@/components/Newsletter";
+import Newsletter from "@/components/CmsNewsletter";
 import { getInsight } from "@/lib/insights";
 export async function generateMetadata({
   params,

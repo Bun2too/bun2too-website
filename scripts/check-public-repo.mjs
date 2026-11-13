@@ -15,6 +15,7 @@ const rules = [
     /\b(?:gh[pousr]_[A-Za-z0-9]{30,}|github_pat_[A-Za-z0-9_]{40,})\b/g,
   ],
   ["cloud-key", /\b(?:AKIA|ASIA)[A-Z0-9]{16}\b/g],
+  ["contentful-personal-token", /\bCFPAT-[A-Za-z0-9_-]{20,}\b/g],
   [
     "provider-key",
     /\b(?:sk-(?:proj-|ant-)?[A-Za-z0-9_-]{24,}|xox[baprs]-[A-Za-z0-9-]{20,}|SG\.[A-Za-z0-9_-]{20,}\.[A-Za-z0-9_-]{20,})\b/g,
@@ -43,7 +44,9 @@ export function scanContent(source, known = []) {
   }
   for (const match of source.matchAll(/\b[\w-]+(?:\.[\w-]+)*\.auth0\.com\b/g)) {
     if (
-      !/^(?:manage|docs)\.auth0\.com$/.test(match[0]) &&
+      !/^(?:manage|docs|support|developer|community|www)\.auth0\.com$/.test(
+        match[0],
+      ) &&
       !/(?:example|your-|fixture|test)/i.test(match[0])
     )
       add("tenant-fingerprint", match.index);
@@ -108,6 +111,11 @@ export function checkPublicRepo() {
     ),
     "NETLIFY_AUTH_TOKEN",
     "NETLIFY_SITE_ID",
+    "CONTENTFUL_MANAGEMENT_TOKEN",
+    "CONTENTFUL_PREVIEW_TOKEN",
+    "AI_EVAL_JUDGE_URL",
+    "AI_EVAL_JUDGE_API_KEY",
+    "AI_EVAL_JUDGE_MODEL",
     "NEXT_PUBLIC_AUTH0_DOMAIN",
     "NEXT_PUBLIC_AUTH0_CLIENT_ID",
     "NEXT_PUBLIC_GTM_CONTAINER_ID",

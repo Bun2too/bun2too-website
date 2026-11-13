@@ -1,4 +1,5 @@
 import Image from "next/image";
+import type { CmsArtwork } from "@/lib/cms-types";
 
 const artwork = {
   "connected-intelligence": {
@@ -38,19 +39,21 @@ export default function PageArtwork({
   name,
   compact = false,
   eager = true,
+  image,
 }: {
   name: ArtworkName;
   compact?: boolean;
   eager?: boolean;
+  image?: CmsArtwork;
 }) {
-  const art = artwork[name];
+  const art = image || artwork[name];
   return (
     <figure className={`page-artwork${compact ? " page-artwork-compact" : ""}`}>
       <Image
-        src={`/images/artwork/${name}.webp`}
+        src={image?.url || `/images/artwork/${name}.webp`}
         alt={art.alt}
-        width={1536}
-        height={1024}
+        width={image?.width || 1536}
+        height={image?.height || 1024}
         sizes={
           compact
             ? "(max-width:760px) 100vw, 360px"
@@ -70,15 +73,17 @@ export function PageHero({
   artwork: name,
   children,
   className = "",
+  image,
 }: {
   artwork: ArtworkName;
   children: React.ReactNode;
   className?: string;
+  image?: CmsArtwork;
 }) {
   return (
     <header className={`page-visual-header ${className}`}>
       <div className="page-visual-copy">{children}</div>
-      <PageArtwork name={name} />
+      <PageArtwork name={name} image={image} />
     </header>
   );
 }

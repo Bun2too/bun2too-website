@@ -2,6 +2,8 @@
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import Icon from "@/components/Icon";
+import EmailButton from "@/components/EmailButton";
+import { site } from "@/lib/site";
 import SupportCaptcha from "./SupportCaptcha";
 import SupportChat from "./SupportChat";
 
@@ -20,8 +22,13 @@ export default function SupportPanel({
     chat: false,
   });
   const [busy, setBusy] = useState(false);
+  const [sessionAttempt, setSessionAttempt] = useState(0);
+  const [sessionError, setSessionError] = useState("");
+  const [sessionNotice, setSessionNotice] = useState("");
   const [error, setError] = useState("");
   const [reference, setReference] = useState("");
+  const [notification, setNotification] = useState("");
+  const [acknowledgment, setAcknowledgment] = useState("");
   const [captcha, setCaptcha] = useState("");
   const [captchaReset, setCaptchaReset] = useState(0);
   const needsCaptcha = Boolean(process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY);
@@ -31,29 +38,50 @@ export default function SupportPanel({
     else if (!open && element?.open) element.close();
   }, [open]);
   useEffect(() => {
+    if (!open) return;
     const controller = new AbortController();
+    setAvailability({ loading: true, inquiries: false, chat: false });
+    setSessionError("");
+    setSessionNotice("");
     void fetch("/api/support/session", {
-      signal: controller.signal,
+      signal: AbortSignal.any([controller.signal, AbortSignal.timeout(10000)]),
       cache: "no-store",
     })
       .then(async (response) => {
-        const body = await response.json();
-        if (!response.ok)
-          throw new Error(body.error || "Support is temporarily unavailable.");
+        if (!response.ok) throw new Error("Session unavailable");
+        const body: unknown = await response.json();
+        if (
+          !body ||
+          typeof body !== "object" ||
+          !("inquiries" in body) ||
+          typeof body.inquiries !== "boolean" ||
+          !("chat" in body) ||
+          typeof body.chat !== "boolean"
+        )
+          throw new Error("Invalid session response");
+        if (controller.signal.aborted) return;
         setAvailability({
           loading: false,
           inquiries: body.inquiries === true,
           chat: body.chat === true,
         });
+        if (sessionAttempt > 0)
+          setSessionNotice(
+            body.inquiries
+              ? "Availability checked: the inquiry form is ready."
+              : "Availability checked: private inquiries are still unavailable. Please email our team directly.",
+          );
       })
-      .catch((error) => {
+      .catch(() => {
         if (!controller.signal.aborted) {
           setAvailability({ loading: false, inquiries: false, chat: false });
-          setError(error.message);
+          setSessionError(
+            "We couldn’t check support availability. Please try again or email our team.",
+          );
         }
       });
     return () => controller.abort();
-  }, []);
+  }, [open, sessionAttempt]);
   async function inquire(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
     if (busy || !availability.inquiries) return;
@@ -78,11 +106,19 @@ export default function SupportPanel({
         signal: AbortSignal.timeout(25000),
       });
       const data = await response.json();
-      if (!response.ok || !data.reference)
+      if (
+        !response.ok ||
+        !data.reference ||
+        !["accepted", "unconfirmed"].includes(data.notification)
+      )
         throw new Error(
           data.error ||
             "We couldn’t confirm that your inquiry was saved. Please try again.",
         );
+      setNotification(data.notification);
+      setAcknowledgment(
+        data.acknowledgment === "accepted" ? "accepted" : "unconfirmed",
+      );
       setReference(data.reference);
     } catch (error) {
       setError(
@@ -123,7 +159,15 @@ export default function SupportPanel({
         </button>
       </header>
       <div className="support-body">
-        {!availability.loading && <SupportChat available={availability.chat} />}
+        <SupportChat
+          available={availability.chat}
+          checking={availability.loading}
+        />
+        {sessionNotice && (
+          <p role="status" className="support-note">
+            {sessionNotice}
+          </p>
+        )}
         {reference ? (
           <div className="support-confirmation" role="status">
             <Icon name="check" size={32} />
@@ -132,15 +176,41 @@ export default function SupportPanel({
               Reference: <strong>{reference}</strong>
             </p>
             <p>
-              Our team can use the contact email you provided to respond. You
-              have not been subscribed to marketing.
+              {notification === "accepted"
+                ? "An email containing your inquiry has been accepted for delivery to our team. We can reply using the contact email you provided."
+                : "Your inquiry is stored privately for our team."}{" "}
+              You have not been subscribed to marketing.
             </p>
+            {notification === "unconfirmed" && (
+              <p role="alert">
+                We couldn’t confirm the email notification. Please email our
+                team directly and include your reference.{" "}
+                <EmailButton
+                  email={
+                    process.env.NEXT_PUBLIC_CONTACT_EMAIL || site.legalEmail
+                  }
+                >
+                  Email our team directly
+                </EmailButton>
+              </p>
+            )}
+            {acknowledgment === "accepted" ? (
+              <p>
+                A confirmation email has also been accepted for delivery to your
+                contact address.
+              </p>
+            ) : (
+              <p role="alert">
+                We couldn’t confirm your acknowledgment email. Keep the
+                reference shown here.
+              </p>
+            )}
           </div>
         ) : (
           <>
             <p className="support-note">
-              Tell us what you need and how to reach you. Your inquiry is stored
-              privately for the Bun2Too team.
+              Tell us what you need and how to reach you. We store your inquiry
+              privately and email it to the Bun2Too team using Amazon SES.
             </p>
             {availability.loading ? (
               <p role="status" className="support-note">
@@ -148,13 +218,31 @@ export default function SupportPanel({
               </p>
             ) : (
               !availability.inquiries && (
-                <p className="support-notice">
-                  Inquiry collection is being connected. Please use{" "}
-                  <Link href="/contact" onClick={onClose}>
-                    the contact page
-                  </Link>{" "}
-                  to email our team.
-                </p>
+                <div className="support-notice">
+                  <p>
+                    Private inquiries are currently unavailable.{" "}
+                    <EmailButton
+                      email={
+                        process.env.NEXT_PUBLIC_CONTACT_EMAIL || site.legalEmail
+                      }
+                    >
+                      Email our team directly
+                    </EmailButton>{" "}
+                    or read the{" "}
+                    <Link href="/support" onClick={onClose}>
+                      support FAQs
+                    </Link>
+                    .
+                  </p>
+                  <button
+                    type="button"
+                    className="button button-outline"
+                    disabled={busy}
+                    onClick={() => setSessionAttempt((value) => value + 1)}
+                  >
+                    Check availability again
+                  </button>
+                </div>
               )
             )}
             <form className="support-inquiry-form" onSubmit={inquire}>
@@ -214,8 +302,9 @@ export default function SupportPanel({
               <label className="check-label">
                 <input type="checkbox" name="consent" required />
                 <span>
-                  I agree that Bun2Too may store these details to respond to
-                  this inquiry, as described in the{" "}
+                  I agree that Bun2Too may store and email these details to its
+                  team to respond to this inquiry and send me an acknowledgment,
+                  as described in the{" "}
                   <Link
                     href="/privacy"
                     target="_blank"
@@ -248,9 +337,9 @@ export default function SupportPanel({
             </form>
           </>
         )}
-        {error && (
+        {(sessionError || error) && (
           <p role="alert" className="form-message error-message">
-            {error}
+            {sessionError || error}
           </p>
         )}
       </div>

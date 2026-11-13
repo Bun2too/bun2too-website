@@ -1,6 +1,6 @@
 import { pageMetadata } from "@/lib/seo";
 import Articles from "@/components/Articles";
-import Newsletter from "@/components/Newsletter";
+import Newsletter from "@/components/CmsNewsletter";
 import { PageHero } from "@/components/PageArtwork";
 
 export const metadata = {

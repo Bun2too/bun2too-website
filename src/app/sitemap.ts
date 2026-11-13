@@ -1,10 +1,11 @@
 import type { MetadataRoute } from "next";
 import { getInsights } from "@/lib/insights";
-import { absoluteUrl, indexable, publicPages } from "@/lib/seo";
+import { absoluteUrl, indexable } from "@/lib/seo";
+import { getCmsPages } from "@/lib/contentful";
 export const revalidate = 300;
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   if (!indexable) return [];
-  const pages: MetadataRoute.Sitemap = publicPages.map((page) => ({
+  const pages: MetadataRoute.Sitemap = (await getCmsPages()).map((page) => ({
     url: absoluteUrl(page.path),
   }));
   try {

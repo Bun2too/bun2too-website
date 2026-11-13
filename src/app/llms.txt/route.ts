@@ -1,7 +1,10 @@
-import { absoluteUrl, publicPages } from "@/lib/seo";
-import { supportFaqs } from "@/lib/support-content";
-export const dynamic = "force-static";
-export function GET() {
+import { absoluteUrl } from "@/lib/seo";
+import { getCmsPage, getCmsPages } from "@/lib/contentful";
+export const revalidate = 60;
+export async function GET() {
+  const publicPages = await getCmsPages();
+  const supportFaqs =
+    (await getCmsPage("/support"))?.blocks.flatMap((block) => block.faqs) || [];
   const text = [
     "# Bun2Too",
     "",
@@ -10,7 +13,9 @@ export function GET() {
     "## Official public information",
     ...publicPages
       .filter((p) => p.path !== "/privacy")
-      .map((p) => `- [${p.title}](${absoluteUrl(p.path)}): ${p.description}`),
+      .map(
+        (p) => `- [${p.seoTitle}](${absoluteUrl(p.path)}): ${p.seoDescription}`,
+      ),
     "",
     "## Common questions",
     ...supportFaqs.map(

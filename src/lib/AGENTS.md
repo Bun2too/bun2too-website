@@ -2,7 +2,7 @@
 
 Read the root guide and `../../docs/architecture.md`. Public content, browser-safe configuration, and server integration logic have different consumers.
 
-- `site.ts`: shared capabilities/process/destinations. Keep explicit service slugs stable and unique. `seo.ts`: canonical metadata, indexing decisions, and truthful schema. `support-content.ts`: public FAQ answers also used by `/llms.txt`.
+- `contentful.ts` is server-only. `cms-content.ts` validates published graphs and `src/content/website-seed.json` supplies the fallback. Read `../../docs/contentful-design.md` before model/seed changes; preserve stable service slugs, reserved routes, and metadata/FAQ/discovery alignment. `site.ts` retains application facts/destinations and compatibility data. Never import the server reader into client code or deploy a Management/Preview token.
 - `auth-config.ts` is public SPA configuration. `auth0-server.ts` owns private Management access and token validation. Preserve issuer/audience/client/scope/expiry checks and the distinction between ID/access tokens.
 - Deployment values have no operational source defaults. Read `../../docs/security.md`; public provider IDs must be environment-supplied even though they remain observable in browser use. `insights-origin.ts` / `insights-proxy.ts` keep the configured editorial origin server-side and expose only fixed public routes. Never replace them with an external client-visible rewrite.
 - `consent.ts` and `subscriptions.ts` implement pending/verified/withdrawn subscription behavior. Anonymous duplicates cannot overwrite another person's choices; preserve unrelated app metadata.

@@ -81,6 +81,7 @@ export async function answerQuestion(
   question: string,
   fetcher = fetch,
   env = process.env,
+  signal?: AbortSignal,
 ) {
   const config = publicSupportConfig(env);
   if (!config)
@@ -89,6 +90,7 @@ export async function answerQuestion(
       "AI answers are not connected yet. You can send the team a private inquiry.",
     );
   let response;
+  let reason = "network";
   try {
     response = await fetcher(`${config.origin}/api/chat/completions`, {
       method: "POST",
@@ -114,9 +116,16 @@ export async function answerQuestion(
         tool_ids: [],
         features: { web_search: false, code_interpreter: false },
       }),
-      signal: AbortSignal.timeout(40000),
+      signal: signal
+        ? AbortSignal.any([signal, AbortSignal.timeout(20000)])
+        : AbortSignal.timeout(20000),
     });
-    if (!response.ok) throw new Error();
+    if (!response.ok) {
+      reason = [401, 403].includes(response.status) ? "authorization" : "upstream";
+      await response.body?.cancel();
+      throw new Error();
+    }
+    reason = "response";
     // Bound response bytes before parsing. Never log the provider body.
     const reader = response.body?.getReader();
     if (!reader) throw new Error();
@@ -154,6 +163,7 @@ export async function answerQuestion(
   } catch {
     console.error("Public AI support request failed", {
       status: response?.status ?? 503,
+      reason,
     });
     throw new RequestError(
       503,

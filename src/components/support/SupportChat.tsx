@@ -2,8 +2,16 @@
 import { useState } from "react";
 import Link from "next/link";
 import SupportCaptcha from "./SupportCaptcha";
+const unavailable =
+  "AI answers are temporarily unavailable. Please try again or send a private inquiry.";
 
-export default function SupportChat({ available }: { available: boolean }) {
+export default function SupportChat({
+  available,
+  checking = false,
+}: {
+  available: boolean;
+  checking?: boolean;
+}) {
   const [question, setQuestion] = useState("");
   const [consent, setConsent] = useState(false);
   const [captcha, setCaptcha] = useState("");
@@ -12,11 +20,12 @@ export default function SupportChat({ available }: { available: boolean }) {
   const [error, setError] = useState("");
   const [answer, setAnswer] = useState("");
   const needsCaptcha = Boolean(process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY);
+  if (checking) return null;
   if (!available)
     return (
       <p className="support-note">
-        AI answers are being connected. You can still send a private inquiry
-        below.
+        AI answers are currently unavailable. Read our{" "}
+        <Link href="/support">support FAQs</Link> for common questions.
       </p>
     );
   return (
@@ -44,19 +53,24 @@ export default function SupportChat({ available }: { available: boolean }) {
                 consent,
                 captchaToken: captcha,
               }),
-              signal: AbortSignal.timeout(45000),
+              signal: AbortSignal.timeout(30000),
             });
-            const data = await response.json();
+            // Gateways can return an HTML error page instead of our API JSON.
+            const data = await response.json().catch(() => null);
+            if (!data) throw new Error(unavailable);
             if (!response.ok || typeof data.answer !== "string")
               throw new Error(
-                data.error || "AI answers are temporarily unavailable.",
+                typeof data.error === "string" ? data.error : unavailable,
               );
             setAnswer(data.answer);
           } catch (error) {
             setError(
-              error instanceof Error
+              error instanceof Error &&
+                !["TimeoutError", "AbortError", "TypeError"].includes(
+                  error.name,
+                )
                 ? error.message
-                : "Please try again or send an inquiry.",
+                : unavailable,
             );
           } finally {
             setBusy(false);
