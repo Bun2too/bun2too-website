@@ -2,12 +2,12 @@
 
 The support assistant is evaluated by the same server adapter and chat handler used by the site. Trusted branch builds run actual candidate model calls and an independent model judge. Offline regression tests verify the harness and fail-closed behavior; they do not establish model quality. Local live evaluation is separate from GitHub-run verification and production deployment.
 
-| Branch       | Required evaluation                                                   | Release condition                                                                                        |
-| ------------ | --------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------- |
-| `dev`        | Component: every observed support-model call                          | Every relevance, faithfulness and task-completion score is at least **0.5**                              |
-| `qa`         | Trajectory: complete server workflows, plus every observed model call | Every component dimension and full-trajectory dimension is at least **0.5**; critical guards pass        |
-| `main`       | Both suites, then recorded human evaluation                           | Automated gates pass and a human approves the exact commit/report with all human scores at least **0.5** |
-| Pull request | Offline unit, browser, security and build checks                      | No provider or deployment secrets; trusted branch builds run the live quality gates                      |
+| Branch       | Required evaluation                                                   | Release condition                                                                                              |
+| ------------ | --------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------- |
+| `dev`        | Component: every observed support-model call                          | Every relevance, faithfulness and task-completion score is at least **0.5**                                    |
+| `qa`         | Trajectory: complete server workflows, plus every observed model call | Every component dimension and full-trajectory dimension is at least **0.5**; critical guards pass              |
+| `main`       | Both suites, then recorded human approval                             | Automated gates pass and a human approves the exact commit/report; scorecard and notes are optional by default |
+| Pull request | Offline unit, browser, security and build checks                      | No provider or deployment secrets; trusted branch builds run the live quality gates                            |
 
 There is no averaging across calls, cases or dimensions. A score of exactly 0.5 passes. Missing coverage, a new unregistered component, invalid/out-of-range grades, provider/judge failures or missing human evidence fail the job. CI never rewrites prompts or overrides a failed guard. Fix the prompt, code, reference or harness as appropriate, then rerun the failed candidate.
 
@@ -22,7 +22,7 @@ flowchart TD
   G -->|No| F[Fail; revise and retest]
   G -->|dev / qa yes| D[Deploy selected environment]
   G -->|main yes| H[Required human review of commit and report digest]
-  H --> A[Validate actual GitHub approval and scorecard]
+  H --> A[Validate actual GitHub approval and scorecard policy]
   A --> P[Production deployment]
 ```
 
@@ -48,7 +48,19 @@ The workflow uses `contents: read`; the human-verification job additionally uses
 
 After the main-branch automatic gate passes, open the `agent-evaluation` artifact and inspect `report.json` and `report.md`. Check factual support, uncertainty, refusals, account boundaries, full-flow evidence, and any judge disagreement. The Markdown report contains a scorecard template with the SHA-256 of the exact JSON bytes. Replace all placeholder scores and notes with your own assessment.
 
-Approve `agent-production-review` in the workflow's **Review deployments** dialog and paste that completed JSON object as the review comment. Keep the keys `report_sha256`, `decision`, `scores` (`relevance`, `faithfulness`, `trajectory`), and `notes`. Notes need at least 20 characters. Any human score below 0.5 means reject and revise. Approval without a complete scorecard, approval of another artifact/commit, a bot approval, or an environment bypass cannot release production. `evals/human-review.mjs` verifies GitHub's actual approval history, this run's report digest and source commit before emitting `human-evaluation.json`.
+Open **GitHub → Actions → workflow run → Review deployments**, select **`agent-production-review`**, and use its optional comment box. Click **Approve and deploy** to record your approval. In the default mode, you can leave the comment blank or write ordinary review notes; a JSON scorecard is not needed. The script still checks actual human approval, the correct environment, this run's passing report digest and source commit. An unprotected job, bot approval, or bypass does not qualify. Approval-only evidence records `scorecardProvided:false` and `scores:null`, rather than inventing human scores.
+
+To require the structured scorecard and notes in the future, set the **Variable** `AI_EVAL_HUMAN_SCORECARD_REQUIRED=true` under **Settings → Environments → prod → Environment variables**. Set it to `false` (the default) to make them optional. The production evaluation job forwards this policy to the separate review environment; it is not a Netlify runtime setting. Repository-level Variables are a fallback if there is no environment override.
+
+```sh
+gh variable set AI_EVAL_HUMAN_SCORECARD_REQUIRED --body true --env prod --repo Bun2too/bun2too-website
+# Restore optional scorecards/notes:
+gh variable set AI_EVAL_HUMAN_SCORECARD_REQUIRED --body false --env prod --repo Bun2too/bun2too-website
+```
+
+When required, paste the completed JSON template from the exact run's `report.md` into that comment box **before approving**. Keep `report_sha256`, `decision`, `scores` (`relevance`, `faithfulness`, `trajectory`), and `notes`. Notes need at least 20 characters in required mode. When optional, a supplied scorecard must still have the correct digest and complete numeric 0–1 scores; its notes may be omitted. Any supplied human score below 0.5 or malformed scorecard remains blocking. Do not paste the placeholder scores/notes without reviewing them. `evals/human-review.mjs` emits `human-evaluation.json` with the chosen policy and whether a scorecard was supplied.
+
+After pushing this implementation, start a new workflow run using that commit. Re-running an older failed run uses its older checkout, so changing the Variable alone cannot retrofit optional-scorecard behavior into the old script.
 
 This review approves a website code/model evaluation candidate. It does not approve individual future customer interactions or grant the bot additional capabilities.
 

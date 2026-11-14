@@ -238,6 +238,7 @@ test("human review requires actual GitHub approval, exact commit/report, and a c
     expectedDigest: digest,
     sourceSha: "fixture-commit",
     approvals: [review],
+    scorecardRequired: true,
   };
   assert.equal((await verifyHumanReview(input)).reviewer, "fixture-reviewer");
   for (const overrides of [

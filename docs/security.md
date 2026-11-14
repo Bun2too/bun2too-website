@@ -55,6 +55,7 @@ These appear under `vars.NAME`. They are public configuration, not credentials. 
 | `NEXT_PUBLIC_AUTH0_AUDIENCE` | Exact custom Auth0 API Identifier. CI uses this single value for both SPA requests and server `AUTH0_AUDIENCE`; the former duplicate GitHub Secret is unused. |
 | `CONTENTFUL_ENABLED` | Optional `true`/`false`, default false; enables published website content. |
 | `OPENWEBUI_PUBLIC_SUPPORT_ENABLED` | Optional `true`/`false`, default false. Enable only after approving public-only model/knowledge permissions; synced server-side. |
+| `AI_EVAL_HUMAN_SCORECARD_REQUIRED` | CI-only `true`/`false`, default false. Set on `prod` to require a human JSON scorecard and review notes; actual human approval remains required in both modes. Forwarded to the review job, never to Netlify. |
 | `NEXT_PUBLIC_AUTH0_EMAIL_CONNECTION` | Passwordless connection name; defaults to `email`, also mirrored as `AUTH0_EMAIL_CONNECTION`. |
 | `NEXT_PUBLIC_TURNSTILE_SITE_KEY` | Public CAPTCHA widget site key. |
 | `NEXT_PUBLIC_GTM_CONTAINER_ID` | Your actual published Google Tag Manager container ID. Source/test fixture IDs are not production settings. |

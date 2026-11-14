@@ -368,6 +368,8 @@ export async function writeReport(report, destination) {
     "",
     "Review the JSON evidence for per-call scores, final outputs, and observed trajectory. A failing score requires revising the prompt/code or harness and rerunning; no automatic prompt rewrite occurs.",
     "",
+    "Human approval is always required. Scorecards and notes are optional by default; the CI Variable AI_EVAL_HUMAN_SCORECARD_REQUIRED=true makes them mandatory.",
+    "For a scorecard, paste the completed JSON below into GitHub Actions > this run > Review deployments > agent-production-review > comment before approving. Use this exact report hash and your own scores/notes.",
     "Human review comment template:",
     "```json",
     JSON.stringify(
