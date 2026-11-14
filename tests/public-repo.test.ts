@@ -41,3 +41,29 @@ test("publication guard accepts reserved fixture identities and public workflow 
     [],
   );
 });
+
+test("publication scan distinguishes documented public values from private settings and credentials", () => {
+  const provider = "https://api.openai.com/v1/chat/completions";
+  assert.deepEqual(
+    scanContent(provider, [["AI_EVAL_JUDGE_URL", provider]]),
+    [],
+  );
+  const custom = "https://private-judge.example.invalid/completions";
+  assert.equal(
+    scanContent(custom, [["AI_EVAL_JUDGE_URL", custom]])[0].type,
+    "local-config:AI_EVAL_JUDGE_URL",
+  );
+  assert.equal(
+    scanContent(provider, [["AI_EVAL_JUDGE_API_KEY", provider]])[0].type,
+    "local-config:AI_EVAL_JUDGE_API_KEY",
+  );
+  const contact = "info@bun2too.com";
+  assert.deepEqual(
+    scanContent(contact, [["SUPPORT_INQUIRY_FROM_EMAIL", contact]]),
+    [],
+  );
+  assert.equal(
+    scanContent(contact, [["SUPPORT_INQUIRY_TO_EMAIL", contact]])[0].type,
+    "local-config:SUPPORT_INQUIRY_TO_EMAIL",
+  );
+});

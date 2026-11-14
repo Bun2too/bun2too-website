@@ -1,6 +1,8 @@
 {
-  "version": "support-2026-11-12.1",
-  "components": ["support.answer"],
+  "version": "support-2026-11-13.1",
+  "components": [
+    "support.answer"
+  ],
   "cases": [
     {
       "id": "services",

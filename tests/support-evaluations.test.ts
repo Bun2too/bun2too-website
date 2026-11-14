@@ -12,10 +12,16 @@ test("evaluation adapter exercises real storage, consent/session guards and obse
     OPENWEBUI_MODEL_ID: "fixture-model",
     OPENWEBUI_KNOWLEDGE_ID: "fixture-knowledge",
   });
-  let sends = 0;
+  let sends = 0,
+    denyCandidate = false;
   globalThis.fetch = async (input, options) => {
     if (new URL(String(input)).hostname === "provider.example.invalid") {
       sends++;
+      if (denyCandidate)
+        return Response.json(
+          { detail: "fixture-private-provider-error" },
+          { status: 401 },
+        );
       return Response.json({
         choices: [
           {
@@ -61,6 +67,20 @@ test("evaluation adapter exercises real storage, consent/session guards and obse
       assert.equal(result.calls.length, 0);
     }
     assert.equal(sends, before);
+    denyCandidate = true;
+    const denied = await adapter.runCase(
+      { question: "Public fixture" },
+      "component",
+    );
+    assert.equal(denied.calls[0].httpStatus, 401);
+    assert.ok(
+      denied.checks.some(
+        (check) => check.name === "candidate-http-401" && !check.passed,
+      ),
+    );
+    assert.ok(
+      !JSON.stringify(denied).includes("fixture-private-provider-error"),
+    );
   } finally {
     await adapter?.close();
     globalThis.fetch = original;

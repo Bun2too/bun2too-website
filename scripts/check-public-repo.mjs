@@ -6,6 +6,9 @@ import { fileURLToPath } from "node:url";
 import { privateRuntimeKeys } from "./deploy-config.mjs";
 
 const root = fileURLToPath(new URL("../", import.meta.url));
+const publicBusinessContact = parseEnv(
+  readFileSync(new URL("../.env.example", import.meta.url), "utf8"),
+).NEXT_PUBLIC_CONTACT_EMAIL;
 const git = (args) =>
   execFileSync("git", args, { cwd: root, maxBuffer: 128 * 1024 * 1024 });
 const rules = [
@@ -64,6 +67,17 @@ export function scanContent(source, known = []) {
       add("literal-credential", match.index);
   }
   for (const [name, value] of known) {
+    // These exact values are already deliberately public. Keep custom provider
+    // hosts, management recipients and all credentials in the private scan.
+    if (
+      (name === "SUPPORT_INQUIRY_FROM_EMAIL" &&
+        value === publicBusinessContact) ||
+      (name === "AI_EVAL_JUDGE_URL" &&
+        /^https:\/\/api\.openai\.com(?:\/v1(?:\/chat\/completions)?)?\/?$/.test(
+          value,
+        ))
+    )
+      continue;
     if (value.length < 8) continue;
     let offset = source.indexOf(value);
     while (offset !== -1) {

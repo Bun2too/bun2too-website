@@ -11,6 +11,7 @@
     "eval:component": "node --import tsx evals/run.mjs component",
     "eval:trajectory": "node --import tsx evals/run.mjs trajectory",
     "eval:all": "node --import tsx evals/run.mjs all",
+    "eval:check": "node --env-file-if-exists=.env.secrets --import tsx scripts/check-agent-evals.mjs",
     "dev:support": "npm run dev --",
     "contentful:plan": "node scripts/contentful-sync.mjs --plan",
     "contentful:check": "node --env-file-if-exists=.env.contentful.local scripts/contentful-sync.mjs",

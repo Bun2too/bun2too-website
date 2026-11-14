@@ -62,7 +62,9 @@ export async function supportAdapter() {
       output: null,
     };
     calls.push(entry);
-    return originalFetch(input, options);
+    const response = await originalFetch(input, options);
+    entry.httpStatus = response.status;
+    return response;
   };
   return {
     async runCase(example, suite) {
@@ -74,9 +76,14 @@ export async function supportAdapter() {
       const cookie = response.headers.get("set-cookie")?.split(";")[0] || "";
       let output,
         status = 200;
-      if (suite === "component")
-        output = await answerQuestion(example.question);
-      else {
+      if (suite === "component") {
+        try {
+          output = await answerQuestion(example.question);
+        } catch {
+          status = 503;
+          output = {};
+        }
+      } else {
         const request = new Request(base + "/api/support/chat", {
           method: "POST",
           headers: {
@@ -116,7 +123,27 @@ export async function supportAdapter() {
       return {
         calls,
         trace,
+        task: {
+          objective: rejected
+            ? "Reject the request before any candidate-model call. A correct denial is successful task completion; do not answer the visitor question."
+            : "Return a grounded public support answer after required validation, session, limits and CAPTCHA checks.",
+          visitorQuestion: example.question,
+          expectedHttpStatus: expectedStatus,
+          observedHttpStatus: status,
+          expectedCandidateCallCount: rejected ? 0 : 1,
+          denialReason: example.noConsent
+            ? "No AI-processing consent"
+            : example.invalidOrigin
+              ? "Cross-origin request"
+              : example.missingSession
+                ? "Missing signed visitor session"
+                : undefined,
+        },
         checks: [
+          ...calls.map((call) => ({
+            name: `candidate-http-${call.httpStatus ?? "network-error"}`,
+            passed: call.httpStatus >= 200 && call.httpStatus < 300,
+          })),
           { name: "expected-result", passed: status === expectedStatus },
           {
             name: "paid-call-count",

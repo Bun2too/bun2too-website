@@ -1,6 +1,6 @@
 # Agent evaluation and release gates
 
-The support assistant is evaluated by the same server adapter and chat handler used by the site. Trusted branch builds run actual candidate model calls and an independent model judge. Offline regression tests verify the harness and fail-closed behavior; they do not establish model quality. No evaluation or deployment has been run against production as part of this implementation.
+The support assistant is evaluated by the same server adapter and chat handler used by the site. Trusted branch builds run actual candidate model calls and an independent model judge. Offline regression tests verify the harness and fail-closed behavior; they do not establish model quality. Local live evaluation is separate from GitHub-run verification and production deployment.
 
 | Branch       | Required evaluation                                                   | Release condition                                                                                        |
 | ------------ | --------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------- |
@@ -38,7 +38,7 @@ Component and trajectory evidence includes visible test outputs, scores, rationa
 
 ## Configure GitHub
 
-1. In the `dev`, `qa` and `prod` GitHub environments, configure the existing dedicated public-support `OPENWEBUI_*` settings and these three new **secrets**: `AI_EVAL_JUDGE_URL` (full HTTPS OpenAI-compatible chat-completions endpoint, no URL credentials/query), `AI_EVAL_JUDGE_API_KEY`, and `AI_EVAL_JUDGE_MODEL`. Use a suitable independent judge, rather than the support assistant/knowledge agent itself. The endpoint must support JSON-object output and the configured request parameters. These settings are CI-only and are not synchronized to Netlify.
+1. In the `dev`, `qa` and `prod` GitHub environments, configure the existing dedicated public-support `OPENWEBUI_*` settings and these three new **secrets**: `AI_EVAL_JUDGE_URL` (full HTTPS OpenAI-compatible chat-completions endpoint, no URL credentials/query), `AI_EVAL_JUDGE_API_KEY`, and `AI_EVAL_JUDGE_MODEL`. For OpenAI, use `https://api.openai.com/v1/chat/completions`; the runner also normalizes its `/v1` base URL to this endpoint. Custom providers need their full endpoint. Use a suitable independent judge, rather than the support assistant/knowledge agent itself. The endpoint must support JSON-object output and the configured request parameters. These settings are CI-only and are not synchronized to Netlify.
 2. Create the **`agent-production-review`** environment in Settings → Environments. Add required human reviewers, prevent self-review where available, disable administrator bypass where available, and limit deployment branches to `main`. Ensure your GitHub repository visibility/plan supports required reviewers. Without actual recorded approval, the post-review check fails even if an unprotected environment lets the job start. No fallback automatically approves production.
 3. Require the verification and evaluation checks in branch protection/rulesets as appropriate. PRs run offline checks; live scores are required on trusted branch pushes. Keep production deployment through this gated workflow, and disable any independent Netlify Git auto-publish path that could bypass it.
 
@@ -63,5 +63,52 @@ npm run eval:all
 ```
 
 The npm scripts read inherited environment variables; they do not implicitly load secrets. These commands incur candidate and judge usage. Reports are written even when setup fails, and the command exits nonzero. Do not use customer data or a privileged internal-knowledge account. Before trusting a new judge/model, compare its grading against reviewed examples, including known bad answers; passing harness tests is not judge calibration.
+
+## Requests and authorization troubleshooting
+
+The evaluation job makes two kinds of external inference requests, using **different credentials**:
+
+| Request                                        | Authentication                 | Payload                                                                                                                                                     |
+| ---------------------------------------------- | ------------------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `POST OPENWEBUI_BASE_URL/api/chat/completions` | `Bearer OPENWEBUI_API_KEY`     | Fixed support model, system prompt, public test question, approved collection, `stream:false`, `max_tokens:700`, no tools/web search/code interpreter       |
+| `POST AI_EVAL_JUDGE_URL`                       | `Bearer AI_EVAL_JUDGE_API_KEY` | Independent judge model, grading rubric, reference facts and visible candidate output; trajectory grades also include visible calls, safe traces and checks |
+
+For OpenAI, judge requests use `max_completion_tokens:1000`, `store:false` and JSON-object mode. GPT-4 judges use temperature zero for repeatable grading; other model families keep the provider default to avoid unsupported reasoning-model parameters. Other compatible providers receive `max_tokens:1000`. No model is silently substituted. The response must contain all three finite numeric 0–1 dimensions; nested `scores` and flat numeric dimensions are accepted, with the same threshold and no coercion/default scores.
+
+With the current four normal cases and three denial cases, a complete successful run makes:
+
+| Suite             | Candidate requests | Judge requests                         |
+| ----------------- | ------------------ | -------------------------------------- |
+| Component (`dev`) | 4                  | 4 per-call grades                      |
+| Trajectory (`qa`) | 4                  | 4 per-call grades + 7 full-flow grades |
+| Both (`main`)     | 8                  | 15 total grades                        |
+
+Calls can stop early or be absent when a guard/provider fails. Session handlers execute in memory, Blobs calls go to the temporary local server, and CAPTCHA verification is a fixture; the evaluation does not call deployed support endpoints or Cloudflare. Open WebUI's own downstream retrieval/model calls are outside this observed HTTP inventory. The later human-review step reads GitHub approval history. Auth0, Netlify, CMS and Insights deployment preflights belong to the separate deployment job.
+
+The denial cases intentionally produce consent **400**, cross-origin **403** and missing-session **401**. Those are successful guard tests when no candidate request is sent; they are different from a provider 401 logged at `ai-provider`. The case report, expected HTTP status and failed checks identify which kind occurred.
+
+To export the exact request templates from saved local settings, without sending requests:
+
+```sh
+npm run eval:check
+```
+
+This command reads ignored `.env.secrets` and writes JSON payloads and ready-to-run curl configurations under ignored `artifacts/agent-eval-requests/`. The curl files contain credentials and private endpoints: keep them local, never paste/upload them, and never add this directory to CI artifacts. The trajectory payload is an illustrative template, not execution evidence. The component payload is updated with the real visible answer when running the live diagnostic.
+
+```sh
+# One real public candidate request and one real judge request:
+npm run eval:check -- --live
+
+# Replay separately using the generated local configurations:
+curl --config artifacts/agent-eval-requests/candidate.curl
+curl --config artifacts/agent-eval-requests/judge-component.curl
+curl --config artifacts/agent-eval-requests/judge-trajectory.curl
+```
+
+The live diagnostic checks connectivity and score shape, not release quality. A schema-valid low score still fails the real evaluation. Never grant a pass merely because both providers return HTTP 200.
+
+Candidate **401** means the Open WebUI credential was rejected. Compare the selected GitHub **environment's** secret update time with any local key rotation and re-upload the correct key; working locally does not update GitHub. GitHub does not expose existing secret values for comparison. Candidate **403** requires checking service-account/model/collection access and any edge policy, without granting administrator access. Reports preserve the candidate HTTP status independently of public 503 errors and judge failures.
+
+Judge **401** concerns `AI_EVAL_JUDGE_API_KEY`, rather than the candidate key. Judge **404** requires checking the endpoint and selected model; a `/v1` base URL alone was previously posted verbatim and returned 404. Judge **403** concerns judge/project/model or network permissions; **429** concerns quota/rate limits. Response bodies and credentials are withheld from diagnostics. If HTTP 200 previously failed parsing because numeric dimensions were at the JSON root, the parser now validates that equivalent layout explicitly; missing, string, nonfinite and out-of-range scores still fail.
 
 The CrewAI editorial repository has its own `docs/agent-evaluations.md`, flow inventory, runtime observer and gated release workflow. The shared `core.mjs` and `human-review.mjs` are vendored so each repository runs independently; update their offline gate tests in both repositories when changing the scoring contract.
