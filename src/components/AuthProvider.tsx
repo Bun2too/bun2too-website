@@ -1,5 +1,5 @@
 "use client";
-import { Auth0Provider } from "@auth0/auth0-react";
+import { Auth0Provider, useAuth0 } from "@auth0/auth0-react";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { authConfig, authConfigured } from "@/lib/auth-config";
@@ -37,7 +37,23 @@ export default function AuthProvider({
         );
       }}
     >
+      <CallbackFailure />
       {children}
     </Auth0Provider>
   );
+}
+
+function CallbackFailure() {
+  const { error } = useAuth0();
+  const router = useRouter();
+  useEffect(() => {
+    if (!error) return;
+    const params = new URLSearchParams(window.location.search);
+    // The SDK's success callback is not called when Auth0 rejects authorization.
+    // Keep its validated error in context, show the account recovery UI, and
+    // remove callback parameters instead of leaving a silent failure on `/`.
+    if (params.has("state") && (params.has("error") || params.has("code")))
+      router.replace("/account");
+  }, [error, router]);
+  return null;
 }

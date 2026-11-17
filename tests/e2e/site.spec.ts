@@ -143,6 +143,44 @@ for (const action of ["Log in", "Create an account", "Continue with email"])
       expect(url.searchParams.get("connection")).toBe("email");
   });
 
+test("rejected Auth0 authorization shows account recovery and clears callback parameters", async ({
+  page,
+}) => {
+  await page.route(
+    "https://website-test.example.auth0.com/authorize**",
+    async (route) => {
+      const authorize = new URL(route.request().url());
+      const callback = new URL(authorize.searchParams.get("redirect_uri")!);
+      callback.searchParams.set("state", authorize.searchParams.get("state")!);
+      callback.searchParams.set("error", "access_denied");
+      callback.searchParams.set(
+        "error_description",
+        "Service not found: https://api.example.invalid/private-provider-detail",
+      );
+      await route.fulfill({
+        status: 302,
+        headers: { location: callback.href },
+      });
+    },
+  );
+  await page.goto("/");
+  await page.getByRole("button", { name: "Log in", exact: true }).click();
+  await expect(page).toHaveURL("/account");
+  const recovery = page.getByRole("alert").filter({
+    hasText: "Sign-in could not complete",
+  });
+  await expect(recovery).toBeVisible();
+  await expect(
+    recovery.getByRole("link", { name: "contact our team" }),
+  ).toHaveAttribute("href", "/contact");
+  await expect(page.locator("body")).not.toContainText("private-provider-detail");
+  await expect(
+    page
+      .locator(".account-card")
+      .getByRole("button", { name: "Log in ↗", exact: true }),
+  ).toBeEnabled();
+});
+
 test("home page artwork loads and visual previews can be reviewed", async ({
   page,
 }, testInfo) => {

@@ -8,6 +8,10 @@ The workflow validates configuration and synchronizes the named site-level runti
 
 Use the repository's `netlify.toml`: Next.js adapter, Node 24, build `npm run build`, publish `.next`. Static export would break server APIs. Keep the Next.js plugin before the local release-validation plugin in `netlify.toml`. GitHub publishes with a combined `netlify deploy --build --prod --context production` command so adapter-prepared assets remain selected through upload; the local plugin validates them before publication. Disable separate Netlify Git-triggered publication and untrusted preview builds so GitHub Actions owns promotion. Protect the release branches and environment permissions. `dev → dev`, `qa → qa`, `main → prod` refers to three separate sites; each uses its production context. Free-compatible ordinary environment storage is supported; no paid Functions-only scope or Secrets Controller is assumed.
 
+Netlify injects its branding frame outside the build. Its dashboard control is under **Project configuration → General → Powered by Netlify badge**, but access to turning it off can depend on the account/plan despite the public documentation. This site's `src/styles/globals.css` hides only `iframe#nl-badge-frame` and the exact iframe title `Powered by Netlify`, including frames inserted after page load. It hides the outer iframe without accessing its isolated contents, changing browser storage or suppressing other frames such as Auth0/Turnstile. Deploy the CSS change for visitors to receive it. The injection script can still run; update these selectors if Netlify changes the frame markup. See [Netlify's badge documentation](https://docs.netlify.com/manage/projects/powered-by-netlify-badge/) for the platform control.
+
+For CMS delivery, set the environment Secrets `CONTENTFUL_SPACE_ID` and `CONTENTFUL_DELIVERY_TOKEN`, and Variable `CONTENTFUL_ENABLED=true`. The workflow maps prod to Contentful `master` and dev/QA to `qa`, verifies published content, and synchronizes delivery settings. Keep Management/Preview tokens out of Netlify. See [the Contentful design and publishing guide](contentful-design.md).
+
 ## 2. Auth0 SPA application
 
 Create or select an Auth0 **Single Page Application**, with token endpoint authentication method **None**. Use its authorized dashboard to obtain the real tenant hostname and SPA client ID. The SDK reads environment configuration only. When these are missing, the site keeps public pages available and explains that account sign-in is being connected.
@@ -37,9 +41,27 @@ Authorize the SPA to request it. For a first-party application, configure the AP
 
 Set the exact Identifier in the GitHub environment Variable `NEXT_PUBLIC_AUTH0_AUDIENCE`. CI derives server `AUTH0_AUDIENCE` from that one source; the older duplicate GitHub Secret is unused. For local development, set both names to the same Identifier. See [deployment troubleshooting](deployment-troubleshooting.md). Sign out and back in after changing token audience or scopes. Without an audience configured, regular login can still work, but the account UI explains that preferences are not connected.
 
+The API must exist in the same tenant as the SPA. In **Applications → APIs → Bun2Too Website API → Settings**, compare **Identifier** with the requested audience exactly, including any trailing slash. A website URL or Allowed Callback URL does not register an API. Auth0 returns `access_denied` with `Service not found` when the requested API identifier is unavailable; it can return immediately to the root callback without showing a login screen. Correct the API registration or the GitHub environment Variable and rebuild if the browser setting changed. See [Auth0's access-denied troubleshooting](https://support.auth0.com/center/s/article/troubleshooting-the-access-denied-error).
+
 ## 4. Credentialless subscriber profiles
 
-Enable **Authentication → Passwordless → Email**, connection name `email`, and enable that connection for your SPA. Configure the email provider and templates in Auth0. Enable this passwordless connection for the Management API M2M application's `enabled_clients` as required for user creation. Keep the two connection environment variables in sync. The code does not create fake passwords or mark unverified emails as verified.
+An Auth0 connection selects how an identity authenticates. The passwordless **Email** connection, normally named `email`, uses an emailed one-time code rather than a stored password. It is separate from an email/password database connection.
+
+1. In the correct Auth0 tenant, go to **Authentication → Passwordless** and turn on **Email**.
+2. Open **Email → Settings**, configure the sender/template and OTP settings, and save. Configure an email provider for production delivery.
+3. Open **Email → Applications**, enable the website's **Single Page Application**, and save. This lets visitors authenticate through that connection. With New Universal Login, enable the **Identifier First** authentication profile; **Continue with email** already requests `connection=email` (or the configured name). See [email connection setup](https://auth0.com/docs/authenticate/passwordless/authentication-methods/email-otp) and [New Universal Login passwordless requirements](https://support.auth0.com/center/s/article/Passwordless-login-not-triggered-using-the-New-Universal-Login-with-Identifier-First-Profile).
+4. Enable the connection for the separate Management M2M application used to create subscriber profiles. This is permission to create identities, not passwordless sign-in for the machine. Where available, use the connection's **Applications** view or **Applications → Applications → selected app → Connections**. See [Auth0's connection-access guidance](https://support.auth0.com/center/s/article/Error-Connection-must-be-enabled-for-this-client-to-perform-single-user-creation-and-signup-operations).
+
+If the M2M app is not exposed in those dashboard controls, an authorized Auth0 administrator can inspect/update its assignment with `GET /api/v2/connections/{id}/clients` and `PATCH /api/v2/connections/{id}/clients`. Use the current connection-client endpoints rather than the deprecated `enabled_clients` field on connection GET/PATCH operations. Keep administrative connection permissions separate from the website's runtime M2M grants. See the [Auth0 migration notice](https://auth0.com/changelog?version=v202447).
+
+The connection environment variables belong to this website; they do not create or enable a connection in Auth0:
+
+| Setting | Consumer | Value for the standard Email connection |
+| --- | --- | --- |
+| `NEXT_PUBLIC_AUTH0_EMAIL_CONNECTION` | Browser's **Continue with email** authorization request | `email` |
+| `AUTH0_EMAIL_CONNECTION` | Server's Auth0 user-creation request | `email` |
+
+Both default to `email`. For deployment, set GitHub **Settings → Environments → prod** (or the selected environment) → **Variables → `NEXT_PUBLIC_AUTH0_EMAIL_CONNECTION`**. The workflow uses that value for both browser and server settings and synchronizes the server copy to Netlify. Locally, keep both names equal in `.env.local`. Changing this string does not enable passwordless by itself. The code does not create fake passwords or mark unverified emails as verified.
 
 Create a **separate Machine-to-Machine application**, authorize it for the **Auth0 Management API**, and grant only:
 

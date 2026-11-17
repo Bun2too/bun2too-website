@@ -1,6 +1,6 @@
 import { pageMetadata } from "@/lib/seo";
 import CTA from "@/components/CTA";
-import Newsletter from "@/components/Newsletter";
+import Newsletter from "@/components/CmsNewsletter";
 
 export const metadata = {
   ...pageMetadata("/contact"),

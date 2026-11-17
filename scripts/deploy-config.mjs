@@ -1,3 +1,4 @@
+import { readFileSync } from "node:fs";
 // Names and handling rules only. Actual values belong in GitHub environments.
 export class DeploymentConfigError extends Error {}
 export const publicBuildKeys = [
@@ -15,6 +16,10 @@ export const publicBuildKeys = [
   "BING_SITE_VERIFICATION",
 ];
 export const privateRuntimeKeys = [
+  "CONTENTFUL_ENABLED",
+  "CONTENTFUL_SPACE_ID",
+  "CONTENTFUL_DELIVERY_TOKEN",
+  "CONTENTFUL_ENVIRONMENT",
   "AUTH0_DOMAIN",
   "AUTH0_AUDIENCE",
   "AUTH0_MANAGEMENT_CLIENT_ID",
@@ -22,6 +27,12 @@ export const privateRuntimeKeys = [
   "AUTH0_EMAIL_CONNECTION",
   "TURNSTILE_SECRET_KEY",
   "SUPPORT_SESSION_SECRET",
+  "SUPPORT_SES_SMTP_HOST",
+  "SUPPORT_SES_SMTP_PORT",
+  "SUPPORT_SES_SMTP_USERNAME",
+  "SUPPORT_SES_SMTP_PASSWORD",
+  "SUPPORT_INQUIRY_FROM_EMAIL",
+  "SUPPORT_INQUIRY_TO_EMAIL",
   "INSIGHTS_API_ORIGIN",
   "INSIGHTS_EMBED_ORIGINS",
   "OPENWEBUI_BASE_URL",
@@ -44,6 +55,7 @@ export const requiredKeys = [
   ...privateRuntimeKeys.filter(
     (key) =>
       !["AUTH0_EMAIL_CONNECTION", "INSIGHTS_EMBED_ORIGINS"].includes(key) &&
+      !key.startsWith("CONTENTFUL_") &&
       !key.startsWith("OPENWEBUI_"),
   ),
 ];
@@ -51,6 +63,30 @@ export function validateDeployment(env) {
   const errors = requiredKeys
     .filter((key) => !env[key]?.trim())
     .map((key) => `Missing ${key}`);
+  if (
+    env.CONTENTFUL_ENABLED &&
+    !["true", "false"].includes(env.CONTENTFUL_ENABLED)
+  )
+    errors.push("CONTENTFUL_ENABLED must be true or false");
+  if (env.CONTENTFUL_ENABLED === "true") {
+    for (const key of [
+      "CONTENTFUL_SPACE_ID",
+      "CONTENTFUL_DELIVERY_TOKEN",
+      "CONTENTFUL_ENVIRONMENT",
+    ])
+      if (!env[key]?.trim())
+        errors.push(`Missing ${key} for enabled CMS delivery`);
+    if (
+      env.CONTENTFUL_SPACE_ID &&
+      !/^[A-Za-z0-9_-]+$/.test(env.CONTENTFUL_SPACE_ID)
+    )
+      errors.push("Invalid CONTENTFUL_SPACE_ID");
+    const expected = env.SITE_ENVIRONMENT === "prod" ? "master" : "qa";
+    if (env.CONTENTFUL_ENVIRONMENT !== expected)
+      errors.push(
+        "CONTENTFUL_ENVIRONMENT must be master for prod and qa for dev/qa",
+      );
+  }
   for (const key of [
     ...publicBuildKeys,
     ...privateRuntimeKeys,
@@ -63,6 +99,39 @@ export function validateDeployment(env) {
       );
   if (env.SUPPORT_SESSION_SECRET && env.SUPPORT_SESSION_SECRET.length < 32)
     errors.push("SUPPORT_SESSION_SECRET must contain at least 32 characters");
+  const emailKeys = [
+    "SUPPORT_SES_SMTP_HOST",
+    "SUPPORT_SES_SMTP_PORT",
+    "SUPPORT_SES_SMTP_USERNAME",
+    "SUPPORT_SES_SMTP_PASSWORD",
+    "SUPPORT_INQUIRY_FROM_EMAIL",
+    "SUPPORT_INQUIRY_TO_EMAIL",
+  ];
+  if (emailKeys.some((key) => env[key])) {
+    for (const key of emailKeys)
+      if (!env[key]?.trim()) errors.push(`Missing ${key} for inquiry email`);
+    for (const key of [
+      "SUPPORT_INQUIRY_FROM_EMAIL",
+      "SUPPORT_INQUIRY_TO_EMAIL",
+    ])
+      if (
+        env[key] &&
+        !/^[A-Za-z0-9.!#$%&'*+/=?^_`{|}~-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/.test(
+          env[key],
+        )
+      )
+        errors.push(`Invalid mailbox in ${key}`);
+    if (
+      env.SUPPORT_SES_SMTP_HOST &&
+      !/^[a-zA-Z0-9.-]+$/.test(env.SUPPORT_SES_SMTP_HOST)
+    )
+      errors.push("Invalid SUPPORT_SES_SMTP_HOST");
+    if (
+      env.SUPPORT_SES_SMTP_PORT &&
+      ![25, 465, 587, 2465, 2587].includes(Number(env.SUPPORT_SES_SMTP_PORT))
+    )
+      errors.push("Invalid SUPPORT_SES_SMTP_PORT");
+  }
   for (const key of ["NEXT_PUBLIC_SITE_URL", "INSIGHTS_API_ORIGIN"]) {
     if (!env[key]) continue;
     try {
@@ -204,6 +273,71 @@ export async function verifyAuth0Connection(env, fetcher = fetch) {
     throw new DeploymentConfigError(
       "Auth0 Management connection did not confirm all required scopes: read:users, create:users, update:users_app_metadata. Check the M2M application's API authorization",
     );
+}
+
+export async function verifyContentfulConnection(env, fetcher = fetch) {
+  if (env.CONTENTFUL_ENABLED !== "true") return null;
+  const seed = JSON.parse(
+    readFileSync(
+      new URL("../src/content/website-seed.json", import.meta.url),
+      "utf8",
+    ),
+  );
+  const requiredPaths = seed.entries
+    .filter((entry) => entry.type === "b2tPage")
+    .map((entry) => entry.fields.path);
+  let pageCount = 0;
+  for (const type of ["b2tPage", "b2tSite"]) {
+    let response;
+    try {
+      response = await fetcher(
+        `https://cdn.contentful.com/spaces/${env.CONTENTFUL_SPACE_ID}/environments/${env.CONTENTFUL_ENVIRONMENT}/entries?content_type=${type}&include=5&limit=1000`,
+        {
+          headers: { Authorization: `Bearer ${env.CONTENTFUL_DELIVERY_TOKEN}` },
+          redirect: "error",
+          signal: AbortSignal.timeout(10000),
+        },
+      );
+    } catch {
+      throw new DeploymentConfigError(
+        "Contentful delivery check failed (network/timeout); values withheld",
+      );
+    }
+    if (!response.ok)
+      throw new DeploymentConfigError(
+        `Contentful delivery check failed (HTTP ${response.status}); check CONTENTFUL_SPACE_ID, CONTENTFUL_DELIVERY_TOKEN and CONTENTFUL_ENVIRONMENT. Values withheld`,
+      );
+    let body;
+    try {
+      body = await response.json();
+    } catch {
+      throw new DeploymentConfigError(
+        "Contentful delivery returned invalid JSON; provider body withheld",
+      );
+    }
+    if (!Array.isArray(body.items) || body.errors?.length)
+      throw new DeploymentConfigError(
+        "Contentful has unresolved published references; publish linked blocks, actions, cards and assets before deploying",
+      );
+    if (type === "b2tPage") {
+      const paths = new Set(
+        body.items
+          .filter(
+            (entry) => entry.fields?.seoTitle && entry.fields?.blocks?.length,
+          )
+          .map((entry) => entry.fields.path),
+      );
+      if (requiredPaths.some((path) => !paths.has(path)))
+        throw new DeploymentConfigError(
+          "Contentful is missing required published website pages; complete the seed publication in the selected environment",
+        );
+      pageCount = paths.size;
+    } else if (!body.items.some((entry) => entry.fields?.key === "website"))
+      throw new DeploymentConfigError(
+        "Contentful is missing the published website settings entry",
+      );
+  }
+  return pageCount;
 }
 
 // Public read-only probes: no editorial administration credential, visitor

@@ -17,6 +17,8 @@ The first two capabilities are featured on the homepage and Services page. Six i
 
 ## Content sources
 
+Published public content and composition now come from Contentful, with `src/content/website-seed.json` as the bootstrap/fallback snapshot. `CmsBlocks.tsx` retains the established templates; `contentful.ts` is server-only. See [CMS design](contentful-design.md). The original `site.ts` capability/process exports remain compatibility/bootstrap references for non-CMS consumers; edit live website content in the CMS and keep any revised snapshot aligned. Application/legal facts and primary integration destinations remain code-owned.
+
 - [`src/lib/site.ts`](../src/lib/site.ts): capability descriptions, tags, IDs/slugs, process steps, shared navigation destinations.
 - [`src/components/Hero.tsx`](../src/components/Hero.tsx), [`Services.tsx`](../src/components/Services.tsx), [`UseCases.tsx`](../src/components/UseCases.tsx), and [`CTA.tsx`](../src/components/CTA.tsx): presentation and supporting copy.
 - [`src/lib/seo.ts`](../src/lib/seo.ts): page descriptions, canonical metadata, organization and service structured data. Service entries derive from the capability data.

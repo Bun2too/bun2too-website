@@ -2,15 +2,59 @@ import { getStore } from "@netlify/blobs";
 import type { SupportStore } from "./support";
 import { RequestError } from "./consent";
 export const SUPPORT_STORE = "bun2too-support";
-export function getSupportStore(): SupportStore {
+export function getSupportStore(signal?: AbortSignal): SupportStore {
   try {
-    const store = getStore({ name: SUPPORT_STORE, consistency: "strong" });
+    const store = getStore({
+      name: SUPPORT_STORE,
+      consistency: "strong",
+      ...(signal
+        ? {
+            fetch: (input: Parameters<typeof fetch>[0], init?: RequestInit) => {
+              signal.throwIfAborted();
+              return fetch(input, {
+                ...init,
+                signal: init?.signal
+                  ? AbortSignal.any([signal, init.signal])
+                  : signal,
+              });
+            },
+          }
+        : {}),
+    });
     return {
       read: async <T>(key: string) => {
-        const result = await store.getWithMetadata(key, {
+        let result = await store.getWithMetadata(key, {
           type: "json",
           consistency: "strong",
         });
+        // The local Blobs server omits ETags on GET, but exposes the same
+        // conditional-write ETags in LIST. Bracket a fresh read with matching
+        // versions so concurrent writes cannot pair old data with a new ETag.
+        // Production still requires the ETag supplied by GET.
+        if (
+          result &&
+          !result.etag &&
+          process.env.NETLIFY_DEV === "true" &&
+          process.env.NODE_ENV !== "production"
+        ) {
+          const version = async () => {
+            const page = await store.list({ prefix: key });
+            return page.blobs.find((entry) => entry.key === key)?.etag;
+          };
+          for (let attempt = 0; attempt < 3; attempt++) {
+            const before = await version();
+            result = await store.getWithMetadata(key, {
+              type: "json",
+              consistency: "strong",
+            });
+            if (!result) return null;
+            const after = await version();
+            if (before && before === after) {
+              result = { ...result, etag: after };
+              break;
+            }
+          }
+        }
         if (result && !result.etag)
           throw new RequestError(
             503,
@@ -33,7 +77,7 @@ export function getSupportStore(): SupportStore {
   } catch {
     throw new RequestError(
       503,
-      "Private inquiry storage is not available yet. Please use the contact page for now.",
+      "Private inquiries are currently unavailable. Please email our team.",
     );
   }
 }

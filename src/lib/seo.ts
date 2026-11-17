@@ -175,8 +175,15 @@ export const organizationSchema = {
     },
   ],
 };
-export function pageSchema(path: string) {
-  const page = publicPages.find((p) => p.path === path);
+export function pageSchema(
+  path: string,
+  content?: {
+    title: string;
+    description: string;
+    services?: { short: string; description: string; slug: string }[];
+  },
+) {
+  const page = content || publicPages.find((p) => p.path === path);
   return {
     "@context": "https://schema.org",
     "@graph": [
@@ -220,17 +227,19 @@ export function pageSchema(path: string) {
         ? [
             {
               "@type": "ItemList",
-              itemListElement: capabilities.map((item, i) => ({
-                "@type": "ListItem",
-                position: i + 1,
-                item: {
-                  "@type": "Service",
-                  name: item.short,
-                  description: item.description,
-                  provider: { "@id": absoluteUrl("/#organization") },
-                  url: absoluteUrl(`/services#${item.slug}`),
-                },
-              })),
+              itemListElement: (content?.services || capabilities).map(
+                (item, i) => ({
+                  "@type": "ListItem",
+                  position: i + 1,
+                  item: {
+                    "@type": "Service",
+                    name: item.short,
+                    description: item.description,
+                    provider: { "@id": absoluteUrl("/#organization") },
+                    url: absoluteUrl(`/services#${item.slug}`),
+                  },
+                }),
+              ),
             },
           ]
         : []),

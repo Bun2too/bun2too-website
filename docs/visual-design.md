@@ -15,6 +15,8 @@ The site uses its existing evergreen/cream/lime theme and official assets under 
 
 Article-specific artwork from the editorial API is preserved. The earlier `public/images/customer-architecture.svg` remains available; it is no longer the homepage hero. Preserve official logo artwork independently of these generated illustrations.
 
+Contentful now references copies of these six original artworks through reusable Artwork entries. Page blocks can select published image assets while the local files remain the fallback. The [CMS design document](contentful-design.md) includes generated model/flow/layout diagrams and desktop/mobile captures of the actual QA-delivered page. Official logos remain local and unchanged.
+
 ## Final prompt set
 
 The following shared prompt was concatenated with each asset’s subject prompt below. These are the production prompts used with the built-in generator; the source generations were inspected before WebP encoding. Re-encode/re-size as a build asset operation; creative image changes should use image generation with explicit reference images.

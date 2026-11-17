@@ -1,4 +1,4 @@
-import Newsletter from "@/components/Newsletter";
+import Newsletter from "@/components/CmsNewsletter";
 export const metadata = {
   title: "Subscribe to insights",
   robots: { index: false, follow: false },

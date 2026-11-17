@@ -47,7 +47,7 @@ export function supportError(error: unknown) {
   return supportResponse(
     {
       error:
-        "Support is temporarily unavailable. Please try again or use the contact page.",
+        "Support is currently unavailable. Please email our team or read the support FAQs.",
     },
     undefined,
     undefined,

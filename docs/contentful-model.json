@@ -1,0 +1,873 @@
+{
+  "contentTypes": [
+    {
+      "id": "b2tAction",
+      "name": "Bun2Too · Action / navigation link",
+      "description": "Reusable, validated links and approved inquiry/email/cookie controls. No executable code.",
+      "displayField": "name",
+      "fields": [
+        {
+          "localized": false,
+          "disabled": false,
+          "omitted": false,
+          "id": "name",
+          "name": "Editorial name",
+          "type": "Symbol",
+          "required": true,
+          "validations": []
+        },
+        {
+          "localized": false,
+          "disabled": false,
+          "omitted": false,
+          "id": "label",
+          "name": "Visible label",
+          "type": "Symbol",
+          "required": true,
+          "validations": []
+        },
+        {
+          "localized": false,
+          "disabled": false,
+          "omitted": false,
+          "id": "href",
+          "name": "Destination (link actions only)",
+          "type": "Symbol",
+          "required": false,
+          "validations": []
+        },
+        {
+          "localized": false,
+          "disabled": false,
+          "omitted": false,
+          "id": "kind",
+          "name": "Action",
+          "type": "Symbol",
+          "required": true,
+          "validations": [
+            {
+              "in": [
+                "link",
+                "inquiry",
+                "email",
+                "cookieSettings"
+              ]
+            }
+          ]
+        },
+        {
+          "localized": false,
+          "disabled": false,
+          "omitted": false,
+          "id": "variant",
+          "name": "Presentation",
+          "type": "Symbol",
+          "required": true,
+          "validations": [
+            {
+              "in": [
+                "lime",
+                "outline",
+                "cream",
+                "text"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "b2tArtwork",
+      "name": "Bun2Too · Artwork",
+      "description": "Reusable artwork and accessible captions. Official logo remains in code.",
+      "displayField": "name",
+      "fields": [
+        {
+          "localized": false,
+          "disabled": false,
+          "omitted": false,
+          "id": "name",
+          "name": "Editorial name",
+          "type": "Symbol",
+          "required": true,
+          "validations": []
+        },
+        {
+          "localized": false,
+          "disabled": false,
+          "omitted": false,
+          "id": "key",
+          "name": "Stable artwork key",
+          "type": "Symbol",
+          "required": true,
+          "validations": []
+        },
+        {
+          "localized": false,
+          "disabled": false,
+          "omitted": false,
+          "id": "image",
+          "name": "Image",
+          "type": "Link",
+          "linkType": "Asset",
+          "required": true,
+          "validations": [
+            {
+              "linkMimetypeGroup": [
+                "image"
+              ]
+            }
+          ]
+        },
+        {
+          "localized": false,
+          "disabled": false,
+          "omitted": false,
+          "id": "alt",
+          "name": "Alternative text",
+          "type": "Symbol",
+          "required": true,
+          "validations": []
+        },
+        {
+          "localized": false,
+          "disabled": false,
+          "omitted": false,
+          "id": "label",
+          "name": "Eyebrow",
+          "type": "Symbol",
+          "required": false,
+          "validations": []
+        },
+        {
+          "localized": false,
+          "disabled": false,
+          "omitted": false,
+          "id": "caption",
+          "name": "Caption",
+          "type": "Symbol",
+          "required": false,
+          "validations": []
+        }
+      ]
+    },
+    {
+      "id": "b2tCard",
+      "name": "Bun2Too · Service / process / use case card",
+      "description": "Structured reusable content. Keep existing service anchors stable.",
+      "displayField": "name",
+      "fields": [
+        {
+          "localized": false,
+          "disabled": false,
+          "omitted": false,
+          "id": "name",
+          "name": "Editorial name",
+          "type": "Symbol",
+          "required": true,
+          "validations": []
+        },
+        {
+          "localized": false,
+          "disabled": false,
+          "omitted": false,
+          "id": "slug",
+          "name": "Stable anchor",
+          "type": "Symbol",
+          "required": true,
+          "validations": [
+            {
+              "regexp": {
+                "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+              }
+            }
+          ]
+        },
+        {
+          "localized": false,
+          "disabled": false,
+          "omitted": false,
+          "id": "number",
+          "name": "Display number",
+          "type": "Symbol",
+          "required": false,
+          "validations": []
+        },
+        {
+          "localized": false,
+          "disabled": false,
+          "omitted": false,
+          "id": "icon",
+          "name": "Icon",
+          "type": "Symbol",
+          "required": false,
+          "validations": [
+            {
+              "in": [
+                "engineering",
+                "infrastructure",
+                "data",
+                "identity",
+                "insight",
+                "consent"
+              ]
+            }
+          ]
+        },
+        {
+          "localized": false,
+          "disabled": false,
+          "omitted": false,
+          "id": "eyebrow",
+          "name": "Category / step label",
+          "type": "Symbol",
+          "required": false,
+          "validations": []
+        },
+        {
+          "localized": false,
+          "disabled": false,
+          "omitted": false,
+          "id": "title",
+          "name": "Heading",
+          "type": "Symbol",
+          "required": true,
+          "validations": []
+        },
+        {
+          "localized": false,
+          "disabled": false,
+          "omitted": false,
+          "id": "body",
+          "name": "Description",
+          "type": "Text"
+        },
+        {
+          "localized": false,
+          "disabled": false,
+          "omitted": false,
+          "id": "detail",
+          "name": "Deliverable / detail",
+          "type": "Symbol",
+          "required": false,
+          "validations": []
+        },
+        {
+          "localized": false,
+          "disabled": false,
+          "omitted": false,
+          "id": "tags",
+          "name": "Tags",
+          "type": "Array",
+          "items": {
+            "type": "Symbol"
+          }
+        },
+        {
+          "localized": false,
+          "disabled": false,
+          "omitted": false,
+          "id": "featured",
+          "name": "Featured capability",
+          "type": "Boolean"
+        }
+      ]
+    },
+    {
+      "id": "b2tFaq",
+      "name": "Bun2Too · Public FAQ",
+      "description": "Used by the visible FAQ, FAQ schema, and public discovery text.",
+      "displayField": "name",
+      "fields": [
+        {
+          "localized": false,
+          "disabled": false,
+          "omitted": false,
+          "id": "name",
+          "name": "Editorial name",
+          "type": "Symbol",
+          "required": true,
+          "validations": []
+        },
+        {
+          "localized": false,
+          "disabled": false,
+          "omitted": false,
+          "id": "question",
+          "name": "Question",
+          "type": "Symbol",
+          "required": true,
+          "validations": []
+        },
+        {
+          "localized": false,
+          "disabled": false,
+          "omitted": false,
+          "id": "answer",
+          "name": "Answer",
+          "type": "Text"
+        },
+        {
+          "localized": false,
+          "disabled": false,
+          "omitted": false,
+          "id": "path",
+          "name": "Learn-more path",
+          "type": "Symbol",
+          "required": true,
+          "validations": []
+        }
+      ]
+    },
+    {
+      "id": "b2tBlock",
+      "name": "Bun2Too · Page block",
+      "description": "Select a supported layout component and edit its content. Reorder references on a Page. Layout code and transactional consent remain in the application.",
+      "displayField": "name",
+      "fields": [
+        {
+          "localized": false,
+          "disabled": false,
+          "omitted": false,
+          "id": "name",
+          "name": "Editorial name",
+          "type": "Symbol",
+          "required": true,
+          "validations": []
+        },
+        {
+          "localized": false,
+          "disabled": false,
+          "omitted": false,
+          "id": "kind",
+          "name": "Component",
+          "type": "Symbol",
+          "required": true,
+          "validations": [
+            {
+              "in": [
+                "hero",
+                "intro",
+                "focusStrip",
+                "services",
+                "approach",
+                "process",
+                "useCases",
+                "insightsPromotion",
+                "newsletter",
+                "cta",
+                "faq",
+                "richText",
+                "insightsFeed"
+              ]
+            }
+          ]
+        },
+        {
+          "localized": false,
+          "disabled": false,
+          "omitted": false,
+          "id": "variant",
+          "name": "Layout variant",
+          "type": "Symbol",
+          "required": true,
+          "validations": [
+            {
+              "in": [
+                "default",
+                "full",
+                "compact",
+                "contact",
+                "support",
+                "insights",
+                "legal"
+              ]
+            }
+          ]
+        },
+        {
+          "localized": false,
+          "disabled": false,
+          "omitted": false,
+          "id": "anchor",
+          "name": "Optional section anchor",
+          "type": "Symbol",
+          "required": false,
+          "validations": []
+        },
+        {
+          "localized": false,
+          "disabled": false,
+          "omitted": false,
+          "id": "eyebrow",
+          "name": "Eyebrow",
+          "type": "Symbol",
+          "required": false,
+          "validations": []
+        },
+        {
+          "localized": false,
+          "disabled": false,
+          "omitted": false,
+          "id": "heading",
+          "name": "Heading (italic = emphasis)",
+          "type": "RichText",
+          "validations": [
+            {
+              "enabledNodeTypes": [
+                "heading-1",
+                "heading-2",
+                "heading-3",
+                "heading-4",
+                "heading-5",
+                "heading-6",
+                "ordered-list",
+                "unordered-list",
+                "hr",
+                "blockquote",
+                "table",
+                "hyperlink",
+                "embedded-entry-inline"
+              ]
+            },
+            {
+              "enabledMarks": [
+                "bold",
+                "italic",
+                "underline",
+                "code"
+              ]
+            },
+            {
+              "nodes": {
+                "embedded-entry-inline": [
+                  {
+                    "linkContentType": [
+                      "b2tAction"
+                    ]
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "localized": false,
+          "disabled": false,
+          "omitted": false,
+          "id": "body",
+          "name": "Body",
+          "type": "RichText",
+          "validations": [
+            {
+              "enabledNodeTypes": [
+                "heading-1",
+                "heading-2",
+                "heading-3",
+                "heading-4",
+                "heading-5",
+                "heading-6",
+                "ordered-list",
+                "unordered-list",
+                "hr",
+                "blockquote",
+                "table",
+                "hyperlink",
+                "embedded-entry-inline"
+              ]
+            },
+            {
+              "enabledMarks": [
+                "bold",
+                "italic",
+                "underline",
+                "code"
+              ]
+            },
+            {
+              "nodes": {
+                "embedded-entry-inline": [
+                  {
+                    "linkContentType": [
+                      "b2tAction"
+                    ]
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "localized": false,
+          "disabled": false,
+          "omitted": false,
+          "id": "note",
+          "name": "Supporting note",
+          "type": "RichText",
+          "validations": [
+            {
+              "enabledNodeTypes": [
+                "heading-1",
+                "heading-2",
+                "heading-3",
+                "heading-4",
+                "heading-5",
+                "heading-6",
+                "ordered-list",
+                "unordered-list",
+                "hr",
+                "blockquote",
+                "table",
+                "hyperlink",
+                "embedded-entry-inline"
+              ]
+            },
+            {
+              "enabledMarks": [
+                "bold",
+                "italic",
+                "underline",
+                "code"
+              ]
+            },
+            {
+              "nodes": {
+                "embedded-entry-inline": [
+                  {
+                    "linkContentType": [
+                      "b2tAction"
+                    ]
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "localized": false,
+          "disabled": false,
+          "omitted": false,
+          "id": "labels",
+          "name": "Strip labels / footnotes",
+          "type": "Array",
+          "items": {
+            "type": "Symbol"
+          }
+        },
+        {
+          "localized": false,
+          "disabled": false,
+          "omitted": false,
+          "id": "artwork",
+          "name": "Artwork",
+          "type": "Link",
+          "linkType": "Entry",
+          "required": false,
+          "validations": [
+            {
+              "linkContentType": [
+                "b2tArtwork"
+              ]
+            }
+          ]
+        },
+        {
+          "localized": false,
+          "disabled": false,
+          "omitted": false,
+          "id": "items",
+          "name": "Cards in display order",
+          "type": "Array",
+          "required": false,
+          "items": {
+            "type": "Link",
+            "linkType": "Entry",
+            "validations": [
+              {
+                "linkContentType": [
+                  "b2tCard"
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "localized": false,
+          "disabled": false,
+          "omitted": false,
+          "id": "faqs",
+          "name": "FAQs in display order",
+          "type": "Array",
+          "required": false,
+          "items": {
+            "type": "Link",
+            "linkType": "Entry",
+            "validations": [
+              {
+                "linkContentType": [
+                  "b2tFaq"
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "localized": false,
+          "disabled": false,
+          "omitted": false,
+          "id": "actions",
+          "name": "Actions in display order",
+          "type": "Array",
+          "required": false,
+          "items": {
+            "type": "Link",
+            "linkType": "Entry",
+            "validations": [
+              {
+                "linkContentType": [
+                  "b2tAction"
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "localized": false,
+          "disabled": false,
+          "omitted": false,
+          "id": "secondary",
+          "name": "Supporting block",
+          "type": "Link",
+          "linkType": "Entry",
+          "required": false,
+          "validations": [
+            {
+              "linkContentType": [
+                "b2tBlock"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "b2tPage",
+      "name": "Bun2Too · Page",
+      "description": "Public route, SEO, page shell, and ordered references to reusable blocks. Publish linked entries and images before the page.",
+      "displayField": "name",
+      "fields": [
+        {
+          "localized": false,
+          "disabled": false,
+          "omitted": false,
+          "id": "name",
+          "name": "Editorial name",
+          "type": "Symbol",
+          "required": true,
+          "validations": []
+        },
+        {
+          "localized": false,
+          "disabled": false,
+          "omitted": false,
+          "id": "path",
+          "name": "Public path",
+          "type": "Symbol",
+          "required": true,
+          "validations": [
+            {
+              "unique": true
+            },
+            {
+              "regexp": {
+                "pattern": "^/(?:[a-z0-9-]+(?:/[a-z0-9-]+)*)?$"
+              }
+            }
+          ]
+        },
+        {
+          "localized": false,
+          "disabled": false,
+          "omitted": false,
+          "id": "seoTitle",
+          "name": "SEO title",
+          "type": "Symbol",
+          "required": true,
+          "validations": []
+        },
+        {
+          "localized": false,
+          "disabled": false,
+          "omitted": false,
+          "id": "seoDescription",
+          "name": "SEO description",
+          "type": "Text"
+        },
+        {
+          "localized": false,
+          "disabled": false,
+          "omitted": false,
+          "id": "layout",
+          "name": "Page shell",
+          "type": "Symbol",
+          "required": true,
+          "validations": [
+            {
+              "in": [
+                "default",
+                "legal",
+                "support",
+                "insights"
+              ]
+            }
+          ]
+        },
+        {
+          "localized": false,
+          "disabled": false,
+          "omitted": false,
+          "id": "blocks",
+          "name": "Page blocks in display order",
+          "type": "Array",
+          "required": true,
+          "items": {
+            "type": "Link",
+            "linkType": "Entry",
+            "validations": [
+              {
+                "linkContentType": [
+                  "b2tBlock"
+                ]
+              }
+            ]
+          },
+          "validations": [
+            {
+              "size": {
+                "min": 1,
+                "max": 60
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "b2tSite",
+      "name": "Bun2Too · Site navigation and footer",
+      "description": "Global public chrome. Authentication controls, official logo, legal operator, and cookie behavior remain application-owned.",
+      "displayField": "name",
+      "fields": [
+        {
+          "localized": false,
+          "disabled": false,
+          "omitted": false,
+          "id": "name",
+          "name": "Editorial name",
+          "type": "Symbol",
+          "required": true,
+          "validations": []
+        },
+        {
+          "localized": false,
+          "disabled": false,
+          "omitted": false,
+          "id": "key",
+          "name": "Singleton key",
+          "type": "Symbol",
+          "required": true,
+          "validations": [
+            {
+              "in": [
+                "website"
+              ]
+            },
+            {
+              "unique": true
+            }
+          ]
+        },
+        {
+          "localized": false,
+          "disabled": false,
+          "omitted": false,
+          "id": "tagline",
+          "name": "Footer tagline",
+          "type": "Symbol",
+          "required": false,
+          "validations": []
+        },
+        {
+          "localized": false,
+          "disabled": false,
+          "omitted": false,
+          "id": "slogan",
+          "name": "Footer slogan",
+          "type": "Symbol",
+          "required": false,
+          "validations": []
+        },
+        {
+          "localized": false,
+          "disabled": false,
+          "omitted": false,
+          "id": "navigation",
+          "name": "Main navigation",
+          "type": "Array",
+          "required": false,
+          "items": {
+            "type": "Link",
+            "linkType": "Entry",
+            "validations": [
+              {
+                "linkContentType": [
+                  "b2tAction"
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "localized": false,
+          "disabled": false,
+          "omitted": false,
+          "id": "footerLinks",
+          "name": "Footer navigation",
+          "type": "Array",
+          "required": false,
+          "items": {
+            "type": "Link",
+            "linkType": "Entry",
+            "validations": [
+              {
+                "linkContentType": [
+                  "b2tAction"
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "localized": false,
+          "disabled": false,
+          "omitted": false,
+          "id": "legalLinks",
+          "name": "Legal links",
+          "type": "Array",
+          "required": false,
+          "items": {
+            "type": "Link",
+            "linkType": "Entry",
+            "validations": [
+              {
+                "linkContentType": [
+                  "b2tAction"
+                ]
+              }
+            ]
+          }
+        }
+      ]
+    }
+  ]
+}

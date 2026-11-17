@@ -85,6 +85,7 @@ export async function verifyCaptcha(
   token: string,
   hostname: string,
   action = "subscribe",
+  signal?: AbortSignal,
 ) {
   const secret = process.env.TURNSTILE_SECRET_KEY;
   if (!secret) {
@@ -110,7 +111,9 @@ export async function verifyCaptcha(
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ secret, response: token }),
-      signal: AbortSignal.timeout(10000),
+      signal: signal
+        ? AbortSignal.any([signal, AbortSignal.timeout(10000)])
+        : AbortSignal.timeout(10000),
     },
   );
   const result = object(await response.json());

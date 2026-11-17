@@ -22,6 +22,12 @@ function configuration() {
     NEXT_PUBLIC_GA4_MEASUREMENT_ID: "G-TEST123456",
     INSIGHTS_API_ORIGIN: "https://editorial.example.invalid",
     SUPPORT_SESSION_SECRET: "fixture-value-with-at-least-thirty-two-characters",
+    SUPPORT_SES_SMTP_HOST: "smtp.example.invalid",
+    SUPPORT_SES_SMTP_PORT: "587",
+    SUPPORT_SES_SMTP_USERNAME: "fixture-smtp-user",
+    SUPPORT_SES_SMTP_PASSWORD: "fixture-smtp-password",
+    SUPPORT_INQUIRY_FROM_EMAIL: "sender@example.com",
+    SUPPORT_INQUIRY_TO_EMAIL: "manager@example.com",
   };
 }
 test("deployment validation rejects incomplete and mismatched configuration without echoing values", () => {
@@ -41,6 +47,68 @@ test("deployment validation rejects incomplete and mismatched configuration with
       }),
     /Invalid HTTPS URL/,
   );
+});
+
+test("enabled CMS requires private delivery settings and the agreed environment mapping", () => {
+  const env = {
+    ...configuration(),
+    CONTENTFUL_ENABLED: "true",
+    CONTENTFUL_SPACE_ID: "fixture-space",
+    CONTENTFUL_DELIVERY_TOKEN: "fixture-delivery-token",
+    CONTENTFUL_ENVIRONMENT: "qa",
+  };
+  assert.doesNotThrow(() => validateDeployment(env));
+  assert.throws(
+    () => validateDeployment({ ...env, CONTENTFUL_DELIVERY_TOKEN: "" }),
+    /Missing CONTENTFUL_DELIVERY_TOKEN/,
+  );
+  assert.throws(
+    () => validateDeployment({ ...env, CONTENTFUL_ENVIRONMENT: "master" }),
+    /master for prod and qa for dev/,
+  );
+  assert.doesNotThrow(() =>
+    validateDeployment({
+      ...env,
+      SITE_ENVIRONMENT: "prod",
+      CONTENTFUL_ENVIRONMENT: "master",
+    }),
+  );
+});
+
+test("inquiry SMTP settings must be complete and remain private runtime values", () => {
+  const smtp = {
+    SUPPORT_SES_SMTP_HOST: "smtp.example.invalid",
+    SUPPORT_SES_SMTP_PORT: "587",
+    SUPPORT_SES_SMTP_USERNAME: "fixture-smtp-user",
+    SUPPORT_SES_SMTP_PASSWORD: "fixture-smtp-password",
+    SUPPORT_INQUIRY_FROM_EMAIL: "sender@example.com",
+    SUPPORT_INQUIRY_TO_EMAIL: "manager@example.com",
+  };
+  assert.doesNotThrow(() =>
+    validateDeployment({ ...configuration(), ...smtp }),
+  );
+  assert.throws(
+    () =>
+      validateDeployment({
+        ...configuration(),
+        SUPPORT_SES_SMTP_HOST: smtp.SUPPORT_SES_SMTP_HOST,
+        SUPPORT_SES_SMTP_PASSWORD: "",
+      }),
+    /Missing SUPPORT_SES_SMTP_PASSWORD/,
+  );
+  assert.throws(
+    () =>
+      validateDeployment({
+        ...configuration(),
+        ...smtp,
+        SUPPORT_SES_SMTP_PORT: "80",
+      }),
+    /Invalid SUPPORT_SES_SMTP_PORT/,
+  );
+  for (const key of Object.keys(smtp)) {
+    assert.ok(privateRuntimeKeys.includes(key));
+    assert.equal(publicBuildKeys.includes(key), false);
+  }
 });
 
 test("site mismatch logs the API/status and public comparison, and stops before any writes", async () => {

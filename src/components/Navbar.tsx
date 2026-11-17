@@ -7,16 +7,21 @@ import { site } from "@/lib/site";
 import Icon from "./Icon";
 import BrandLogo from "./BrandLogo";
 import { authConfigured } from "@/lib/auth-config";
-export default function Navbar() {
+import SupportOpenButton from "./support/SupportOpenButton";
+import type { CmsAction } from "@/lib/cms-types";
+export default function Navbar({ navigation }: { navigation?: CmsAction[] }) {
   const [open, setOpen] = useState(false);
   const pathname = usePathname();
   const { isAuthenticated, isLoading, loginWithRedirect } = useAuth0();
   const [loginError, setLoginError] = useState(false);
-  const links = [
-    ["Services", "/services"],
-    ["Our process", "/process"],
-    ["Use cases", "/usecases"],
-  ];
+  const links = navigation
+    ? navigation.map((action) => [action.label, action.href])
+    : [
+        ["Services", "/services"],
+        ["Our process", "/process"],
+        ["Use cases", "/usecases"],
+        ["Insights", site.articles],
+      ];
   return (
     <header className="site-header">
       <nav aria-label="Main navigation" className="nav shell">
@@ -33,19 +38,17 @@ export default function Navbar() {
             <Link
               key={href}
               href={href}
-              aria-current={pathname === href ? "page" : undefined}
+              aria-current={
+                pathname === href ||
+                (href !== "/" && pathname.startsWith(`${href}/`))
+                  ? "page"
+                  : undefined
+              }
               onClick={() => setOpen(false)}
             >
               {label}
             </Link>
           ))}
-          <a
-            href={site.articles}
-            aria-current={pathname.startsWith("/insights") ? "page" : undefined}
-            onClick={() => setOpen(false)}
-          >
-            Insights
-          </a>
         </div>
         <div className="nav-end">
           {!authConfigured ? (
@@ -71,9 +74,9 @@ export default function Navbar() {
               {isLoading ? "Loading…" : "Log in"}
             </button>
           )}
-          <Link href="/contact" className="nav-contact">
+          <SupportOpenButton className="nav-contact">
             Let’s connect ↗
-          </Link>
+          </SupportOpenButton>
         </div>
         <button
           className="menu-toggle"

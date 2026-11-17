@@ -18,7 +18,7 @@ Read the nearest scoped `AGENTS.md` before changing files in that directory. Loa
 
 - Next.js App Router + React + TypeScript, npm lockfile, Node 24 (`.nvmrc`). Read relevant installed Next.js guides before changing framework APIs.
 - Active routes are in `src/app`; `@/*` maps to `src/*`. `src/app_temp` and `src/components/tsconfig.json` are retained legacy material.
-- `src/lib/site.ts` owns capabilities, explicit stable service slugs, and primary shared destinations. `src/lib/seo.ts` and `src/lib/support-content.ts` keep discovery/FAQ content aligned.
+- Contentful owns public page copy/composition; read [CMS design](docs/contentful-design.md). `src/content/website-seed.json` is the migration/fallback graph and `src/components/CmsBlocks.tsx` owns approved templates. Keep stable service anchors. `site.ts` retains application facts/destinations and compatibility exports; metadata, service/FAQ schema and discovery consume the CMS graph. Management/Preview credentials are local authoring-only.
 - The active article view is `/insights`, backed by a separate public editorial API (`INSIGHTS_API_ORIGIN`, required private configuration; no deployment default). Preserve this integration and its proxy routes.
 - Authentication uses the official Auth0 React SDK in the browser. Management API access, private inquiry APIs and storage are server-side.
 - Netlify hosts the app and `netlify/functions/support-retention.mts`. Server functionality requires the Next.js adapter; static export is insufficient.

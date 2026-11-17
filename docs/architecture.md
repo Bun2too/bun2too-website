@@ -2,6 +2,8 @@
 
 This is a Next.js App Router application with server-rendered public content and client-side Auth0 authentication. Netlify hosts pages, Next.js API handlers, static assets, and a scheduled retention function. Static export is unsuitable because identity preferences, support, and private inquiry collection use server code.
 
+Contentful owns published public page content and block composition through seven content types. `src/content/website-seed.json` is the migration/fallback snapshot; `contentful.ts` reads the Delivery API server-side and `CmsBlocks.tsx` renders the existing design. Core public routes use `ContentPage`; `[...slug]` serves additional validated public CMS paths without taking over private/application routes. Navigation/footer, page metadata, service/FAQ schema, sitemap and `/llms.txt` consume the CMS graph. Insights article records remain external. See the [Contentful design](contentful-design.md) for model/field details, diagrams, caching, failure policy and publishing evidence.
+
 ## Views and discovery routes
 
 | Route                         | View or behavior                                                                                                 | Main source                                                                   |
@@ -35,7 +37,7 @@ The current canonical article experience is **bun2too.com/insights**. It uses a 
 | `GET /api/preferences`                                               | Read the signed-in user's newsletter preferences                                                 | Validated issuer/audience/client/scope access token                                   |
 | `PATCH /api/preferences`                                             | Confirm topics or unsubscribe                                                                    | Email verification required for activation; never trust a browser-provided user ID    |
 | `GET /api/support/session`                                           | Initialize a signed HttpOnly visitor cookie and report support configuration availability        | No saved inquiry records or credentials returned                                     |
-| `POST /api/support/inquiries`                                        | Save a consented inquiry privately in Netlify Blobs                                              | No marketing enrollment or chat attachment; no public inbox API   |
+| `POST /api/support/inquiries`                                        | Save a consented inquiry privately in Netlify Blobs and notify the management inbox through SES SMTP                                              | No marketing enrollment or chat attachment; no public inbox API   |
 | `/api/insights/push-config`, `/api/insights/push-subscriptions`      | Proxy public Web Push setup/registration to editorial backend                                    | Preserve upstream public API; no marketing administration key                         |
 | `/insights/feed.xml`, `/insights/feed.atom`, `/insights/unsubscribe` | Proxy feeds and unsubscribe handling to editorial backend                                        | Owned by the editorial service                                                        |
 
@@ -54,8 +56,10 @@ flowchart LR
   Visitor --> Widget[Contact Bun2Too dialog]
   Widget --> Inquiry[Next.js inquiry API]
   Inquiry --> Blobs
+  Inquiry --> SES[SES email to configured management inbox]
   Retention[Scheduled retention function] --> Blobs
   Public --> Editorial[Public Insights API]
+  Public --> CMS[Contentful published page and block graph]
 ```
 
 ## State and storage
@@ -72,7 +76,7 @@ flowchart LR
 
 `CookieConsentProvider` wraps the identity provider and gates optional browser categories. `GoogleTagManager` initializes the environment-configured container only with Analytics consent, and controls advertising consent separately. Withdrawal targets known Google cookies and reloads to unload a previously running container. Necessary-only keeps authentication and requested support available. Consent never replaces terms acceptance, email consent, or inquiry permissions. See [terms/cookie behavior and legal review](legal-and-cookies.md).
 
-`PageArtwork.tsx` owns the six local artwork variants and responsive header layout, with styles in `artwork.css`. Images are optimized WebP assets under `public/images/artwork`; the original architecture SVG remains available. `EmailButton.tsx` uses a stable server/client button to avoid extensions rewriting `mailto:` anchors before hydration. It opens the native configured mail handler only on click. See [visual design](visual-design.md) for the full asset/consumer/prompt map.
+`PageArtwork.tsx` owns the responsive artwork layout, with styles in `artwork.css`. CMS blocks can select published Contentful assets; the six local variants remain the fallback. Images are optimized WebP assets under `public/images/artwork`; the original architecture SVG remains available. `EmailButton.tsx` uses a stable server/client button to avoid extensions rewriting `mailto:` anchors before hydration. It opens the native configured mail handler only on click. See [visual design](visual-design.md) for the full asset/consumer/prompt map.
 
 `netlify/functions/support-retention.mts` is scheduled daily at 04:00 UTC. It removes expired site records. Netlify packaging recognizes the schedule; production execution still depends on a deployed function and functioning storage access.
 

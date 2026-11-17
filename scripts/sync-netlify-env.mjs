@@ -5,6 +5,7 @@ import {
   verifyAuth0Connection,
   inspectNetlifySite,
   verifyInsightsConnection,
+  verifyContentfulConnection,
 } from "./deploy-config.mjs";
 try {
   if (process.argv.includes("--inspect-site")) {
@@ -26,6 +27,8 @@ try {
       );
       await verifyAuth0Connection(process.env);
       console.log("Auth0 Management credentials and required scopes verified.");
+      const cmsPages = await verifyContentfulConnection(process.env);
+      if (cmsPages !== null) console.log(`Contentful published content and references verified (${cmsPages} pages).`);
       console.log(
         `Insights public API connection verified (${await verifyInsightsConnection(process.env, fetch, (message) => console.log(message))} articles; article lookup and feed checked where available).`,
       );

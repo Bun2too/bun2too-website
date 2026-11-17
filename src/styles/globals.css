@@ -2,6 +2,12 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Hide Netlify's injected branding frame, including late injection. */
+iframe#nl-badge-frame,
+iframe[title="Powered by Netlify"] {
+  display: none !important;
+}
+
 :root {
   --bg: #111e1c;
   --surface: #182925;

@@ -15,9 +15,13 @@ Copy `.env.example` to `.env.local` only if you do not already have a local envi
 npm run dev
 ```
 
-Development and normal production startup use **3000**, matching the supplied local Auth0 root callback. Browser tests use **3100** and mock authentication redirects rather than completing real tenant login on that port.
+Development exposes Netlify's offline proxy on **3000**, matching the supplied local Auth0 root callback, with Next.js on internal **3001**. It includes sandboxed local Blobs storage without connecting to production records. Normal production startup uses 3000; deployed Netlify Functions receive their storage context from the adapter. Browser tests use **3100** and mock authentication redirects rather than completing real tenant login on that port.
+
+`npm run dev` loads optional `.env.contentful.local` defaults followed by `.env.local` overrides. Existing shell variables take precedence. The `scripts/dev.mjs` launcher watches local environment files, including atomic editor saves and deletion, and restarts its own runtime process group with freshly loaded values. It retains the original shell environment, rather than a previous child’s loaded credentials. Changed shell exports require restarting the command. Configuration values are never logged. `dev:cms` and `dev:support` are compatibility aliases, not feature switches. `npm run contentful:plan` is offline; `contentful:check` and `contentful:delivery:check` are explicitly live, read-only Contentful checks. `contentful:seed` creates/publishes missing owned records and needs task authorization; its Management token is never deployed. Read [CMS design](contentful-design.md) before changing the model or fallback snapshot.
 
 Public views render without private credentials. Missing configuration returns an unavailable state for the corresponding feature. Private inquiries need Netlify runtime storage context, a session signing secret, and production verification. Inquiries have no AI dependency; optional Open WebUI support requires explicit enablement and separate public-only configuration. See [support](support.md) and [deployment troubleshooting](deployment-troubleshooting.md).
+
+For a local support session, run `npm run support:setup` if a signing secret is missing, then use the standard `npm run dev`. Inquiry availability requires SMTP settings; AI availability requires complete, explicitly enabled Open WebUI configuration. Starting the command does not enable either feature by itself. Raw `next dev` and local `npm start` do not provide Netlify storage context. Real SMTP credentials send real mail; tests use fixtures. See [local support setup](support.md#local-development-and-session-errors).
 
 ## Validation
 
@@ -67,3 +71,7 @@ GitHub Actions verifies pull requests and publishes pushes according to `dev →
 `src/app_temp` and `src/components/tsconfig.json` are legacy material from the original working tree. The active app uses the root TypeScript configuration and `src/app`. Do not use legacy files as current route definitions or remove them casually during unrelated work.
 
 Public CI builds use `npm run build:test` with reserved synthetic identities in `tests/fixtures/public-env.json`; release builds use `npm run build` with the selected GitHub/Netlify environment. Never deploy the test fixture build. Run `npm run security:check` and `npm run security:scan` before public commits. See [security and configuration](security.md).
+
+## Agent quality gates
+
+Trusted branch pipelines also run [agent evaluations](agent-evaluations.md): dev components, QA trajectories, and both plus a recorded human review before production. Live evaluation commands require explicit candidate/judge settings; ordinary unit tests remain offline.

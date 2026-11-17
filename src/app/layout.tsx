@@ -11,6 +11,7 @@ import "@/styles/insights.css";
 import "@/styles/support.css";
 import "@/styles/cookies.css";
 import "@/styles/artwork.css";
+import { getCmsPage, getCmsSite } from "@/lib/contentful";
 export const metadata: Metadata = {
   ...pageMetadata("/"),
   metadataBase: new URL(siteOrigin),
@@ -38,23 +39,33 @@ export const metadata: Metadata = {
     apple: [{ url: "/bun2too/logo.png", sizes: "180x180", type: "image/png" }],
   },
 };
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  const content = await getCmsSite();
+  const home = await getCmsPage("/");
+  const organization = {
+    ...organizationSchema,
+    "@graph": organizationSchema["@graph"].map((item) =>
+      item["@type"] === "Organization"
+        ? { ...item, description: home?.seoDescription || item.description }
+        : item,
+    ),
+  };
   return (
     <html lang="en">
       <body>
-        <StructuredData data={organizationSchema} />
+        <StructuredData data={organization} />
         <a href="#main-content" className="skip-link">
           Skip to content
         </a>
         <CookieConsentProvider>
           <AuthProvider>
-            <Navbar />
+            <Navbar navigation={content.navigation} />
             {children}
-            <Footer />
+            <Footer content={content} />
             <SupportLauncher />
           </AuthProvider>
         </CookieConsentProvider>
